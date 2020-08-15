@@ -1,0 +1,108 @@
+{% extends 'base-foreground.html' %}
+
+{% block title %}文章列表{% endblock %}
+
+{% block content %}
+<!--中间主体部分-->
+<main class="page-main  clearfix">
+    <div class="layui-row">
+<!--        &lt;!&ndash;    页面左侧留空&ndash;&gt;-->
+<!--        <div class="layui-hide-xs layui-col-sm1 layui-col-md2 left-null">-->
+        </div>
+        <!--    页面主体部分-->
+        <div class="layui-col-md-offset2 layui-col-sm12 layui-col-md8 page-main-centre">
+            <div class="layui-row layui-col-space30 main-centre">
+                <!--            主体左侧部分-->
+                <div class="layui-col-md9 main-left">
+<!--                    位置信息-->
+                    <blockquote class="layui-elem-quote location suspend">
+                        <p>您的位置： <a href="#">首页</a> <i class="layui-icon layui-icon-next"></i> <span>Python</span></p>
+                    </blockquote>
+                    <!--            文章列表-->
+                    <div class="index-new">
+                        <h4>
+                            <strong>
+                                <span>📜 文章列表</span>
+                            </strong>
+                        </h4>
+                        {% for class in classArticle%}
+                            <div class="layui-row layui-col-space20 article-box">
+                            <div class="layui-col-xs12 layui-col-md4">
+                                <div class="img-cover">
+                                    <a href="/blog/show/" title="文章1标题">
+                                        <img src="../media/cover/2.jpg" width="100%">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="layui-col-xs12 layui-col-md8">
+                                <h3>
+                                    <a href="/blog/show/">这是这个分类下第{{ class }}篇文章</a>
+                                </h3>
+                                <p class="txt-cont hidden-xs">
+                                    <a href="/blog/show/">这是第{{ class }}篇最新文章的摘要信息，锄禾日当午，汗滴禾下土，谁知盘中餐，粒粒皆辛苦。</a>
+                                </p>
+                                <div>
+                                    <span class="label-tag label-color-2">
+                                        <a>Linux</a>
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-clock"> 2020年7月16日</i>
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-eye"> 32</i>
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-star-half-alt"> 4.8</i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div id="paging"></div>
+                    </div>
+                </div>
+                {% include 'blog/aside.html' %}
+                <!--            主体右侧部分-->
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block js %}
+<script>
+    // 分页
+    layui.use(['laypage', 'layer'], function(){
+        var laypage = layui.laypage
+            ,layer = layui.layer;
+        laypage.render({
+            elem: 'paging'
+            ,count: 1000
+            ,layout: ['prev', 'page', 'next','limit',]
+        });
+        //调用分页
+        laypage.render({
+            elem: 'demo20'
+            ,count: data.length
+            ,jump: function(obj){
+                //模拟渲染
+                document.getElementById('biuuu_city_list').innerHTML = function(){
+                    var arr = []
+                        ,thisData = data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                    layui.each(thisData, function(index, item){
+                        arr.push('<li>'+ item +'</li>');
+                    });
+                    return arr.join('');
+                }();
+            }
+        });
+    });
+</script>
+<script>
+    // 导航栏当前标签页
+    $(function () {
+        $(".layui-nav li:eq(1)").addClass("layui-this");
+        $("#LAY-system-side-menu li:eq(1)").addClass("layui-this");
+    })
+</script>
+{% endblock %}

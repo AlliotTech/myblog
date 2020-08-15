@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+	<title>用户登录/注册</title>
+	<link rel='stylesheet' href='../static/bootstrap-4.5.0/css/bootstrap.min.css'>
+	<link rel="stylesheet" href="../static/layui/css/layui.css">
+	<link rel="stylesheet" href="../static/css/login.css">
+</head>
+<body>
+<div class="section">
+	<div class="container">
+		<div class="row full-height justify-content-center">
+			<div class="col-12 text-center align-self-center py-5">
+				<div class="section pb-5 pt-5 pt-sm-2 text-center">
+					<h6 class="mb-0 pb-3"><span>登录</span><span>注册</span></h6>
+					<input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+					<label for="reg-log"></label>
+					<div class="card-3d-wrap mx-auto">
+						<div class="card-3d-wrapper">
+							<div class="card-front">
+								<div class="center-wrap">
+									<div class="section text-center">
+										<h4 class="mb-4 pb-3">登&nbsp;录</h4>
+										<form action="#">
+											<div class="form-group">
+												<input type="email" name="logemail" class="form-style" placeholder="邮箱" autocomplete="off" required="required">
+												<i class="input-icon layui-icon layui-icon-email"></i>
+											</div>
+											<div class="form-group mt-2">
+												<input type="password" name="loginpwd" lay-verify="required" lay-vertype="tips" class="form-style" placeholder="密码" autocomplete="off" required="required">
+												<i class="input-icon layui-icon layui-icon-password"></i>
+											</div>
+											<div class="form-group mt-2 verification">
+												<input type="password" name="logpass" class="form-style" placeholder="验证码" autocomplete="off" required="required">
+												<i class="input-icon layui-icon layui-icon-vercode"></i>
+												<a href="#" title="点击刷新验证码"><img src="static/images/yanzheng.png" alt=""></a>
+											</div>
+											<input class="btn mt-4" type="submit" value="登录">
+											<a href="password.html" class="link forget">忘记密码?</a>
+										</form>
+										<div>
+											<p class="mb-0 mt-4 text-center">社交账号免注册登录</p>
+											<div class="layui-btn-group">
+												<button type="button" class="layui-btn layui-btn-normal"><i class="layui-icon layui-icon-login-wechat"></i></button>
+												<button type="button" class="layui-btn layui-btn-normal"><i class="layui-icon layui-icon-login-qq"></i></button>
+												<button type="button" class="layui-btn layui-btn-normal"><i class="layui-icon layui-icon-login-weibo"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="card-back">
+								<div class="center-wrap">
+									<div class="section text-center">
+										<h4 class="mb-4 pb-3">注&nbsp;册</h4>
+										<form action="#">
+											<div class="form-group">
+												<input type="text" name="logname" class="form-style" placeholder="昵称" autocomplete="off" required>
+												<i class="input-icon layui-icon layui-icon-username"></i>
+											</div>
+											<div class="form-group mt-2">
+												<input type="email" name="logemail" class="form-style" placeholder="邮箱" autocomplete="off" required>
+												<i class="input-icon layui-icon layui-icon-email"></i>
+											</div>
+											<div class="form-group mt-2">
+												<input type="password" name="pwd-1" lay-verify="required" lay-vertype="tips" class="form-style" placeholder="密码" autocomplete="off" required="required">
+												<i class="input-icon layui-icon layui-icon-password"></i>
+											</div>
+											<div class="form-group mt-2">
+												<input type="password" name="pwd-2" lay-verify="required" lay-vertype="tips" class="form-style" placeholder="确认密码" autocomplete="off" required="required">
+												<i class="input-icon layui-icon layui-icon-password"></i>
+											</div>
+											<div class="form-group mt-2 verification">
+												<input type="password" name="logpass" class="form-style" placeholder="验证码" autocomplete="off" required>
+												<i class="input-icon layui-icon layui-icon-vercode"></i>
+												<a href="#" title="点击刷新验证码"><img src="static/images/yanzheng.png" alt=""></a>
+											</div>
+											<input class="btn mt-4" type="submit" value="注册">
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

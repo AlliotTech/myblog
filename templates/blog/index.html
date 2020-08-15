@@ -1,0 +1,133 @@
+{% extends 'base-foreground.html' %}
+ 
+{% block title %}崔亮的博客-专注devops自动化运维，传播优秀it运维技术文章{% endblock %}
+ 
+{% block content %}
+<main class="page-main">
+    <div class="layui-row">
+    <div class="layui-col-md-offset2 layui-col-sm12 layui-col-md8 page-main-centre">
+            <div class="layui-row layui-col-space30 main-centre">
+                <!--            主体左侧部分-->
+                <div class="layui-col-md9 main-left">
+                    <!--            轮播图片-->
+                    <div class="carousel-img layui-carousel" id="test10">
+                        <div carousel-item="" class="img-zoom">
+                            <div><img src="/media/carousel/carousel-1.jpg"></div>
+                            <div><img src="/media/carousel/carousel-2.jpg"></div>
+                            <div><img src="/media/carousel/carousel-3.jpg"></div>
+                            <div><img src="/media/carousel/carousel-4.jpg"></div>
+                            <div><img src="/media/carousel/carousel-5.jpg"></div>
+                        </div>
+                    </div>
+                    <!--            最新文章-->
+                    <div class="index-new">
+                        <h4>
+                            <strong>
+                                <span>🆕 最新文章</span>
+                            </strong>
+                        </h4>
+                        {% for new in newArticle%}
+                            <div class="layui-row layui-col-space20 article-box">
+                            <div class="layui-col-xs12 layui-col-md4">
+                                <div class="img-cover img-zoom">
+                                    <a href="/blog/show/" title="第{{ new }}篇文章标题">
+                                        <img src="media/cover/1.jpg" width="100%">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="layui-col-xs12 layui-col-md8">
+                                <h3>
+                                    <a href="/blog/show/">这是第{{ new }}篇最新的文章标题</a>
+                                </h3>
+                                <p class="txt-cont hidden-xs">
+                                    <a href="/blog/show/">这是第{{ new }}篇最新文章的摘要信息，锄禾日当午，汗滴禾下土，谁知盘中餐，粒粒皆辛苦。</a>
+                                </p>
+                                <div class="list-article-info">
+                                    <a href="#" class="label-tag tag-color-1">1111</a>
+                                    <span>
+                                        <i class="fas fa-clock"><span class="timeago" datetime="2020-06-30 09:20:00"></span></i>
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-eye"> 32</i>
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-thumbs-up">123</i>
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-star-half-alt"> 4.8</i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% include 'blog/aside.html' %}
+                <!--            主体右侧部分-->
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block js %}
+<script>
+    <!--轮播图片-->
+    $(document).ready(function()
+    {
+        w= $(window).width(); //浏览器当前窗口可视区域宽度
+        if (w > 768) {
+            img_height = 400
+        }
+        else {
+            img_height = 200
+        }
+    })
+    layui.use(['carousel', 'form'], function () {
+        var carousel = layui.carousel
+            , form = layui.form;
+        //图片轮播
+        carousel.render({
+            elem: '#test10'
+            , width: '100%'
+            , height: img_height
+            , interval: 5000
+        });
+        //事件
+        carousel.on('change(test4)', function (res) {
+            console.log(res)
+        });
+        var $ = layui.$, active = {
+            set: function (othis) {
+                var THIS = 'layui-bg-normal'
+                    , key = othis.data('key')
+                    , options = {};
+                othis.css('background-color', '#5FB878').siblings().removeAttr('style');
+                options[key] = othis.data('value');
+                ins3.reload(options);
+            }
+        };
+        //监听开关
+        form.on('switch(autoplay)', function () {
+            ins3.reload({
+                autoplay: this.checked
+            });
+        });
+        $('.demoSet').on('keyup', function () {
+            var value = this.value
+                , options = {};
+            if (!/^\d+$/.test(value)) return;
+
+            options[this.name] = value;
+            ins3.reload(options);
+        });
+    });
+</script>
+<script>
+    // 导航栏当前标签页
+    $(function () {
+        $(".layui-nav li:eq(0)").addClass("layui-this");
+        $("#LAY-system-side-menu li:eq(0)").addClass("layui-this");
+    })
+</script>
+{% endblock %}

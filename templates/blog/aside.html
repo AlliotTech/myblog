@@ -1,0 +1,118 @@
+{% load static %}
+{#右侧栏目部分#}
+<div class="layui-col-md3 main-right">
+    <!--        热门文章-->
+    <aside class="post-right-item suspend">
+        <h4>
+            <strong>
+                <span>🔥 热门文章</span>
+            </strong>
+        </h4>
+        <ol class="hot-list">
+            {% for top in topArticle %}
+                <li>
+                    <a href="#" title="这是我的第1篇文章——这就是标题">这是第{{ top }}篇热门文章标题</a>
+                </li>
+            {% endfor %}
+        </ol>
+    </aside>
+    <aside class="post-right-item suspend post-right-tag">
+        <h4>
+            <strong>
+                <span>🏷️ 所有标签</span>
+            </strong>
+        </h4>
+        <div id="tagscloud">
+            <a href="#" class="tag-color-1">1111</a>
+            <a href="#" class="tag-color-2">2222</a>
+            <a href="#" class="tag-color-3">33333</a>
+            <a href="#" class="tag-color-4">44444</a>
+            <a href="#" class="tag-color-5">555</a>
+            <a href="#" class="tag-color-6">6666666</a>
+            <a href="#" class="tag-color-7">7777</a>
+            <a href="#" class="tag-color-8">88888</a>
+            <a href="#" class="tag-color-9">99999</a>
+            <a href="#" class="tag-color-1">1111</a>
+            <a href="#" class="tag-color-2">2222</a>
+            <a href="#" class="tag-color-3">33333</a>
+            <a href="#" class="tag-color-4">44444</a>
+            <a href="#" class="tag-color-5">555</a>
+            <a href="#" class="tag-color-6">6666666</a>
+            <a href="#" class="tag-color-7">7777</a>
+            <a href="#" class="tag-color-8">88888</a>
+            <a href="#" class="tag-color-9">99999</a>
+        </div>
+    </aside>
+    <aside class="post-right-item suspend">
+        <h4>
+            <strong>
+                <span>👦 关于博主</span>
+            </strong>
+        </h4>
+        <div class="about-me">
+            <div>
+                <i class="fas fa-user-cog"></i>
+                <span>运维工程师</span>
+            </div>
+            <div>
+                <i class="fas fa-user-friends"></i>
+                <span>世纪佳缘网</span>
+            </div>
+            <div>
+                <i class="fas fa-location-arrow"></i>
+                <span>北京</span>
+            </div>
+            <div>
+                <i class="fas fa-envelope"></i>
+                <span>cuiliang0302@qq.com</span>
+            </div>
+            <div class="about-logo">
+                        <span>
+                            <i class="layui-icon layui-icon-login-qq"></i>
+                        </span>
+                <span>
+                            <i class="layui-icon layui-icon-login-wechat"></i>
+                        </span>
+                <span>
+                            <img src="{% static 'images/csdn.png' %}" width="20px">
+                        </span>
+                <span>
+                            <i class="fab fa-github"></i>
+                        </span>
+            </div>
+        </div>
+    </aside>
+    <aside class="post-right-item suspend">
+        <h4>
+            <strong>
+                <span>📊 网站信息</span>
+            </strong>
+        </h4>
+        <div class="about-me">
+            <div>
+                <i class="fas fa-business-time"></i>
+                <span>运行时间：123天</span>
+            </div>
+            <div>
+                <i class="fas fa-book-reader"></i>
+                <span>PV：2341次</span>
+            </div>
+            <div>
+                <i class="fas fa-user-plus"></i>
+                <span>UV：1234人</span>
+            </div>
+            <div>
+                <i class="fas fa-book"></i>
+                <span>文章数：121篇</span>
+            </div>
+            <div>
+                <i class="fas fa-columns"></i>
+                <span>栏目数：18个</span>
+            </div>
+            <div>
+                <i class="fas fa-paperclip"></i>
+                <span>标签数：34个</span>
+            </div>
+        </div>
+    </aside>
+</div>

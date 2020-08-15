@@ -1,0 +1,89 @@
+/*后台管理*/
+.layui-body .page-main-management {
+    padding-top: 0;
+}
+.layui-layout-body .layui-body .layui-fluid {
+    padding: 15px;
+}
+.layui-card-header {
+    font-size: 20px;
+}
+.layui-badge {
+    float: right;
+    margin-top: 1em;
+}
+.layuiadmin-big-font {
+    font-size: 36px;
+    color: #666;
+    line-height: 36px;
+    padding: 5px 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    white-space: nowrap;
+}
+.layuiadmin-span-color {
+    position: absolute;
+    right: 15px;
+    color: #666;
+}
+.layui-btn-group {
+    float: right;
+}
+.layuiadmin-normal-font {
+    padding-bottom: 10px;
+    font-size: 20px;
+    color: #666;
+    line-height: 24px;
+}
+.layuiadmin-card-list {
+    padding: 15px;
+}
+.progress-bar-row {
+    margin: 15px 0;
+}
+.progress-bar-row h3 {
+    margin-bottom: 10px;
+}
+/*发布文章*/
+.layui-layout-body .layui-layout .layui-header {
+    z-index: 100;
+}
+.layui-layout-body .layui-layout-admin .layui-side {
+    z-index: 100;
+}
+.layui-input-block .editormd {
+    z-index: 1000;
+}
+.article-photo-change img {
+    width: 192px;
+    height: 108px;
+    border-radius: 10px;
+}
+.article-photo-change button {
+    margin-left: 15px;
+}
+/*移动设备适配*/
+@media screen and (max-width: 768px) {
+    /*后台管理页首页*/
+    .layuiadmin-big-font {
+        padding-left: 10px;
+    }
+    .layui-card-body p {
+        padding-left: 10px;
+    }
+    .progress-bar-row {
+        padding-left: 10px;
+    }
+    .layui-btn+.layui-btn {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    /*文章发布*/
+    #input-textarea {
+        display: inline;
+    }
+    .layui-form-item button {
+        margin-top: 10px;
+    }
+}

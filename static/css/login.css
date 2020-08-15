@@ -1,0 +1,480 @@
+/*登录注册页样式*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #c4c3ca;
+    width: 100%;
+    height: 100%;
+    background: url("../images/bg-img.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    box-sizing: border-box;
+}
+
+a {
+    cursor: pointer;
+    transition: all 200ms linear;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.forget {
+    position: absolute;
+    right: 0;
+    bottom: 6em;
+}
+
+.link {
+    color: #c4c3ca;
+}
+
+.link:hover {
+    color: #ffeba7;
+}
+
+p {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.center-wrap h4 {
+    font-weight: 600;
+    font-size: 30px;
+    color: #2980b9;
+}
+
+h6 span {
+    padding: 0 20px;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.section {
+    position: relative;
+    width: 100%;
+    display: block;
+}
+
+.full-height {
+    min-height: 100vh;
+}
+
+[type="checkbox"]:checked,
+[type="checkbox"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+
+.checkbox:checked + label,
+.checkbox:not(:checked) + label {
+    position: relative;
+    display: block;
+    text-align: center;
+    width: 60px;
+    height: 16px;
+    border-radius: 8px;
+    padding: 0;
+    margin: 10px auto;
+    cursor: pointer;
+    background-color: #ffeba7;
+}
+
+.checkbox:checked + label:before,
+.checkbox:not(:checked) + label:before {
+    position: absolute;
+    display: block;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #ffeba7;
+    background-color: #102770;
+    font-family: layui-icon !important;
+    /*content: "\e619";*/
+    content: "\e603";
+    z-index: 20;
+    top: -10px;
+    left: -10px;
+    line-height: 36px;
+    text-align: center;
+    font-size: 24px;
+    transition: all 0.5s ease;
+}
+
+.checkbox:checked + label:before {
+    transform: translateX(44px) rotate(-180deg);
+}
+
+
+.card-3d-wrap {
+    position: relative;
+    width: 440px;
+    max-width: 100%;
+    height: 450px;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    perspective: 800px;
+    margin-top: 30px;
+}
+
+.card-3d-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    transition: all 600ms ease-out;
+}
+
+.card-front, .card-back {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: 300%;
+    position: absolute;
+    border-radius: 20px;
+    left: 0;
+    top: 0;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+}
+
+.checkbox:checked ~ .card-3d-wrap .card-3d-wrapper {
+    transform: rotateY(180deg);
+}
+
+.center-wrap {
+    position: absolute;
+    width: 100%;
+    padding: 0 35px;
+    top: 50%;
+    left: 0;
+    transform: translate3d(0, -50%, 35px) perspective(100px);
+    z-index: 20;
+    display: block;
+}
+
+
+.form-group {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.form-group a {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.form-style {
+    padding: 13px 20px;
+    padding-left: 55px;
+    height: 48px;
+    width: 100%;
+    font-weight: 500;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0.5px;
+    outline: none;
+    background-color: #f6f6f6;
+    border: none;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .2);
+}
+
+.form-style:focus,
+.form-style:active {
+    border: none;
+    outline: none;
+    box-shadow: 0 4px 8px 0 rgba(21, 21, 21, .2);
+}
+
+.input-icon {
+    position: absolute;
+    top: 0;
+    left: 18px;
+    height: 48px;
+    font-size: 24px;
+    line-height: 48px;
+    text-align: left;
+    color: #3498db;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:-ms-input-placeholder {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input::-moz-placeholder {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:-moz-placeholder {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input::-webkit-input-placeholder {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:focus:-ms-input-placeholder {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:focus::-moz-placeholder {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:focus:-moz-placeholder {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:focus::-webkit-input-placeholder {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+form .btn {
+    border-radius: 4px;
+    height: 44px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+    padding: 0 30px;
+    letter-spacing: 1px;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+    -ms-flex-pack: center;
+    text-align: center;
+    border: none;
+    background-color: #2980b9;
+    color: #102770;
+    box-shadow: 0 8px 24px 0 rgba(255, 235, 167, .2);
+}
+
+.btn:active,
+.btn:focus {
+    background-color: #102770;
+    color: #ffeba7;
+    box-shadow: 0 8px 24px 0 rgba(16, 39, 112, .2);
+}
+
+.btn:hover {
+    background-color: #102770;
+    color: #ffeba7;
+    box-shadow: 0 8px 24px 0 rgba(16, 39, 112, .2);
+}
+/*导航栏滑动搜索框*/
+nav {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+}
+
+.search-box {
+    height: 60px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+    transition: all 1s;
+}
+
+.search-box-show {
+    top: 60px;
+    transition: all 1s;
+}
+
+.search-form {
+    height: 40px;
+    padding: 10px 25%;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.search-form input {
+    width: 65%;
+    height: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #555;
+    border: none;
+    background: #fff;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.search-form button {
+    width: 20%;
+    height: 40px;
+    overflow: hidden;
+    text-align: center;
+    font-size: 14px;
+    color: #fff;
+    border: none;
+    vertical-align: middle;
+    background: #008cd6;
+    outline: none;
+    cursor: pointer;
+    transition: background .2s ease-in-out;
+}
+
+.nav-search {
+    font-family: layui-icon !important;
+    transition: all 1s;
+}
+
+.nav-search::before {
+    content: "\e615";
+}
+
+.nav-search-close {
+    transition: all 1s;
+}
+
+.nav-search-close::before {
+    content: "\1006";
+}
+/*忘记密码页面*/
+.main {
+    height: 400px;
+}
+.form {
+    width: 100%;
+    height: 100%;
+    background: url(../images/bg.png) no-repeat;
+    background-size: 100% 100%;
+    overflow: hidden;
+    border-radius: 20px;
+    position: absolute;
+    top: 38%;
+    padding: 20px 40px;
+
+}
+.form-head h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #31acfb;
+}
+.step {
+    margin: 0 auto 40px auto;
+    height: 50px;
+    padding: 0;
+    position: relative;
+}
+.step-list {
+    float: left;
+    width: 33.33%;
+    height: 7px;
+    background: #ccc;
+}
+.text-box {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: -10px;
+}
+.step-text {
+    float: left;
+    width: 33.33%;
+    text-align: center;
+}
+.text-box em {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    -moz-border-radius: 24px;
+    -webkit-border-radius: 24px;
+    border-radius: 24px;
+    background: #ccc;
+    text-align: center;
+    font-size: 14px;
+    line-height: 24px;
+    font-style: normal;
+    font-weight: bold;
+    color: #fff;
+}
+.text-box strong {
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+    font-weight: 400;
+}
+.finish-list , .finish-text em {
+    background-color: #27ae60;
+}
+.form-body {
+    width: 100%;
+    height: 200px;
+    padding: 5% 20%;
+}
+.layui-form label {
+    width: 100px;
+}
+/*移动设备*/
+@media screen and (max-width: 768px) {
+    .row .col-12 .section {
+        padding-top: 1em!important;
+        padding-bottom: 0!important;
+    }
+}
