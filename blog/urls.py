@@ -14,4 +14,6 @@ urlpatterns = [
     # 留言板
     path('about/', views.about, name='about'),
     # 关于
+    path('blogroll/', views.blogroll, name='blogroll'),
+    # 友情链接
 ]

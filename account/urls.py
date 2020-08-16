@@ -4,5 +4,8 @@ from . import views
 app_name = "blog"
 
 urlpatterns = [
-    # path('', views.index, name='index'),
+    path('loginRegister/', views.loginRegister, name='loginRegister'),
+    # 登录注册
+    path('forgetPassword/', views.forgetPassword, name='forgetPassword'),
+    # 忘记密码
 ]

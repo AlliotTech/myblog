@@ -65,3 +65,8 @@ def about(request):
     for i in range(1, 10):
         topArticle.append(i)
     return render(request, 'blog/about.html', locals())
+
+
+# 友情链接
+def blogroll(request):
+    return render(request, 'blog/blogroll.html', locals())
