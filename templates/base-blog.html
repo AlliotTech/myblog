@@ -31,8 +31,8 @@
 <!--        <span><a class="nav-logo" href="#"><img src="static/images/logo.png" alt="logo"></a></span>-->
     </div>
     <ul class="layui-nav">
-        <li class="layui-nav-item layui-hide-xs"><a href="/">首页</a></li>
-        <li class="layui-nav-item layui-hide-xs">
+        <li class="layui-nav-item layui-hide-xs nav1"><a href="/">首页</a></li>
+        <li class="layui-nav-item layui-hide-xs nav2">
             <a href="javascript:">文章分类</a>
             <dl class="layui-nav-child">
                 <dd><a href="/blog/classify">MySQL</a></dd>
@@ -43,7 +43,7 @@
                 <dd><a href="/blog/classify">kubernets</a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item layui-hide-xs">
+        <li class="layui-nav-item layui-hide-xs nav3">
             <a href="javascript:">电子书</a>
             <dl class="layui-nav-child">
                 <dd><a href="">MySQL</a></dd>
@@ -51,15 +51,21 @@
                 <dd class="layui-this"><a href="">python</a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item layui-hide-xs"><a href="/blog/timeAxis">时间轴</a></li>
-        <li class="layui-nav-item layui-hide-xs"><a href="/blog/messageBoard">留言板</a></li>
-        <li class="layui-nav-item layui-hide-xs"><a href="/blog/about">关于</a></li>
-        <li class="layui-nav-item layui-hide-xs"><a href="/account/loginRegister">登录注册</a></li>
-        <li class="layui-nav-item layui-hide-xs"><a href="management/manage-index.html">后台管理</a></li>
+        <li class="layui-nav-item layui-hide-xs nav4">
+            <a href="/blog/timeAxis">时间轴</a>
+        </li>
+        <li class="layui-nav-item layui-hide-xs nav5">
+            <a href="/blog/messageBoard">留言板</a>
+        </li>
+        <li class="layui-nav-item layui-hide-xs nav6">
+            <a href="/blog/about">关于</a>
+        </li>
+
         <!--用户已登录-->
-        <li class="layui-nav-item nav-user-online layui-hide-xs">
+        <li class="layui-nav-item nav-user-online layui-hide-xs nav7">
             <a href="javascript:;"><img src="/media/photo/photo.jpg" class="layui-nav-img">admin</a>
             <dl class="layui-nav-child">
+                <dd><a href="/account/loginRegister">登录注册</a></dd>
                 <dd><a href="/account/personalCenter">个人中心</a></dd>
                 <dd><a href="/management/dashboard">网站管理</a></dd>
                 <dd><a href="">退出登录</a></dd>
@@ -86,13 +92,13 @@
 <div class="layui-side layui-side-menu side-close">
     <div class="layui-side-scroll">
         <ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" style="height: 100%">
-            <li data-name="home" class="layui-nav-item layui-nav-itemed side-home">
+            <li data-name="home" class="layui-nav-item layui-nav-itemed side-home nav1">
                 <a href="/">
                     <i class="layui-icon layui-icon-home"></i>
-                    <cite>主页</cite>
+                    <cite>首页</cite>
                 </a>
             </li>
-            <li data-name="component" class="layui-nav-item">
+            <li data-name="component" class="layui-nav-item nav2">
                 <a href="javascript:">
                     <i class="layui-icon layui-icon-component"></i>
                     <cite>文章分类</cite>
@@ -112,7 +118,7 @@
                     </dd>
                 </dl>
             </li>
-            <li data-name="template" class="layui-nav-item">
+            <li data-name="template" class="layui-nav-item nav3">
                 <a href="javascript:">
                     <i class="layui-icon layui-icon-template"></i>
                     <cite>电子书</cite>
@@ -124,34 +130,31 @@
                     <dd><a href="#">prometheus</a></dd>
                 </dl>
             </li>
-            <li data-name="senior" class="layui-nav-item">
+            <li data-name="senior" class="layui-nav-item nav4">
                 <a href="/blog/timeAxis">
                     <i class="layui-icon layui-icon-senior"></i>
                     <cite>时间轴</cite></a>
             </li>
-            <li data-name="user" class="layui-nav-item">
+            <li data-name="user" class="layui-nav-item nav5">
                 <a href="/blog/messageBoard">
                     <i class="layui-icon layui-icon-user"></i>
                     <cite>留言板</cite></a>
             </li>
-            <li data-name="get" class="layui-nav-item">
+            <li data-name="get" class="layui-nav-item nav6">
                 <a href="/blog/about">
                     <i class="layui-icon layui-icon-auz"></i>
                     <cite>关于</cite>
                 </a>
             </li>
-            <li data-name="get" class="layui-nav-item">
-                <a href="/account/loginRegister">
-                    <i class="layui-icon layui-icon-auz"></i>
-                    <cite>登录注册</cite>
-                </a>
-            </li>
-            <li data-name="component" class="layui-nav-item">
+            <li data-name="component" class="layui-nav-item nav7">
                 <a href="javascript:">
-                    <i class="layui-icon layui-icon-component"></i>
+                    <i class="layui-icon layui-icon-friends"></i>
                     <cite>admin</cite>
                     <span class="layui-nav-more"></span></a>
                 <dl class="layui-nav-child">
+                    <dd data-name="button">
+                        <a href="/account/loginRegister">登录注册</a>
+                    </dd>
                     <dd data-name="button">
                         <a href="/account/personalCenter">个人中心</a>
                     </dd>
