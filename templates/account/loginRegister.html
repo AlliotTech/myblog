@@ -27,15 +27,15 @@
 										<h4 class="mb-4 pb-3">登&nbsp;录</h4>
 										<form action="#">
 											<div class="form-group">
-												<input type="email" name="logemail" class="form-style" placeholder="邮箱" autocomplete="off" required="required">
+												<input type="email" name="logemail" class="form-style" placeholder="邮箱" autocomplete="off" required="required" oninvalid="setCustomValidity('请输入邮箱号');" oninput="setCustomValidity('');">
 												<i class="input-icon layui-icon layui-icon-email"></i>
 											</div>
 											<div class="form-group mt-2">
-												<input type="password" name="loginpwd" lay-verify="required" lay-vertype="tips" class="form-style" placeholder="密码" autocomplete="off" required="required">
+												<input type="password" name="loginpwd" lay-verify="required" lay-vertype="tips" class="form-style" placeholder="密码" autocomplete="off" required="required" oninvalid="setCustomValidity('请输入密码');" oninput="setCustomValidity('');">
 												<i class="input-icon layui-icon layui-icon-password"></i>
 											</div>
 											<div class="form-group mt-2 verification">
-												<input type="password" name="logpass" class="form-style" placeholder="验证码" autocomplete="off" required="required">
+												<input type="password" name="logpass" class="form-style" placeholder="验证码" autocomplete="off" required="required" oninvalid="setCustomValidity('请输入验证码');" oninput="setCustomValidity('');">
 												<i class="input-icon layui-icon layui-icon-vercode"></i>
 												<a href="#" title="点击刷新验证码"><img src="/static/images/yanzheng.png" alt=""></a>
 											</div>
@@ -59,23 +59,23 @@
 										<h4 class="mb-4 pb-3">注&nbsp;册</h4>
 										<form action="#">
 											<div class="form-group">
-												<input type="text" name="logname" class="form-style" placeholder="昵称" autocomplete="off" required>
+												<input type="text" name="logname" class="form-style" placeholder="用户名" autocomplete="off" required oninvalid="setCustomValidity('请输入用户名');" oninput="setCustomValidity('');">
 												<i class="input-icon layui-icon layui-icon-username"></i>
 											</div>
 											<div class="form-group mt-2">
-												<input type="email" name="logemail" class="form-style" placeholder="邮箱" autocomplete="off" required>
+												<input type="email" name="logemail" class="form-style" placeholder="邮箱" autocomplete="off" required oninvalid="setCustomValidity('请输入邮箱号');" oninput="setCustomValidity('');">
 												<i class="input-icon layui-icon layui-icon-email"></i>
 											</div>
 											<div class="form-group mt-2">
-												<input type="password" name="pwd-1" lay-verify="required" lay-vertype="tips" class="form-style" placeholder="密码" autocomplete="off" required="required">
+												<input type="password" name="pwd-1" lay-verify="required" lay-vertype="tips" class="form-style" placeholder="密码" autocomplete="off" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$" oninvalid="setCustomValidity('密码为6到16位包含字母和数字的组合');" oninput="setCustomValidity('');">
 												<i class="input-icon layui-icon layui-icon-password"></i>
 											</div>
 											<div class="form-group mt-2">
-												<input type="password" name="pwd-2" lay-verify="required" lay-vertype="tips" class="form-style" placeholder="确认密码" autocomplete="off" required="required">
+												<input type="password" name="pwd-2" lay-verify="required" lay-vertype="tips" class="form-style" placeholder="确认密码" autocomplete="off" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$" oninvalid="setCustomValidity('密码为6到16位包含字母和数字的组合');" oninput="setCustomValidity('');">
 												<i class="input-icon layui-icon layui-icon-password"></i>
 											</div>
 											<div class="form-group mt-2 verification">
-												<input type="password" name="logpass" class="form-style" placeholder="验证码" autocomplete="off" required>
+												<input type="password" name="logpass" class="form-style" placeholder="验证码" autocomplete="off" required oninvalid="setCustomValidity('请输入验证码');" oninput="setCustomValidity('');">
 												<i class="input-icon layui-icon layui-icon-vercode"></i>
 												<a href="#" title="点击刷新验证码"><img src="/static/images/yanzheng.png" alt=""></a>
 											</div>
@@ -91,5 +91,6 @@
 		</div>
 	</div>
 </div>
+<
 </body>
 </html>
