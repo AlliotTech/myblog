@@ -1015,12 +1015,21 @@
                         <div class="article-action">
                             <p>码字不易，转载请注明本文链接，您的打赏是对我最大的支持!</p>
                             <div>
-                                <a class="article-like" href="#">
-                                    <i class="layui-icon layui-icon-rate">评分</i>
+                                <a class="article-like" href="javascript:">
+                                    <i class="layui-icon layui-icon-praise" id="like-text">点赞</i>
                                 </a>
-                                <a class="article-reward" href="#">打赏</a>
-                                <a class="article-share" href="#">
-                                    <i class="layui-icon layui-icon-praise">点赞</i>
+                                <a class="article-reward" href="javascript:">打赏
+                                    <div id="reward-box" class="reward-box-close">
+                                        <h5>❤️您可以选择一种方式赞助本站</h5>
+                                        <img src="../../static/images/pay.png">
+                                    </div>
+                                </a>
+                                <a class="article-score" href="javascript:">
+                                    <i class="layui-icon layui-icon-rate" id="score-text">评分</i>
+                                     <div id="score-box" class="score-box-close">
+                                         <h5>😊快来给文章打个分吧！</h5>
+                                         <span id="test14"></span>
+                                     </div>
                                 </a>
                             </div>
                         </div>
@@ -1206,6 +1215,54 @@
         layedit.build('comment', {
             height: 100 //设置编辑器高度
         });
+    });
+</script>
+<script>
+    //鼠标悬停赞赏弹窗
+    var articleReward = document.querySelector('.article-reward')
+    var rewardBox = document.querySelector('#reward-box')
+    articleReward.onmouseover = function () {
+        rewardBox.className = 'reward-box-show';
+    }
+    articleReward.onmouseout = function () {
+        rewardBox.className = 'reward-box-close';
+    }
+</script>
+<script>
+    //鼠标悬停评分弹窗
+    var articleScore = document.querySelector('.article-score')
+    var scoreBox = document.querySelector('#score-box')
+    var scoreText = document.querySelector('#score-text')
+    articleScore.onclick = function () {
+        scoreBox.className = 'score-box-show';
+    }
+    scoreBox.onclick = function () {
+        scoreBox.style.display = 'none';
+        layer.msg('感谢评分！');
+        scoreText.innerHTML = '已评分';
+        articleScore.style.width = '50%';
+    }
+</script>
+<script>
+    // 点赞
+    var articleLike = document.querySelector('.article-like')
+    var likeText = document.querySelector('#like-text')
+    articleLike.onclick = function () {
+        layer.msg('感谢点赞！');
+        likeText.innerHTML = '已点赞';
+        articleLike.style.width = '50%'
+    }
+</script>
+<script>
+    // 评分组件
+    layui.use(['rate'], function () {
+        var rate = layui.rate;
+        rate.render({
+            elem: '#test14'
+            , value: 2.5
+            , half: true
+            , theme: '#FE0000'
+        })
     });
 </script>
 {% endblock %}

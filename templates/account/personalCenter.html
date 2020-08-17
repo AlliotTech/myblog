@@ -1,0 +1,91 @@
+{% extends 'base-account.html' %}
+
+{% block title %}个人中心{% endblock %}
+
+{% block content %}
+    <div class="manage-body page-main page-main-management">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+                <div class="cintent-card">
+                    <fieldset class="layui-elem-field">
+                        <legend>我的信息</legend>
+                        <div class="layui-field-box">
+                            <table class="layui-table" lay-even="" lay-skin="nob">
+                                <colgroup>
+                                    <col width="150">
+                                    <col width="150">
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th>用户名：</th>
+                                    <th>张三</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>性别：</td>
+                                    <td>男</td>
+                                </tr>
+                                <tr>
+                                    <td>邮箱：</td>
+                                    <td>asmin@qq.com</td>
+                                </tr>
+                                <tr>
+                                    <td>手机：</td>
+                                    <td>14353125323</td>
+                                </tr>
+                                <tr>
+                                    <td>个性签名：</td>
+                                    <td>我就是我，是颜色不一样的烟火</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+                <div class="cintent-card">
+                    <fieldset class="layui-elem-field">
+                        <legend>我的记录</legend>
+                        <div class="layui-field-box">
+                            <table class="layui-table" lay-even="" lay-skin="nob">
+                                <colgroup>
+                                    <col width="150">
+                                    <col width="150">
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <td>注册时间：</td>
+                                    <td>2020年8月7日17:34:51</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>浏览文章数：</td>
+                                    <td>23篇</td>
+                                </tr>
+                                <tr>
+                                    <td>评论数：</td>
+                                    <td>23条</td>
+                                </tr>
+                                <tr>
+                                    <td>收藏文章数：</td>
+                                    <td>12篇</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // 导航栏当前标签页
+        document.querySelector('#nav1-1').className = 'layui-this'
+    </script>
+{% endblock %}

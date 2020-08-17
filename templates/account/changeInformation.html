@@ -1,0 +1,121 @@
+{% extends 'base-account.html' %}
+{% load static %}
+{% block title %}修改信息{% endblock %}
+ 
+{% block content %}
+<div class="manage-body page-main">
+    <div class="cintent-card">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" value="xianxin" readonly="" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="nickname" value="贤心" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" value="男" title="男"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>男</div></div>
+                <input type="radio" name="sex" value="女" title="女" checked=""><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>女</div></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">头像</label>
+            <div class="layui-input-inline layui-btn-container photo-change img-zoom">
+                <img src="../media/photo/photo.jpg">
+                <button type="button" class="layui-btn layui-btn-normal" id="editimg">修改头像</button >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机</label>
+            <div class="layui-input-inline">
+                <input type="text" name="cellphone" value="" lay-verify="phone" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" name="email" value="" lay-verify="email" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">个性签名</label>
+            <div class="layui-input-block">
+                <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="setmyinfo">确认修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    // 导航栏当前标签页
+    document.querySelector('#nav1-2').className = 'layui-this'
+</script>
+<script>
+    //文本提交
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })
+            return false;
+        });
+    });
+</script>
+<script type="text/javascript">
+    // 设置裁剪图片
+    $(document).ready(function()
+    {
+        w= $(window).width(); //浏览器当前窗口可视区域宽度
+        if (w > 768) {
+            open_height = '50%'
+        }
+        else {
+            open_height = '100%'
+        }
+    })
+    layui.config({
+        base: "{% static 'cropper/' %}" //layui自定义layui组件目录
+    }).use(['form','croppers'], function () {
+        var $ = layui.jquery
+            ,form = layui.form
+            ,croppers = layui.croppers
+            ,layer= layui.layer;
+
+        //创建一个头像上传组件
+        croppers.render({
+            elem: '#editimg'
+            ,saveW:150     //保存宽度
+            ,saveH:150
+            ,mark:1/1    //选取比例
+            ,area:open_height  //弹窗宽度
+            ,url: "upload/uploadImg"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+            ,done: function(url){ //上传完毕回调
+                $("#inputimgurl").val(url);
+                $("#srcimgurl").attr('src',url);
+            }
+        });
+    });
+</script>
+{% endblock %}

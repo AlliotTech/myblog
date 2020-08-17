@@ -1,0 +1,74 @@
+{% extends 'base-manage.html' %}
+
+{% block title %}留言管理{% endblock %}
+
+{% block content %}
+    <div class="manage-body page-main">
+        <div class="cintent-card">
+            <div class="layui-form">
+                <table class="layui-table">
+                    <colgroup>
+                        <!--                            <col width="60">-->
+                        <!--                            <col width="600">-->
+                        <!--                            <col width="200">-->
+                        <!--                            <col>-->
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>留言者</th>
+                        <th>留言内容</th>
+                        <th>留言时间</th>
+                        <th>回复状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in leaveList %}
+                        {% if i <= 5 %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>太极张三丰</td>
+                                <td>好好学习天天向上</td>
+                                <td>2020年8月12日23:45:23</td>
+                                <td>
+                                    <button class="layui-btn layui-btn-xs">已回复</button>
+                                </td>
+                                <td>
+                                    <a class="layui-btn layui-btn-disabled layui-btn-xs">
+                                        <i class="layui-icon layui-icon-dialogue"></i>回复</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs">
+                                        <i class="layui-icon layui-icon-delete"></i>删除</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>太极张三丰</td>
+                                <td>好好学习天天向上</td>
+                                <td>2020年8月12日23:45:23</td>
+                                <td>
+                                    <button class="layui-btn layui-btn-primary layui-btn-xs">未回复</button>
+                                </td>
+                                <td>
+                                    <a class="layui-btn layui-btn-normal layui-btn-xs">
+                                        <i class="layui-icon layui-icon-dialogue"></i>回复</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs">
+                                        <i class="layui-icon layui-icon-delete"></i>删除</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // 导航栏当前标签页
+        document.querySelector('#nav3-1').className = 'layui-this'
+    </script>
+{% endblock %}

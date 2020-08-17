@@ -1,6 +1,6 @@
-{% extends 'base-blog.html' %}
+{% extends 'base-manage.html' %}
  
-{% block title %}崔亮的博客-专注devops自动化运维，传播优秀it运维技术文章{% endblock %}
+{% block title %}文章{% endblock %}
  
 {% block content %}
 
@@ -9,9 +9,6 @@
 {% block js %}
 <script>
     // 导航栏当前标签页
-    $(function () {
-        $(".layui-nav li:eq(0)").addClass("layui-this");
-        $("#LAY-system-side-menu li:eq(0)").addClass("layui-this");
-    })
+    document.querySelector('#nav1-2').className = 'layui-this'
 </script>
 {% endblock %}

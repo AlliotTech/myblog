@@ -38,7 +38,6 @@ h4 {
     box-shadow: 0 1px 4px rgba(0, 0, 0, .1);
     margin-bottom: 20px;
 }
-
 /*主页侧边栏栏目图标*/
 .post-right-item strong i, .catalogue aside strong i {
     color: #1E9FFF;
@@ -324,16 +323,16 @@ h4 {
     font-size: 20px;
 }
 
-/*.main-centre i:hover, .main-centre .article-reward:hover {*/
-/*    color: white;*/
-/*}*/
-
 .main-centre .article-action .article-like {
     position: absolute;
     padding-left: 30px;
     background: radial-gradient(circle at 100% 50%, transparent 25px, #ccc 16px) right top;
     background-size: 100% 100%;
     background-repeat: no-repeat;
+}
+.main-centre .article-action .article-like:hover {
+    background: radial-gradient(circle at 100% 50%, transparent 25px, #3498db 16px) right top;
+    color: white;
 }
 
 .main-centre .article-action .article-reward {
@@ -354,7 +353,7 @@ h4 {
 .main-centre .article-action .article-reward:hover {
     transform: scale(1.1);
 }
-.main-centre .article-action .article-share {
+.main-centre .article-action .article-score {
     position: absolute;
     right: 0;
     background: radial-gradient(circle at 0 50%, transparent 25px, #ccc 16px) right top;
@@ -362,11 +361,72 @@ h4 {
     background-repeat: no-repeat;
     padding-right: 30px;
 }
-
-.main-centre .article-action .article-share i {
-    float: right;
+.main-centre .article-action .article-score:hover {
+    background: radial-gradient(circle at 0 50%, transparent 25px, #3498db 16px) right top;
+    background-repeat: no-repeat;
+    color: black;
 }
 
+.main-centre .article-action .article-score i {
+    float: right;
+}
+/*文章打赏评分*/
+.main-centre .article-reward .reward-box-show {
+    background: #f7f7fc;
+    position: absolute;
+    bottom: 70px;
+    height: 305px;
+    width: 300px;
+    right: -115px;
+}
+.main-centre .article-reward .reward-box-show:before {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-width: 0 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #f7f7fc;
+    transform: rotate(180deg);
+    position: absolute;
+    bottom: -10px;
+    left: 140px;
+}
+.main-centre .article-reward .reward-box-show img{
+    width: 100%;
+}
+.reward-box-close {
+    display: none;
+}
+.main-centre .article-score .score-box-show {
+    background-color: #f7f7fc;
+    text-align: center;
+    width: 180px;
+    position: absolute;
+    bottom: 40px;
+    right: -40px;
+    border-radius: 10px;
+    padding-top: 10px;
+}
+.main-centre .article-score .score-box-show:before {
+    content: ' ';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-width: 0 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #f7f7fc;
+    transform: rotate(180deg);
+    position: absolute;
+    bottom: -10px;
+    left: 76px;
+}
+.main-centre .article-score .score-box-show h5 {
+    display: inline-block;
+}
+.score-box-close {
+    display: none;
+}
 /*文章上下篇链接*/
 .main-centre .article-relevance {
     background-color: #f7f7fc;
@@ -585,7 +645,7 @@ h4 {
     border-radius: 5px;
     padding: 10px;
     background-color: white;
-    min-height: 80px;
+    min-height: 120px;
 }
 .recommended .recommended-card div:nth-child(1) {
     float: left;
@@ -599,6 +659,12 @@ h4 {
 }
 .recommended-card p {
     padding-top: 10px;
+}
+/*底部栏固定*/
+.footer-fixed {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
 }
 /*导航栏滑动搜索框*/
 nav {
@@ -744,9 +810,8 @@ nav {
     .recommended-card {
         height: 125px;
     }
-    footer .footer-fixed {
+    .footer-fixed {
         position: revert;
         width: auto;
     }
-
 }

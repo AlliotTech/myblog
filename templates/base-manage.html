@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="docker,虚拟化,云计算,IT运维,运维社区,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,高效运维,微服务,互联网运维">
+    <meta name="description" content="分享DevOps、自动化运维、Kubernetes、Docker等运维优秀实践经验个人博客，由系统运维、脚本编程、devops以及资源分享等分类组成，涵盖了DevOps、自动化运维、操作系统教程、运维经验、脚本语言、云计算、虚拟化、监控以及网络资源等。">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}"  media="all">
+    <link rel="stylesheet" href="{% static 'css/public.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/management.css' %}" >
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+    <script src="{% static 'layui/layui.js' %}" charset="utf-8"></script>
+    <script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
+    {% block link %}{% endblock %}
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <span><a class="nav-show-btn"><i></i></a></span>
+        <span class="logo">
+            <h1>
+                <a href="/" title="崔亮的博客">崔亮的博客</a>
+            </h1>
+        </span>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="/">首页</a></li>
+            <!--            <li class="layui-nav-item">-->
+            <!--                <a href="javascript:;">其它系统</a>-->
+            <!--                <dl class="layui-nav-child">-->
+            <!--                    <dd><a href="">邮件管理</a></dd>-->
+            <!--                    <dd><a href="">消息管理</a></dd>-->
+            <!--                    <dd><a href="">授权管理</a></dd>-->
+            <!--                </dl>-->
+            <!--            </li>-->
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="../media/photo/photo.jpg" class="layui-nav-img">
+                    贤心
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <!--            <li class="layui-nav-item"><a href="">退了</a></li>-->
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black side-close">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree">
+                <li class="layui-nav-item" id="nav1-1"><a href="/management/dashboard">Dashboard</a></li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">文章管理</a>
+                    <dl class="layui-nav-child">
+                        <dd id="nav2-1"><a href="/management/articleAdd">文章发布</a></dd>
+                        <dd id="nav2-2"><a href="/management/articleList">文章列表</a></dd>
+                        <dd id="nav2-3"><a href="/management/articleClass">文章分类</a></dd>
+                        <dd id="nav2-4"><a href="/management/articleTag">文章标签</a></dd>
+                        <dd id="nav2-5"><a href="/management/articleComment">文章评论</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">网站管理</a>
+                    <dl class="layui-nav-child">
+                        <dd id="nav3-1"><a href="/management/websiteLeaveMessage">留言管理</a></dd>
+                        <dd id="nav3-2"><a href="/management/websiteCarousel">轮播图管理</a></dd>
+                        <dd id="nav3-3"><a href="/management/websiteLink">友情链接管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item" id="nav4-1"><a href="/management/managementUser">用户管理</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body ">
+        <!-- 内容主体区域 -->
+        {% block content %}
+
+        {% endblock %}
+    </div>
+
+    <div class="layui-footer layui-hide-xs">
+        <!-- 底部固定区域 -->
+        <span>Copyright&nbsp; ©&nbsp; 2019-2020&nbsp; 崔亮的博客&nbsp; All Rights Reserved</span>
+        <span>|</span>
+        <span><a href="http://www.beian.miit.gov.cn">陇ICP备19001718号</a></span>
+        <span>|</span>
+        <span><a
+                href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11011202002337">京公安备11011202002337号</a></span>
+        <span>|</span>
+        <span><a href="https://www.cuiliangblog.cn">友情链接</a></span>
+        <span>|</span>
+        <span>Powered by Django</span>
+    </div>
+</div>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+
+    });
+</script>
+<script>
+    // 手机侧边栏
+    $('.nav-show-btn').on("click", function () {
+        $('.nav-show-btn').toggleClass('nav-close-btn');
+        $('.side-close').toggleClass('side-show');
+        $('.page-main').toggleClass('page-main-side');
+        $('.logo').toggleClass('logo-side');
+    });
+</script>
+{% block js %}
+
+{% endblock %}
+</body>
+</html>

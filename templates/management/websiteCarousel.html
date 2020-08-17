@@ -1,0 +1,52 @@
+{% extends 'base-manage.html' %}
+
+{% block title %}轮播图管理{% endblock %}
+
+{% block content %}
+    <div class="manage-body page-main">
+        <div class="cintent-card">
+            <div class="layui-form">
+                <table class="layui-table">
+                    <colgroup>
+                        <!--                            <col width="10%">-->
+                        <!--                            <col width="10%">-->
+                        <!--                            <col width="10%">-->
+                        <!--                            <col width="10%">-->
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>图片</th>
+                        <th>链接</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in carouselList %}
+                    <tr>
+                        <td>{{ i }}</td>
+                        <td><img src="../../media/carousel/carousel-5.jpg"></td>
+                        <td><a href="www.baidu.com">www.baidu.com</a></td>
+                        <td>百度网广告</td>
+                        <td>
+                            <a class="layui-btn layui-btn-normal layui-btn-xs">
+                                <i class="layui-icon layui-icon-edit"></i>编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs">
+                                <i class="layui-icon layui-icon-delete"></i>删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // 导航栏当前标签页
+        document.querySelector('#nav3-2').className = 'layui-this'
+    </script>
+{% endblock %}

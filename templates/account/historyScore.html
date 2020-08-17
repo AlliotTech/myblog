@@ -1,0 +1,67 @@
+{% extends 'base-account.html' %}
+
+{% block title %}评分记录{% endblock %}
+
+{% block content %}
+    <div class="manage-body page-main">
+        <div class="cintent-card">
+            <div class="layui-form">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="10%">
+                        <col width="30%">
+                        <col width="20%">
+                        <col width="20%">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>标题</th>
+                        <th>分类</th>
+                        <th>评分</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in scoreList %}
+                        <tr>
+                            <td>{{ i }}</td>
+                            <td>第{{ i }}篇评分文章</td>
+                            <td><a href="#">Django</a></td>
+                            <td>
+                                <div class="test9"></div>
+                            </td>
+                            <td>
+                                <a class="layui-btn layui-btn-normal layui-btn-xs"><i
+                                        class="layui-icon layui-icon-edit"></i>编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs"><i
+                                        class="layui-icon layui-icon-delete"></i>删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // 导航栏当前标签页
+        document.querySelector('#nav2-4').className = 'layui-this'
+    </script>
+    <script>
+        //只读评分
+        layui.use(['rate'], function () {
+            var rate = layui.rate;
+            rate.render({
+                elem: '.test9'
+                , value: 4
+                , readonly: true
+                , theme: '#1E9FFF'
+            });
+        });
+    </script>
+{% endblock %}

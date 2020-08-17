@@ -1,0 +1,53 @@
+{% extends 'base-account.html' %}
+
+{% block title %}评论记录{% endblock %}
+
+{% block content %}
+<div class="manage-body page-main">
+            <div class="cintent-card">
+            <div class="layui-form">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="10%">
+                        <col width="30%">
+                        <col width="20%">
+                        <col width="20%">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>标题</th>
+                        <th>分类</th>
+                        <th>评论内容</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in commentList %}
+                        <tr>
+                            <td>{{ i }}</td>
+                            <td>第{{ i }}篇评论文章</td>
+                            <td><a href="#">Django</a></td>
+                            <td>你说的真对啊</td>
+                            <td>
+                                <a class="layui-btn layui-btn-normal layui-btn-xs">
+                                    <i class="layui-icon layui-icon-edit"></i>修改</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs">
+                                    <i class="layui-icon layui-icon-delete"></i>删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block js %}
+<script>
+    // 导航栏当前标签页
+    document.querySelector('#nav2-2').className = 'layui-this'
+</script>
+{% endblock %}

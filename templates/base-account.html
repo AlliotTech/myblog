@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}"  media="all">
+    <link rel="stylesheet" href="{% static 'css/public.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/account.css' %}" >
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+    <script src="{% static 'layui/layui.js' %}" charset="utf-8"></script>
+    <script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <span><a class="nav-show-btn"><i></i></a></span>
+        <span class="logo">
+            <h1>
+                <a href="/" title="崔亮的博客">崔亮的博客</a>
+            </h1>
+        </span>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="/">首页</a></li>
+<!--            <li class="layui-nav-item">-->
+<!--                <a href="javascript:;">其它系统</a>-->
+<!--                <dl class="layui-nav-child">-->
+<!--                    <dd><a href="">邮件管理</a></dd>-->
+<!--                    <dd><a href="">消息管理</a></dd>-->
+<!--                    <dd><a href="">授权管理</a></dd>-->
+<!--                </dl>-->
+<!--            </li>-->
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="../media/photo/photo.jpg" class="layui-nav-img">
+                    贤心
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+<!--            <li class="layui-nav-item"><a href="">退了</a></li>-->
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black side-close">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">我的信息</a>
+                    <dl class="layui-nav-child">
+                        <dd id="nav1-1"><a href="/account/personalCenter">我的主页</a></dd>
+                        <dd id="nav1-2"><a href="/account/changeInformation">修改信息</a></dd>
+                        <dd id="nav1-3"><a href="/account/changePassword">修改密码</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">我的足迹</a>
+                    <dl class="layui-nav-child">
+                        <dd id="nav2-1"><a href="/account/historyBrowse">浏览记录</a></dd>
+                        <dd id="nav2-2"><a href="/account/historyComment">评论记录</a></dd>
+                        <dd id="nav2-3"><a href="/account/historyLike">点赞记录</a></dd>
+                        <dd id="nav2-4"><a href="/account/historyScore">评分记录</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body ">
+        <!-- 内容主体区域 -->
+    {% block content %}
+
+    {% endblock %}
+    </div>
+
+    <div class="layui-footer layui-hide-xs">
+        <!-- 底部固定区域 -->
+        <span>Copyright&nbsp; ©&nbsp; 2019-2020&nbsp; 崔亮的博客&nbsp; All Rights Reserved</span>
+        <span>|</span>
+        <span><a href="http://www.beian.miit.gov.cn">陇ICP备19001718号</a></span>
+        <span>|</span>
+        <span><a
+                href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11011202002337">京公安备11011202002337号</a></span>
+        <span>|</span>
+        <span><a href="https://www.cuiliangblog.cn">友情链接</a></span>
+        <span>|</span>
+        <span>Powered by Django</span>
+    </div>
+</div>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
+<script>
+    // 手机侧边栏
+    $('.nav-show-btn').on("click", function () {
+        $('.nav-show-btn').toggleClass('nav-close-btn');
+        $('.side-close').toggleClass('side-show');
+        $('.page-main').toggleClass('page-main-side');
+        $('.logo').toggleClass('logo-side');
+    });
+</script>
+{% block js %}
+
+{% endblock %}
+</body>
+</html>

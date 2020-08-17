@@ -15,12 +15,6 @@ em {
     position: fixed;
     width: 100%;
 }
-/*底部栏固定*/
-.footer-fixed {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-}
 /*表格居中*/
 .layui-table thead tr th {
     text-align: center;

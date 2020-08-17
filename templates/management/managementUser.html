@@ -1,0 +1,59 @@
+{% extends 'base-manage.html' %}
+
+{% block title %}用户管理{% endblock %}
+
+{% block content %}
+    <!-- 内容主体区域 -->
+    <div class="manage-body page-main">
+        <div class="cintent-card">
+            <div class="layui-form">
+                <table class="layui-table">
+                    <colgroup>
+                        <!--                            <col width="60">-->
+                        <!--                            <col width="600">-->
+                        <!--                            <col width="200">-->
+                        <!--                            <col>-->
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>头像</th>
+                        <th>手机</th>
+                        <th>邮箱</th>
+                        <th>性别</th>
+                        <th>注册时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in userList %}
+                    <tr>
+                        <td>{{ i }}</td>
+                        <td>天上的星星参北斗</td>
+                        <td><img src="../../media/photo/photo.jpg" class="layui-nav-img"></td>
+                        <td>16609376866</td>
+                        <td>1554382111@qq.com</td>
+                        <td>男</td>
+                        <td>2020年8月12日23:36:15</td>
+                        <td>
+                            <a class="layui-btn layui-btn-normal layui-btn-xs">
+                                <i class="layui-icon layui-icon-edit"></i>编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs">
+                                <i class="layui-icon layui-icon-delete"></i>删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // 导航栏当前标签页
+        document.querySelector('#nav4-1').classList.add('layui-this')
+    </script>
+{% endblock %}
