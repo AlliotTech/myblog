@@ -23,7 +23,7 @@
 }
 
 /*首页各个栏目标题*/
-h4 {
+aside h4, .index-new h4 {
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
     position: relative;
@@ -251,7 +251,9 @@ h4 {
 .location a {
     color: #d9534f;
 }
-
+.article-box span a {
+    color: white;
+}
 /*文章内容页*/
 /*目录*/
 .main-centre .catalogue aside {
@@ -508,24 +510,6 @@ h4 {
     float: right;
 }
 /*留言评论列表*/
-.message-board .list-title {
-    margin: 20px 0;
-}
-.message-board .list-title h1 {
-    font-size: 28px;
-    display: inline-block;
-}
-.message-board .list-title a {
-    color: #3498db;
-}
-.message-board .list-title div:nth-child(1) {
-    float: left;
-    font-size: 22px;
-}
-.message-board .list-title div:nth-child(2) {
-    float: right;
-    font-size: 18px;
-}
 .message-board .message-content {
     display: flex;
 }

@@ -145,49 +145,53 @@ nav .layui-nav {
 /*各个不同颜色标签*/
 .label-color-0 a {
     /*text-decoration: none;*/
-    color: white;
+    color: white;!important;
     background-color: #999;!important;
 }
 
 .tag-color-1 {
-    color: white;
+    color: white;!important;
     background: firebrick;!important;
 }
 
 .tag-color-2 {
-    color: white;
+    color: white;!important;
     background: skyblue;!important;
 }
 .tag-color-3 {
-    color: white;
+    color: white;!important;
     background: saddlebrown;!important;
 }
 
 .tag-color-4 {
-    color: white;
+    color: white;!important;
     background: green;!important;
 }
 .tag-color-5 {
-    color: white;
+    color: white;!important;
     background: aqua;!important;
 }
 
 .tag-color-6 {
-    color: white;
-    background: yellow;!important;
+    color: white;!important;
+    background: violet;!important;
 }
 .tag-color-7 {
-    color: white;
+    color: white;!important;
     background: #e83e8c;!important;
 }
 
 .tag-color-8 {
-    color: white;
+    color: white;!important;
     background: red;!important;
 }
 .tag-color-9 {
-    color: white;
+    color: white;!important;
     background: blueviolet;!important;
+}
+.tag-color-10 {
+    color: white;!important;
+    background: skyblue;!important;
 }
 /*个人中心和后台管理首页*/
 .layui-layout-body .layui-layout .layui-body {
@@ -217,6 +221,10 @@ nav .layui-nav {
 }
 .manage-body .layui-form {
     padding: 15px;
+}
+/*后台管理导航栏*/
+.layui-layout-admin .layui-header .layui-layout-left {
+    margin-left: 20px;
 }
 /*移动设备适配*/
 @media screen and (max-width: 768px) {

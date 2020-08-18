@@ -23,24 +23,12 @@
             </strong>
         </h4>
         <div id="tagscloud">
-            <a href="#" class="tag-color-1">1111</a>
-            <a href="#" class="tag-color-2">2222</a>
-            <a href="#" class="tag-color-3">33333</a>
-            <a href="#" class="tag-color-4">44444</a>
-            <a href="#" class="tag-color-5">555</a>
-            <a href="#" class="tag-color-6">6666666</a>
-            <a href="#" class="tag-color-7">7777</a>
-            <a href="#" class="tag-color-8">88888</a>
-            <a href="#" class="tag-color-9">99999</a>
-            <a href="#" class="tag-color-1">1111</a>
-            <a href="#" class="tag-color-2">2222</a>
-            <a href="#" class="tag-color-3">33333</a>
-            <a href="#" class="tag-color-4">44444</a>
-            <a href="#" class="tag-color-5">555</a>
-            <a href="#" class="tag-color-6">6666666</a>
-            <a href="#" class="tag-color-7">7777</a>
-            <a href="#" class="tag-color-8">88888</a>
-            <a href="#" class="tag-color-9">99999</a>
+            {% for i in topArticle %}
+                <a href="#" class="tag-color-{{ i }}">标签{{ i }}</a>
+            {% endfor %}
+            {% for i in topArticle %}
+                <a href="#" class="tag-color-{{ i }}">标签{{ i }}</a>
+            {% endfor %}
         </div>
     </aside>
     <aside class="post-right-item suspend">

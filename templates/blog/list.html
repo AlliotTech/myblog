@@ -30,7 +30,7 @@
                             <div class="layui-col-xs12 layui-col-md4">
                                 <div class="img-cover">
                                     <a href="/blog/show/" title="文章1标题">
-                                        <img src="../media/cover/2.jpg" width="100%">
+                                        <img src="../media/cover/{{ class }}.jpg" width="100%">
                                     </a>
                                 </div>
                             </div>
@@ -42,8 +42,8 @@
                                     <a href="/blog/show/">这是第{{ class }}篇最新文章的摘要信息，锄禾日当午，汗滴禾下土，谁知盘中餐，粒粒皆辛苦。</a>
                                 </p>
                                 <div>
-                                    <span class="label-tag label-color-2">
-                                        <a>Linux</a>
+                                    <span class="label-tag tag-color-{{ class }}">
+                                        <a>标签{{ class }}</a>
                                     </span>
                                     <span>
                                         <i class="fas fa-clock"> 2020年7月16日</i>

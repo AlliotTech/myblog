@@ -1,181 +1,206 @@
 {% extends 'base-blog.html' %}
- 
-{% block title %}留言板{% endblock %}
- 
-{% block content %}
-<!--中间主体部分-->
-<main class="page-main">
-    <div class="layui-row">
-        <!--    页面主体部分-->
-        <div class="layui-col-md-offset2 layui-col-sm12 layui-col-md8 page-main-centre">
-            <div class="layui-row layui-col-space30 main-centre">
-                <!--            主体左侧部分-->
-                <div class="layui-col-md9 main-left">
-                    <div class="index-new message-board">
-                        <div class="message-editor">
-                            <div class="message-title clearfix">
-                                <div><h1>我要留言</h1></div>
-                                <div><em>80条留言</em></div>
-                            </div>
-                            <hr class="layui-bg-gray">
-                            <div class="layui-row message-body">
-                                <div class="layui-hide-xs layui-col-md1">
-                                    <a href="#">
-                                        <img src="../media/photo/photo.jpg" class="layui-nav-img">
-                                    </a>
-                                </div>
-                                <div class="layui-col-xs12 layui-col-md10">
-                                    <textarea id="leave"></textarea>
-                                </div>
-                                <div class="layui-col-xs2 layui-col-md1">
-                                    <button type="button" class="layui-btn layui-btn-normal">留言</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="message-list">
-                            <div class="list-title clearfix">
-                                <div>
-                                    <h1>全部留言</h1>
-                                    <span>/</span>
-                                    <span><a href="#">我的留言</a></span>
-                                </div>
-                                <div>
-                                    <span>最新</span>
-                                    <span>/</span>
-                                    <span><a href="#">最热</a></span></div>
-                            </div>
-                            <hr class="layui-bg-gray">
-                            <ol class="list-body">
-                                <li class="message-content">
-                                    <a href="#">
-                                        <img src="../media/photo/nologin.png" class="layui-nav-img">
-                                    </a>
-                                    <div class="text-box">
-                                        <div class="box-info">
-                                            <a href="#">张三</a>
-                                            <span class="timeago" datetime="2020-06-30 09:20:00"></span>
-                                        </div>
-                                        <div class="box-body">
-                                            <p>好好学习天天向上，好好学习天天向上</p>
-                                        </div>
-                                        <div class="box-action">
-                                            <a href="#"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>
-                                            <a href="#"><i class="fas fa-comment-alt"></i>回复</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ol>
-                            <ol class="list-body">
-                                <li class="message-content">
-                                    <a href="#">
-                                        <img src="../media/photo/nologin.png" class="layui-nav-img">
-                                    </a>
-                                    <div class="text-box">
-                                        <div class="box-info">
-                                            <a href="#">尼古拉斯凯奇</a>
-                                            <span class="timeago" datetime="2020-06-30 09:20:00"></span>
-                                        </div>
-                                        <div class="box-body">
-                                            <p>滚管厂家爱上大法官哈十多个</p>
-                                        </div>
-                                        <div class="box-action">
-                                            <a href="#"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>
-                                            <a href="#"><i class="fas fa-comment-alt"></i>回复</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ol>
-                            <ol class="list-body">
-                                <li class="message-content">
-                                    <a href="#">
-                                        <img src="../media/photo/nologin.png" class="layui-nav-img">
-                                    </a>
-                                    <div class="text-box">
-                                        <div class="box-info">
-                                            <a href="#">李四</a>
-                                            <span class="timeago" datetime="2020-06-30 09:20:00"></span>
-                                        </div>
-                                        <div class="box-body">
-                                            <p>好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上</p>
-                                        </div>
-                                        <div class="box-action">
-                                            <a href="#"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>
-                                            <a href="#"><i class="fas fa-comment-alt"></i>回复</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <div class="reply-1 message-content">
-                                    <a href="#">
-                                        <img src="../media/photo/nologin.png" class="layui-nav-img">
-                                    </a>
-                                    <div class="text-box">
-                                        <div class="box-info">
-                                            <a href="#">王五</a>
-                                            <em>回复</em>
-                                            <a href="#">赵四</a>
-                                            <span class="timeago" datetime="2020-06-30 09:20:00"></span>
-                                        </div>
-                                        <div class="box-body">
-                                            <p>你说的对</p>
-                                        </div>
-                                        <div class="box-action">
-                                            <a href="#"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>
-                                            <a href="#"><i class="fas fa-comment-alt"></i>回复</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="reply-2 message-content">
-                                    <a href="#">
-                                        <img src="../media/photo/nologin.png" class="layui-nav-img">
-                                    </a>
-                                    <div class="text-box">
-                                        <div class="box-info">
-                                            <a href="#">我的名字随便起</a>
-                                            <em>回复</em>
-                                            <a href="#">王五</a>
-                                            <span class="timeago" datetime="2020-06-30 09:20:00"></span>
-                                        </div>
-                                        <div class="box-body">
-                                            <p>我也觉得你说的对</p>
-                                        </div>
-                                        <div class="box-action">
-                                            <a href="#"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>
-                                            <a href="#"><i class="fas fa-comment-alt"></i>回复</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ol>
 
+{% block title %}留言板{% endblock %}
+
+{% block content %}
+    <!--中间主体部分-->
+    <main class="page-main">
+        <div class="layui-row">
+            <!--    页面主体部分-->
+            <div class="layui-col-md-offset2 layui-col-sm12 layui-col-md8 page-main-centre">
+                <div class="layui-row layui-col-space30 main-centre">
+                    <!--            主体左侧部分-->
+                    <div class="layui-col-md9 main-left">
+                        <div class="index-new message-board">
+                            <div class="message-editor">
+                                <div class="message-title clearfix">
+                                    <div><h1>我要留言</h1></div>
+                                    <div><em>80条留言</em></div>
+                                </div>
+                                <hr class="layui-bg-gray">
+                                <div class="layui-row message-body">
+                                    <div class="layui-hide-xs layui-col-md1">
+                                        <a href="#">
+                                            <img src="../media/photo/photo.jpg" class="layui-nav-img">
+                                        </a>
+                                    </div>
+                                    <div class="layui-col-xs12 layui-col-md10">
+                                        <textarea id="leave"></textarea>
+                                    </div>
+                                    <div class="layui-col-xs2 layui-col-md1">
+                                        <button type="button" class="layui-btn layui-btn-normal">留言</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-tab">
+                                <ul class="layui-tab-title">
+                                    <li class="layui-this">最新留言</li>
+                                    <li>热门留言</li>
+                                    <li>我的留言</li>
+                                </ul>
+                                <div class="layui-tab-content">
+                                    {#                                         最新留言#}
+                                    <div class="layui-tab-item layui-show">
+                                        <ol class="list-body">
+                                            <li class="message-content">
+                                                <a href="#">
+                                                    <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                </a>
+                                                <div class="text-box">
+                                                    <div class="box-info">
+                                                        <a href="#">张三</a>
+                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <p>好好学习天天向上，好好学习天天向上</p>
+                                                    </div>
+                                                    <div class="box-action">
+                                                        <a href="#"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>
+                                                        <a href="#"><i class="fas fa-comment-alt"></i>回复</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ol>
+                                        <ol class="list-body">
+                                            <li class="message-content">
+                                                <a href="#">
+                                                    <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                </a>
+                                                <div class="text-box">
+                                                    <div class="box-info">
+                                                        <a href="#">尼古拉斯凯奇</a>
+                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <p>滚管厂家爱上大法官哈十多个</p>
+                                                    </div>
+                                                    <div class="box-action">
+                                                        <a href="#"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>
+                                                        <a href="#"><i class="fas fa-comment-alt"></i>回复</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ol>
+                                        <ol class="list-body">
+                                            <li class="message-content">
+                                                <a href="#">
+                                                    <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                </a>
+                                                <div class="text-box">
+                                                    <div class="box-info">
+                                                        <a href="#">李四</a>
+                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <p>
+                                                            好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上</p>
+                                                    </div>
+                                                    <div class="box-action">
+                                                        <a href="#"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>
+                                                        <a href="#"><i class="fas fa-comment-alt"></i>回复</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <div class="reply-1 message-content">
+                                                <a href="#">
+                                                    <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                </a>
+                                                <div class="text-box">
+                                                    <div class="box-info">
+                                                        <a href="#">王五</a>
+                                                        <em>回复</em>
+                                                        <a href="#">赵四</a>
+                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <p>你说的对</p>
+                                                    </div>
+                                                    <div class="box-action">
+                                                        <a href="#"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>
+                                                        <a href="#"><i class="fas fa-comment-alt"></i>回复</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="reply-2 message-content">
+                                                <a href="#">
+                                                    <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                </a>
+                                                <div class="text-box">
+                                                    <div class="box-info">
+                                                        <a href="#">我的名字随便起</a>
+                                                        <em>回复</em>
+                                                        <a href="#">王五</a>
+                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <p>我也觉得你说的对</p>
+                                                    </div>
+                                                    <div class="box-action">
+                                                        <a href="#"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>
+                                                        <a href="#"><i class="fas fa-comment-alt"></i>回复</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ol>
+                                    </div>
+                                    {#                                        热门留言#}
+                                    <div class="layui-tab-item">
+                                        <ol class="list-body">
+                                            <li class="message-content">
+                                                <a href="#">
+                                                    <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                </a>
+                                                <div class="text-box">
+                                                    <div class="box-info">
+                                                        <a href="#">尼古拉斯凯奇</a>
+                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <p>滚管厂家爱上大法官哈十多个</p>
+                                                    </div>
+                                                    <div class="box-action">
+                                                        <a href="#"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>
+                                                        <a href="#"><i class="fas fa-comment-alt"></i>回复</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                    {#                                        我的留言#}
+                                    <div class="layui-tab-item">
+                                        <h3>🥺您还没有留言，快来留言吧！</h3>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                {% include 'blog/aside.html' %}
-                <!--            主体右侧部分-->
+                    {% include 'blog/aside.html' %}
+                    <!--            主体右侧部分-->
+                </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 {% endblock %}
 
 {% block js %}
-<script>
-    // 导航栏当前标签页
-    $(".nav5").addClass("layui-this");
-</script>
-<script>
-    // 富文本编辑器
-    layui.use('layedit', function(){
-        var layedit = layui.layedit;
-        layedit.set({
-            uploadImage: {  //上传图片的设置
-                url: '' //接口url
-                ,type: 'post' //默认post
+    <script>
+        // 导航栏当前标签页
+        $(".nav5").addClass("layui-this");
+    </script>
+    <script>
+        // 富文本编辑器
+        layui.use('layedit', function () {
+            var layedit = layui.layedit;
+            layedit.set({
+                uploadImage: {  //上传图片的设置
+                    url: '' //接口url
+                    , type: 'post' //默认post
 
-            }
+                }
+            });
+            layedit.build('leave', {
+                height: 150 //设置编辑器高度
+            });
         });
-        layedit.build('leave', {
-            height: 150 //设置编辑器高度
-        });
-    });
-</script>
+    </script>
 {% endblock %}
