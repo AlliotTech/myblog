@@ -16,4 +16,8 @@
     .layui-layout-body .layui-body .manage-body,.layui-layout-body .layui-body .layui-card-body {
         padding-left: 0;
     }
+    .layui-btn+.layui-btn {
+        margin-left: 0;
+        margin-top: 10px;
+    }
 }
