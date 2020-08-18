@@ -416,17 +416,7 @@
           },
           {
             "objectType": "Table_LOGICAL",
-            "name": "留言信息",
-            "comment": "",
-            "oldName": "",
-            "fields": [],
-            "foreignKeys": [],
-            "indexes": [],
-            "uniques": []
-          },
-          {
-            "objectType": "Table_LOGICAL",
-            "name": "用户信息",
+            "name": "用户基础信息",
             "comment": "",
             "oldName": "",
             "fields": [
@@ -444,7 +434,7 @@
               },
               {
                 "objectType": "TableField_LOGICAL",
-                "name": "用户名",
+                "name": "邮箱号",
                 "type": "CHAR VARYING",
                 "length": 255,
                 "decimals": 0,
@@ -452,7 +442,79 @@
                 "defaultType": "None",
                 "defaultValue": "",
                 "comment": "",
-                "oldName": "用户名"
+                "oldName": "邮箱号"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "密码",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "密码"
+              }
+            ],
+            "foreignKeys": [
+              {
+                "objectType": "ForeignKey_LOGICAL",
+                "name": "fk_用户基础信息_评论信息_1",
+                "fields": [
+                  "id"
+                ],
+                "referencedSchema": "Default",
+                "referencedTable": "评论信息",
+                "referencedFields": [
+                  "发表用户id"
+                ],
+                "sourceCardinality": "NoneRelationship",
+                "targetCardinality": "NoneRelationship",
+                "comment": "",
+                "oldName": ""
+              }
+            ],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "id"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "用户详细信息",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "id",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "昵称",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "昵称"
               },
               {
                 "objectType": "TableField_LOGICAL",
@@ -480,18 +542,6 @@
               },
               {
                 "objectType": "TableField_LOGICAL",
-                "name": "邮箱",
-                "type": "CHAR VARYING",
-                "length": 255,
-                "decimals": 0,
-                "isNullable": true,
-                "defaultType": "None",
-                "defaultValue": "",
-                "comment": "",
-                "oldName": "邮箱"
-              },
-              {
-                "objectType": "TableField_LOGICAL",
                 "name": "性别",
                 "type": "CHAR VARYING",
                 "length": 255,
@@ -515,7 +565,24 @@
                 "oldName": "注册时间"
               }
             ],
-            "foreignKeys": [],
+            "foreignKeys": [
+              {
+                "objectType": "ForeignKey_LOGICAL",
+                "name": "fk_用户详细信息_用户基础信息_1",
+                "fields": [
+                  "id"
+                ],
+                "referencedSchema": "Default",
+                "referencedTable": "用户基础信息",
+                "referencedFields": [
+                  "id"
+                ],
+                "sourceCardinality": "NoneRelationship",
+                "targetCardinality": "NoneRelationship",
+                "comment": "",
+                "oldName": ""
+              }
+            ],
             "indexes": [],
             "uniques": [],
             "primaryKey": {
@@ -616,25 +683,21 @@
                 "defaultValue": "",
                 "comment": "",
                 "oldName": "父评论id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "留言层级",
+                "type": "INTEGER",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "Null",
+                "defaultValue": "NULL",
+                "comment": "",
+                "oldName": "留言层级"
               }
             ],
             "foreignKeys": [
-              {
-                "objectType": "ForeignKey_LOGICAL",
-                "name": "fk_评论信息_用户信息_1",
-                "fields": [
-                  "发表用户id"
-                ],
-                "referencedSchema": "Default",
-                "referencedTable": "用户信息",
-                "referencedFields": [
-                  "id"
-                ],
-                "sourceCardinality": "NoneRelationship",
-                "targetCardinality": "NoneRelationship",
-                "comment": "",
-                "oldName": ""
-              },
               {
                 "objectType": "ForeignKey_LOGICAL",
                 "name": "fk_评论信息_博客文章_1",
@@ -643,6 +706,126 @@
                 ],
                 "referencedSchema": "Default",
                 "referencedTable": "博客文章",
+                "referencedFields": [
+                  "id"
+                ],
+                "sourceCardinality": "NoneRelationship",
+                "targetCardinality": "NoneRelationship",
+                "comment": "",
+                "oldName": ""
+              }
+            ],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "id"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "留言信息",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "id",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "留言用户id",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "留言用户id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "留言内容",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "留言内容"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "留言时间",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "留言时间"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "留言点赞数",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "留言点赞数"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "父留言id",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "父留言id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "留言层级",
+                "type": "INTEGER",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "留言层级"
+              }
+            ],
+            "foreignKeys": [
+              {
+                "objectType": "ForeignKey_LOGICAL",
+                "name": "fk_留言信息_用户基础信息_1",
+                "fields": [
+                  "留言用户id"
+                ],
+                "referencedSchema": "Default",
+                "referencedTable": "用户基础信息",
                 "referencedFields": [
                   "id"
                 ],
@@ -685,8 +868,8 @@
           "type": "table",
           "schemaName": "Default",
           "tableName": "博客文章",
-          "x": 310,
-          "y": 190,
+          "x": 300,
+          "y": 250,
           "width": 200,
           "height": 260,
           "isBold": false,
@@ -733,8 +916,8 @@
           "type": "table",
           "schemaName": "Default",
           "tableName": "轮播图",
-          "x": 290,
-          "y": 990,
+          "x": 620,
+          "y": 600,
           "width": 200,
           "height": 200,
           "isBold": false,
@@ -749,8 +932,8 @@
           "type": "table",
           "schemaName": "Default",
           "tableName": "友情链接",
-          "x": 40,
-          "y": 990,
+          "x": 300,
+          "y": 610,
           "width": 200,
           "height": 200,
           "isBold": false,
@@ -764,10 +947,10 @@
         {
           "type": "table",
           "schemaName": "Default",
-          "tableName": "用户信息",
-          "x": 560,
-          "y": 0,
-          "width": 200,
+          "tableName": "用户详细信息",
+          "x": 490,
+          "y": 30,
+          "width": 190,
           "height": 200,
           "isBold": false,
           "titleColor": {
@@ -781,8 +964,8 @@
           "type": "table",
           "schemaName": "Default",
           "tableName": "评论信息",
-          "x": 880,
-          "y": 210,
+          "x": 620,
+          "y": 270,
           "width": 200,
           "height": 200,
           "isBold": false,
@@ -797,8 +980,24 @@
           "type": "table",
           "schemaName": "Default",
           "tableName": "留言信息",
-          "x": 930,
-          "y": 530,
+          "x": 850,
+          "y": 380,
+          "width": 200,
+          "height": 200,
+          "isBold": false,
+          "titleColor": {
+            "r": 55,
+            "g": 131,
+            "b": 192,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "Default",
+          "tableName": "用户基础信息",
+          "x": 850,
+          "y": 30,
           "width": 200,
           "height": 200,
           "isBold": false,
@@ -829,11 +1028,11 @@
             },
             {
               "x": 280,
-              "y": 290
+              "y": 350
             },
             {
-              "x": 295,
-              "y": 290
+              "x": 285,
+              "y": 350
             }
           ],
           "label": {
@@ -862,12 +1061,12 @@
           "visible": true,
           "vertices": [
             {
-              "x": 295,
-              "y": 300
+              "x": 285,
+              "y": 360
             },
             {
               "x": 100,
-              "y": 300
+              "y": 360
             },
             {
               "x": 100,
@@ -875,50 +1074,8 @@
             }
           ],
           "label": {
-            "x": 147,
-            "y": 262,
-            "width": 158,
-            "height": 30,
-            "fontName": "Arial Unicode MS",
-            "fontSize": 14,
-            "fontColor": {
-              "r": 51,
-              "g": 51,
-              "b": 51,
-              "a": 1
-            },
-            "isFontBold": false,
-            "isFontItalic": false,
-            "isVisible": false
-          }
-        },
-        {
-          "name": "fk_评论信息_用户信息_1",
-          "sourceTableName": "评论信息",
-          "sourceSchemaName": "Default",
-          "lineWidth": 1,
-          "visible": true,
-          "vertices": [
-            {
-              "x": 865,
-              "y": 310
-            },
-            {
-              "x": 870,
-              "y": 310
-            },
-            {
-              "x": 870,
-              "y": 100
-            },
-            {
-              "x": 775,
-              "y": 100
-            }
-          ],
-          "label": {
-            "x": 717,
-            "y": 272,
+            "x": 137,
+            "y": 322,
             "width": 158,
             "height": 30,
             "fontName": "Arial Unicode MS",
@@ -942,26 +1099,148 @@
           "visible": true,
           "vertices": [
             {
-              "x": 865,
-              "y": 320
+              "x": 605,
+              "y": 380
             },
             {
               "x": 745,
-              "y": 320
+              "y": 380
             },
             {
               "x": 745,
-              "y": 320
+              "y": 380
             },
             {
-              "x": 525,
-              "y": 320
+              "x": 515,
+              "y": 380
             }
           ],
           "label": {
-            "x": 717,
-            "y": 282,
+            "x": 457,
+            "y": 342,
             "width": 158,
+            "height": 30,
+            "fontName": "Arial Unicode MS",
+            "fontSize": 14,
+            "fontColor": {
+              "r": 51,
+              "g": 51,
+              "b": 51,
+              "a": 1
+            },
+            "isFontBold": false,
+            "isFontItalic": false,
+            "isVisible": false
+          }
+        },
+        {
+          "name": "fk_用户详细信息_用户基础信息_1",
+          "sourceTableName": "用户详细信息",
+          "sourceSchemaName": "Default",
+          "lineWidth": 1,
+          "visible": true,
+          "vertices": [
+            {
+              "x": 695,
+              "y": 130
+            },
+            {
+              "x": 765,
+              "y": 130
+            },
+            {
+              "x": 765,
+              "y": 130
+            },
+            {
+              "x": 835,
+              "y": 130
+            }
+          ],
+          "label": {
+            "x": 685,
+            "y": 92,
+            "width": 214,
+            "height": 30,
+            "fontName": "Arial Unicode MS",
+            "fontSize": 14,
+            "fontColor": {
+              "r": 51,
+              "g": 51,
+              "b": 51,
+              "a": 1
+            },
+            "isFontBold": false,
+            "isFontItalic": false,
+            "isVisible": false
+          }
+        },
+        {
+          "name": "fk_用户基础信息_评论信息_1",
+          "sourceTableName": "用户基础信息",
+          "sourceSchemaName": "Default",
+          "lineWidth": 1,
+          "visible": true,
+          "vertices": [
+            {
+              "x": 835,
+              "y": 140
+            },
+            {
+              "x": 720,
+              "y": 140
+            },
+            {
+              "x": 720,
+              "y": 255
+            }
+          ],
+          "label": {
+            "x": 659,
+            "y": 102,
+            "width": 186,
+            "height": 30,
+            "fontName": "Arial Unicode MS",
+            "fontSize": 14,
+            "fontColor": {
+              "r": 51,
+              "g": 51,
+              "b": 51,
+              "a": 1
+            },
+            "isFontBold": false,
+            "isFontItalic": false,
+            "isVisible": false
+          }
+        },
+        {
+          "name": "fk_留言信息_用户基础信息_1",
+          "sourceTableName": "留言信息",
+          "sourceSchemaName": "Default",
+          "lineWidth": 1,
+          "visible": true,
+          "vertices": [
+            {
+              "x": 950,
+              "y": 365
+            },
+            {
+              "x": 950,
+              "y": 315
+            },
+            {
+              "x": 950,
+              "y": 315
+            },
+            {
+              "x": 950,
+              "y": 245
+            }
+          ],
+          "label": {
+            "x": 958,
+            "y": 345,
+            "width": 186,
             "height": 30,
             "fontName": "Arial Unicode MS",
             "fontSize": 14,
