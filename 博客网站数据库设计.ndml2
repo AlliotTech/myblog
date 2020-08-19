@@ -79,162 +79,6 @@
           },
           {
             "objectType": "Table_LOGICAL",
-            "name": "博客文章",
-            "comment": "",
-            "oldName": "",
-            "fields": [
-              {
-                "objectType": "TableField_LOGICAL",
-                "name": "id",
-                "type": "INTEGER",
-                "length": 0,
-                "decimals": 0,
-                "isNullable": false,
-                "defaultType": "None",
-                "defaultValue": "",
-                "comment": "",
-                "oldName": "id"
-              },
-              {
-                "objectType": "TableField_LOGICAL",
-                "name": "文章标题",
-                "type": "CHAR VARYING",
-                "length": 255,
-                "decimals": 0,
-                "isNullable": true,
-                "defaultType": "None",
-                "defaultValue": "",
-                "comment": "",
-                "oldName": "文章标题"
-              },
-              {
-                "objectType": "TableField_LOGICAL",
-                "name": "文章摘要",
-                "type": "CHAR VARYING",
-                "length": 255,
-                "decimals": 0,
-                "isNullable": true,
-                "defaultType": "None",
-                "defaultValue": "",
-                "comment": "",
-                "oldName": "文章摘要"
-              },
-              {
-                "objectType": "TableField_LOGICAL",
-                "name": "文章分类",
-                "type": "CHAR VARYING",
-                "length": 255,
-                "decimals": 0,
-                "isNullable": true,
-                "defaultType": "None",
-                "defaultValue": "",
-                "comment": "",
-                "oldName": "文章分类"
-              },
-              {
-                "objectType": "TableField_LOGICAL",
-                "name": "文章标签",
-                "type": "CHAR VARYING",
-                "length": 255,
-                "decimals": 0,
-                "isNullable": true,
-                "defaultType": "None",
-                "defaultValue": "",
-                "comment": "",
-                "oldName": "文章标签"
-              },
-              {
-                "objectType": "TableField_LOGICAL",
-                "name": "文章内容",
-                "type": "CHAR VARYING",
-                "length": 255,
-                "decimals": 0,
-                "isNullable": true,
-                "defaultType": "None",
-                "defaultValue": "",
-                "comment": "",
-                "oldName": "文章内容"
-              },
-              {
-                "objectType": "TableField_LOGICAL",
-                "name": "文章浏览数",
-                "type": "INT",
-                "length": 255,
-                "decimals": 0,
-                "isNullable": true,
-                "defaultType": "None",
-                "defaultValue": "",
-                "comment": "",
-                "oldName": "文章浏览数"
-              },
-              {
-                "objectType": "TableField_LOGICAL",
-                "name": "文章点赞数",
-                "type": "INT",
-                "length": 255,
-                "decimals": 0,
-                "isNullable": true,
-                "defaultType": "None",
-                "defaultValue": "",
-                "comment": "",
-                "oldName": "文章点赞数"
-              },
-              {
-                "objectType": "TableField_LOGICAL",
-                "name": "文章评分",
-                "type": "FLOAT",
-                "length": 255,
-                "decimals": 0,
-                "isNullable": true,
-                "defaultType": "Null",
-                "defaultValue": "NULL",
-                "comment": "",
-                "oldName": "文章评分"
-              },
-              {
-                "objectType": "TableField_LOGICAL",
-                "name": "文章发布时间",
-                "type": "TIME",
-                "length": 255,
-                "decimals": 0,
-                "isNullable": true,
-                "defaultType": "None",
-                "defaultValue": "",
-                "comment": "",
-                "oldName": "文章发布时间"
-              }
-            ],
-            "foreignKeys": [
-              {
-                "objectType": "ForeignKey_LOGICAL",
-                "name": "fk_博客文章_文章标签_1",
-                "fields": [
-                  "文章标签"
-                ],
-                "referencedSchema": "Default",
-                "referencedTable": "文章标签",
-                "referencedFields": [
-                  "标签名称"
-                ],
-                "sourceCardinality": "ManyRelationship",
-                "targetCardinality": "ManyRelationship",
-                "comment": "",
-                "oldName": ""
-              }
-            ],
-            "indexes": [],
-            "uniques": [],
-            "primaryKey": {
-              "objectType": "PrimaryKey_LOGICAL",
-              "name": "",
-              "fields": [
-                "id"
-              ],
-              "oldName": ""
-            }
-          },
-          {
-            "objectType": "Table_LOGICAL",
             "name": "文章标签",
             "comment": "",
             "oldName": "",
@@ -1007,6 +851,174 @@
                 ],
                 "sourceCardinality": "ManyRelationship",
                 "targetCardinality": "OneAndOnlyOneRelationship",
+                "comment": "",
+                "oldName": ""
+              }
+            ],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "id"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "博客文章",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "id",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "文章标题",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "文章标题"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "文章摘要",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "文章摘要"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "文章分类",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "文章分类"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "文章标签",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "文章标签"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "文章内容",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "文章内容"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "文章浏览数",
+                "type": "INT",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "文章浏览数"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "文章点赞数",
+                "type": "INT",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "文章点赞数"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "文章评分",
+                "type": "FLOAT",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "Null",
+                "defaultValue": "NULL",
+                "comment": "",
+                "oldName": "文章评分"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "文章创建时间",
+                "type": "TIME",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "文章创建时间"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "文章修改时间",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "文章修改时间"
+              }
+            ],
+            "foreignKeys": [
+              {
+                "objectType": "ForeignKey_LOGICAL",
+                "name": "fk_博客文章_文章标签_1",
+                "fields": [
+                  "文章标签"
+                ],
+                "referencedSchema": "Default",
+                "referencedTable": "文章标签",
+                "referencedFields": [
+                  "标签名称"
+                ],
+                "sourceCardinality": "ManyRelationship",
+                "targetCardinality": "ManyRelationship",
                 "comment": "",
                 "oldName": ""
               }
