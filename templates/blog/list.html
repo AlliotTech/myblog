@@ -18,7 +18,7 @@
                     <blockquote class="layui-elem-quote location suspend">
                         <p>您的位置： <a href="/">首页</a>
                             <i class="layui-icon layui-icon-next"></i>
-                            <span>{{ categoryName }} {{ tag }}</span>
+                            <span>{{ categoryName }} {{ tagName }}</span>
                         </p>
                     </blockquote>
                     <!--            文章列表-->
@@ -46,7 +46,7 @@
                                     </p>
                                     <div>
                                     <span class="label-tag tag-color-{{ article.category.id }}">
-                                        <a>{{ article.category }}</a>
+                                        <a href="/blog/category-{{ article.category.id }}">{{ article.category }}</a>
                                     </span>
                                         <span>
                                        <i class="fas fa-clock">

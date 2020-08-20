@@ -58,14 +58,20 @@ def index(request):
 # 文章分类列表
 def category(request, category_id):
     articles = Article.objects.filter(category_id=category_id)
+    categoryName = Category.objects.get(id=category_id)
     return render(request, 'blog/list.html', locals())
 
 
 # 文章标签列表
 def tag(request, tag_id):
-    tag = Tag.objects.filter(id=tag_id)
-    for i in tag:
-        articles = i.article_set.all().values()
+    articles = []
+    tag_obj = Tag.objects.get(id=tag_id)
+    tagName = tag_obj
+    article_obj = tag_obj.article_set.all().values()
+    for article in article_obj:
+        category_name = Category.objects.get(id=article['category_id'])
+        article["category"] = category_name
+        articles.append(article)
     return render(request, 'blog/list.html', locals())
 
 

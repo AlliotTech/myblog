@@ -43,7 +43,7 @@
                                             <a href="/blog/show-{{ article.id }}">{{ article.excerpt }}</a>
                                         </p>
                                         <div class="list-article-info">
-                                            <a href="/blog/category-{{ category.id }}" class="label-tag tag-color-{{ article.category.id }}">{{ article.category }}</a>
+                                            <a href="/blog/category-{{ article.category_id }}" class="label-tag tag-color-{{ article.category.id }}">{{ article.category }}</a>
                                             <span>
                                         <i class="fas fa-clock">
                                             <span class="timeago" datetime="{{ article.created_time | date:"Y-m-d H:i:s" }}"></span>
