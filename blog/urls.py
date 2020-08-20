@@ -4,9 +4,10 @@ from . import views
 app_name = "blog"
 
 urlpatterns = [
+    path('media/<str:img_url>', views.compressImage),
     path('classify/', views.classify, name='classify'),
     # 文章分类列表
-    path('show/', views.show, name='show'),
+    path('<int:article_id>/', views.show, name='show'),
     # 文章内容页
     path('timeAxis/', views.timeAxis, name='timeAxis'),
     # 时间轴

@@ -1,86 +1,99 @@
 {% extends 'base-account.html' %}
-
+{% load static %}
 {% block title %}个人中心{% endblock %}
-
+{% block link %}
+    <script src="{% static 'echarts/echarts.min.js' %}" charset="utf-8"></script>
+    <script src="{% static 'echarts/wonderland.js' %}" charset="utf-8"></script>
+{% endblock %}
 {% block content %}
     <div class="manage-body page-main page-main-management">
         <div class="layui-row layui-col-space15">
-            <div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+            <div class="layui-col-xs12 layui-col-md6">
                 <div class="cintent-card">
-                    <fieldset class="layui-elem-field">
-                        <legend>我的信息</legend>
-                        <div class="layui-field-box">
-                            <table class="layui-table" lay-even="" lay-skin="nob">
-                                <colgroup>
-                                    <col width="150">
-                                    <col width="150">
-                                </colgroup>
-                                <thead>
-                                <tr>
-                                    <th>用户名：</th>
-                                    <th>张三</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>性别：</td>
-                                    <td>男</td>
-                                </tr>
-                                <tr>
-                                    <td>邮箱：</td>
-                                    <td>asmin@qq.com</td>
-                                </tr>
-                                <tr>
-                                    <td>手机：</td>
-                                    <td>14353125323</td>
-                                </tr>
-                                <tr>
-                                    <td>个性签名：</td>
-                                    <td>我就是我，是颜色不一样的烟火</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
+                    <div class="layui-card-header">我的信息</div>
+                    <div class="layui-field-box">
+                        <table class="layui-table" lay-even="" lay-skin="nob">
+                            <colgroup>
+                                <col width="150">
+                                <col width="150">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>用户名：</th>
+                                <th>张三</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>性别：</td>
+                                <td>男</td>
+                            </tr>
+                            <tr>
+                                <td>邮箱：</td>
+                                <td>asmin@qq.com</td>
+                            </tr>
+                            <tr>
+                                <td>手机：</td>
+                                <td>14353125323</td>
+                            </tr>
+                            <tr>
+                                <td>个性签名：</td>
+                                <td>我就是我，是颜色不一样的烟火</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+            <div class="layui-col-xs12 layui-col-md6">
                 <div class="cintent-card">
-                    <fieldset class="layui-elem-field">
-                        <legend>我的记录</legend>
-                        <div class="layui-field-box">
-                            <table class="layui-table" lay-even="" lay-skin="nob">
-                                <colgroup>
-{#                                    <col width="150">#}
-{#                                    <col width="150">#}
-                                </colgroup>
-                                <thead>
-                                <tr>
-                                    <th>注册时间：</th>
-                                    <th>2020年8月7日17:34:51</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>浏览文章数：</td>
-                                    <td>23篇</td>
-                                </tr>
-                                <tr>
-                                    <td>发表评论数：</td>
-                                    <td>23条</td>
-                                </tr>
-                                <tr>
-                                    <td>收藏文章数：</td>
-                                    <td>12篇</td>
-                                </tr>
-                                <tr>
-                                    <td>文章评分数：</td>
-                                    <td>18篇</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
+                    <div class="layui-card-header">我的记录</div>
+                    <div class="layui-field-box">
+                        <table class="layui-table" lay-even="" lay-skin="nob">
+                            <colgroup>
+                                {#                                    <col width="150">#}
+                                {#                                    <col width="150">#}
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>注册时间：</th>
+                                <th>2020年8月7日17:34:51</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>浏览文章数：</td>
+                                <td>23篇</td>
+                            </tr>
+                            <tr>
+                                <td>发表评论数：</td>
+                                <td>23条</td>
+                            </tr>
+                            <tr>
+                                <td>收藏文章数：</td>
+                                <td>12篇</td>
+                            </tr>
+                            <tr>
+                                <td>评分文章数：</td>
+                                <td>18篇</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md6">
+                <div class="cintent-card">
+                    <div class="layui-card-header">浏览历史数据</div>
+                    <div class="layui-card-body">
+                        <div id="data-statistics" style="width: 100%; height:450px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-md6">
+                <div class="cintent-card">
+                    <div class="layui-card-header">浏览文章分类</div>
+                    <div id="browser-source" style="width: 100%; height:470px;"></div>
                 </div>
             </div>
         </div>
@@ -91,5 +104,134 @@
     <script>
         // 导航栏当前标签页
         document.querySelector('#nav1-1').className = 'layui-this'
+    </script>
+    <script>
+        // 流量分析折线图
+        var myChart = echarts.init(document.getElementById('data-statistics'), 'wonderland');
+        // 指定图表的配置项和数据
+        var option = {
+            // title: {
+            //     text: '流量分析'
+            // },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['pv', 'uv', '收入', '注册用户数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            },
+            yAxis: {
+                type: 'value',
+            },
+            series: [
+                {
+                    name: 'pv',
+                    type: 'line',
+                    stack: '总量',
+                    data: [120, 132, 101, 134, 90, 230, 210],
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                        ]
+                    },
+                },
+                {
+                    name: 'uv',
+                    type: 'line',
+                    stack: '总量',
+                    data: [220, 182, 191, 234, 290, 330, 310],
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                        ]
+                    },
+                },
+                {
+                    name: '收入',
+                    type: 'line',
+                    stack: '总量',
+                    data: [150, 232, 201, 154, 190, 330, 410],
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                        ]
+                    },
+                },
+                {
+                    name: '注册用户数',
+                    type: 'line',
+                    stack: '总量',
+                    data: [320, 332, 301, 334, 390, 330, 320],
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                        ]
+                    },
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+    <script>
+        // 访客浏览器折线图
+
+        var myChart = echarts.init(document.getElementById('browser-source'), 'wonderland');
+
+        // 指定图表的配置项和数据
+        var option = {
+            // title: {
+            //     text: '访客浏览器分布',
+            //     left: 'center'
+            // },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+                data: ['Chrome', 'Firefox', 'IE', 'Safari', '其他浏览器']
+            },
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '60%'],
+                    data: [
+                        {value: 635, name: 'Chrome'},
+                        {value: 310, name: 'Firefox'},
+                        {value: 234, name: 'IE'},
+                        {value: 135, name: 'Safari'},
+                        {value: 648, name: '其他浏览器'}
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
     </script>
 {% endblock %}

@@ -38,6 +38,11 @@ em {
     clear: both;
     visibility: hidden;
 }
+/*管理页卡片标题居中*/
+.layui-card-header {
+    font-size: 20px;
+    text-align: center;
+}
 /*卡片悬浮特效*/
 .suspend {
     -webkit-transition: all 2s cubic-bezier(0.02, 0.01, 0.47, 1);
@@ -149,47 +154,47 @@ nav .layui-nav {
     background-color: #999;!important;
 }
 
-.tag-color-1 {
+.tag-color-1, .tag-color-1 a {
     color: white;!important;
     background: firebrick;!important;
 }
 
-.tag-color-2 {
+.tag-color-2, .tag-color-2 a{
     color: white;!important;
     background: skyblue;!important;
 }
-.tag-color-3 {
+.tag-color-3, .tag-color-3 a {
     color: white;!important;
     background: saddlebrown;!important;
 }
 
-.tag-color-4 {
+.tag-color-4, .tag-color-4 a{
     color: white;!important;
     background: green;!important;
 }
-.tag-color-5 {
+.tag-color-5, .tag-color-5 a {
     color: white;!important;
     background: aqua;!important;
 }
 
-.tag-color-6 {
+.tag-color-6, .tag-color-6 a {
     color: white;!important;
     background: violet;!important;
 }
-.tag-color-7 {
+.tag-color-7, .tag-color-7 a {
     color: white;!important;
     background: #e83e8c;!important;
 }
 
-.tag-color-8 {
+.tag-color-8, .tag-color-8 a {
     color: white;!important;
     background: red;!important;
 }
-.tag-color-9 {
+.tag-color-9, .tag-color-9 a {
     color: white;!important;
     background: blueviolet;!important;
 }
-.tag-color-10 {
+.tag-color-10, .tag-color-10 a {
     color: white;!important;
     background: skyblue;!important;
 }

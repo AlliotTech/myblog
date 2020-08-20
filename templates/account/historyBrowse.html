@@ -1,10 +1,10 @@
 {% extends 'base-account.html' %}
- 
+
 {% block title %}浏览记录{% endblock %}
- 
+
 {% block content %}
-<div class="manage-body page-main">
-            <div class="cintent-card">
+    <div class="manage-body page-main">
+        <div class="cintent-card">
             <div class="layui-form">
                 <table class="layui-table">
                     <colgroup>
@@ -24,7 +24,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for i in browseList%}
+                    {% for i in browseList %}
                         <tr>
                             <td>{{ i }}</td>
                             <td>查看过的第{{ i }}篇文章</td>
@@ -44,13 +44,13 @@
                     </tbody>
                 </table>
             </div>
-            </div>
         </div>
+    </div>
 {% endblock %}
 
 {% block js %}
-<script>
-    // 导航栏当前标签页
-    document.querySelector('#nav2-1').className = 'layui-this'
-</script>
+    <script>
+        // 导航栏当前标签页
+        document.querySelector('#nav2-1').className = 'layui-this'
+    </script>
 {% endblock %}

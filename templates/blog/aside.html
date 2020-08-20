@@ -9,9 +9,9 @@
             </strong>
         </h4>
         <ol class="hot-list">
-            {% for top in topArticle %}
+            {% for article in hotArticle %}
                 <li>
-                    <a href="#" title="这是我的第1篇文章——这就是标题">这是第{{ top }}篇热门文章标题</a>
+                    <a href="/blog/{{ article.id }}" title="这是我的第1篇文章——这就是标题">{{ article.title }}</a>
                 </li>
             {% endfor %}
         </ol>
@@ -23,11 +23,11 @@
             </strong>
         </h4>
         <div id="tagscloud">
-            {% for i in topArticle %}
-                <a href="#" class="tag-color-{{ i }}">标签{{ i }}</a>
+            {% for tag in tags %}
+                <a href="#" class="tag-color-{{ tag.id }}">{{ tag.name }}</a>
             {% endfor %}
-            {% for i in topArticle %}
-                <a href="#" class="tag-color-{{ i }}">标签{{ i }}</a>
+            {% for tag in tags %}
+                <a href="#" class="tag-color-{{ tag.id }}">{{ tag.name }}</a>
             {% endfor %}
         </div>
     </aside>
@@ -120,15 +120,13 @@
     var howElliptical = 1;
     var aA = null;
     var oDiv = null;
-    window.onload=function ()
-    {
-        var i=0;
-        var oTag=null;
-        oDiv=document.getElementById('tagscloud');
-        aA=oDiv.getElementsByTagName('a');
-        for(i=0;i<aA.length;i++)
-        {
-            oTag={};
+    window.onload = function () {
+        var i = 0;
+        var oTag = null;
+        oDiv = document.getElementById('tagscloud');
+        aA = oDiv.getElementsByTagName('a');
+        for (i = 0; i < aA.length; i++) {
+            oTag = {};
             aA[i].onmouseover = (function (obj) {
                 return function () {
                     obj.on = true;
@@ -154,15 +152,15 @@
             oTag.offsetHeight = aA[i].offsetHeight;
             mcList.push(oTag);
         }
-        sineCosine( 0,0,0 );
+        sineCosine(0, 0, 0);
         positionAll();
         (function () {
             update();
             setTimeout(arguments.callee, 40);
         })();
     };
-    function update()
-    {
+
+    function update() {
         var a, b, c = 0;
         a = (Math.min(Math.max(-mouseY, -size), size) / radius) * tspeed;
         b = (-Math.min(Math.max(-mouseX, -size), size) / radius) * tspeed;
@@ -204,8 +202,8 @@
         }
         doPosition();
     }
-    function positionAll()
-    {
+
+    function positionAll() {
         var phi = 0;
         var theta = 0;
         var max = mcList.length;
@@ -226,8 +224,8 @@
             aA[i].style.top = mcList[i].cy + oDiv.offsetHeight / 2 - mcList[i].offsetHeight / 2 + 'px';
         }
     }
-    function doPosition()
-    {
+
+    function doPosition() {
         var l = oDiv.offsetWidth / 2;
         var t = oDiv.offsetHeight / 2;
         for (var i = 0; i < mcList.length; i++) {
@@ -252,8 +250,8 @@
             aAs.opacity = mcList[i].alpha;
         }
     }
-    function sineCosine( a, b, c)
-    {
+
+    function sineCosine(a, b, c) {
         sa = Math.sin(a * dtr);
         ca = Math.cos(a * dtr);
         sb = Math.sin(b * dtr);

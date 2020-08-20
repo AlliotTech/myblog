@@ -35,12 +35,9 @@
         <li class="layui-nav-item layui-hide-xs nav2">
             <a href="javascript:">文章分类</a>
             <dl class="layui-nav-child">
-                <dd><a href="/blog/classify">MySQL</a></dd>
-                <dd><a href="/blog/classify">Linux</a></dd>
-                <dd><a href="/blog/classify">kubernets</a></dd>
-                <dd><a href="/blog/classify">MySQL</a></dd>
-                <dd><a href="/blog/classify">Linux</a></dd>
-                <dd><a href="/blog/classify">kubernets</a></dd>
+                {% for category in categorys %}
+                    <dd><a href="/blog/{{ category.id }}">{{ category.name }}</a></dd>
+                {% endfor %}
             </dl>
         </li>
         <li class="layui-nav-item layui-hide-xs nav3">
@@ -104,18 +101,9 @@
                     <cite>文章分类</cite>
                     <span class="layui-nav-more"></span></a>
                 <dl class="layui-nav-child">
-                    <dd data-name="button">
-                        <a href="/blog/classify">Linux</a>
-                    </dd>
-                    <dd data-name="nav">
-                        <a href="/blog/classify">MySQL</a>
-                    </dd>
-                    <dd data-name="button">
-                        <a href="/blog/classify">kubernets</a>
-                    </dd>
-                    <dd data-name="nav">
-                        <a href="/blog/classify">MongoDB</a>
-                    </dd>
+                    {% for category in categorys %}
+                    <dd><a href="/blog/{{ category.id }}">{{ category.name }}</a></dd>
+                    {% endfor %}
                 </dl>
             </li>
             <li data-name="template" class="layui-nav-item nav3">

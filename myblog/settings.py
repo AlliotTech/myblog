@@ -68,6 +68,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # 图片资源模板
                 'django.template.context_processors.media',
+                # 全局公共函数
+                'blog.views.global_variable'
             ],
         },
     },
@@ -120,7 +122,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
