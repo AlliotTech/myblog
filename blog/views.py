@@ -64,7 +64,8 @@ def category(request, category_id):
 # 文章标签列表
 def tag(request, tag_id):
     tag = Tag.objects.filter(id=tag_id)
-    print(tag)
+    for i in tag:
+        articles = i.article_set.all().values()
     return render(request, 'blog/list.html', locals())
 
 
