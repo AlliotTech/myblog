@@ -87,17 +87,40 @@
                                 </div>
                             </div>
                             <div class="article-relevance">
-                                <a href="#" class="article-last"><i class="layui-icon layui-icon-left"></i>上一篇<br>钢铁是怎样炼成的</a>
+                                {% if last_article %}
+                                    <a href="/blog/show-{{ last_article.pk }}" class="article-last">
+                                        <i class="layui-icon layui-icon-left"></i>上一篇
+                                        <br>
+                                        {{ last_article }}
+                                    </a>
+                                {% else %}
+                                    <a class="article-last">
+                                        <i class="layui-icon layui-icon-left"></i>上一篇
+                                        <br>
+                                        没有了
+                                    </a>
+                                {% endif %}
                                 <div>
-                                    <p>文章分类：<span class="label-tag label-color-0"><a href="#">python</a></span></p>
+                                    <p>文章分类：<span class="label-tag label-color-0"><a href="/blog/category-{{ article.category.id }}">{{ article.category.name }}</a></span></p>
                                     <p>文章标签：
                                         {% for tag in article.tags.all %}
-                                            <span class="label-tag tag-color-{{ tag.id }}"><a href="#">{{ tag.name }}</a></span>
+                                            <span class="label-tag tag-color-{{ tag.id }}"><a href="/blog/tag-{{ tag.id }}">{{ tag.name }}</a></span>
                                         {% endfor %}
                                     </p>
                                 </div>
-                                <a href="#" class="article-next">下一篇<i
-                                        class="layui-icon layui-icon-right"></i><br>百家姓</a>
+                                {% if next_article %}
+                                    <a href="/blog/show-{{ next_article.pk }}" class="article-next">
+                                    下一篇<i class="layui-icon layui-icon-right"></i>
+                                        <br>
+                                        {{ next_article }}
+                                    </a>
+                                {% else %}
+                                    <a class="article-next">
+                                    下一篇<i class="layui-icon layui-icon-right"></i>
+                                        <br>
+                                        没有了
+                                    </a>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="index-new">

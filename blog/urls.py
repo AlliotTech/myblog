@@ -5,9 +5,12 @@ app_name = "blog"
 
 urlpatterns = [
     path('media/<str:img_url>', views.compressImage),
-    path('classify/', views.classify, name='classify'),
+    # 图片压缩
+    path('category-<int:category_id>/', views.category, name='category'),
     # 文章分类列表
-    path('<int:article_id>/', views.show, name='show'),
+    path('tag-<int:tag_id>/', views.tag, name='tag'),
+    # 文章标签列表
+    path('show-<int:article_id>/', views.show, name='show'),
     # 文章内容页
     path('timeAxis/', views.timeAxis, name='timeAxis'),
     # 时间轴

@@ -1,6 +1,6 @@
 from typing import List
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from blog.models import *
 from PIL import Image
@@ -56,25 +56,38 @@ def index(request):
 
 
 # 文章分类列表
-def classify(request):
-    classArticle = []
-    # 最新文章列表
-    for i in range(1, 11):
-        classArticle.append(i)
-    topArticle = []
-    # 热门文章列表
-    for i in range(1, 10):
-        topArticle.append(i)
+def category(request, category_id):
+    articles = Article.objects.filter(category_id=category_id)
+    return render(request, 'blog/list.html', locals())
+
+
+# 文章标签列表
+def tag(request, tag_id):
+    tag = Tag.objects.filter(id=tag_id)
+    print(tag)
     return render(request, 'blog/list.html', locals())
 
 
 # 文章内容页
 def show(request, article_id):
-    topArticle = []
-    # 热门文章列表
-    for i in range(1, 10):
-        topArticle.append(i)
-    article = Article.objects.get(id=article_id)
+    article = get_object_or_404(Article, id=article_id)
+    # 阅读量+1
+    article.views = article.views + 1
+    article.save()
+    # 下一篇，找出id大于当前文章id的文章,升序排序后取第一个，即为下一篇
+    next_article = Article.objects.filter(id__gt=article_id).order_by("id")[:1]
+    if len(next_article) == 0:
+        next_article = 0
+    else:
+        for next in next_article:
+            next_article = next
+    # 上一篇，找出id小于当前文章id的文章，降序排序后取第一个，即为上一篇
+    last_article = Article.objects.filter(id__lt=article_id).order_by("-id")[:1]
+    if len(last_article) == 0:
+        last_article = 0
+    else:
+        for last in last_article:
+            last_article = last
     return render(request, 'blog/show.html', locals())
 
 

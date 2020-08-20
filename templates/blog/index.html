@@ -30,20 +30,20 @@
                                 <div class="layui-row layui-col-space20 article-box">
                                     <div class="layui-col-xs12 layui-col-md4">
                                         <div class="img-cover img-zoom">
-                                            <a href="/blog/{{ article.id }}" title="{{ article.title }}">
+                                            <a href="/blog/show-{{ article.id }}" title="{{ article.title }}">
                                                 <img src="media/{{ article.img }}" width="100%">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="layui-col-xs12 layui-col-md8">
                                         <h3>
-                                            <a href="/blog/{{ article.id }}">{{ article.title }}</a>
+                                            <a href="/blog/show-{{ article.id }}">{{ article.title }}</a>
                                         </h3>
                                         <p class="txt-cont hidden-xs">
-                                            <a href="/blog/{{ article.id }}">{{ article.excerpt }}</a>
+                                            <a href="/blog/show-{{ article.id }}">{{ article.excerpt }}</a>
                                         </p>
                                         <div class="list-article-info">
-                                            <a href="#" class="label-tag tag-color-{{ article.category.id }}">{{ article.category }}</a>
+                                            <a href="/blog/category-{{ category.id }}" class="label-tag tag-color-{{ article.category.id }}">{{ article.category }}</a>
                                             <span>
                                         <i class="fas fa-clock">
                                             <span class="timeago" datetime="{{ article.created_time | date:"Y-m-d H:i:s" }}"></span>

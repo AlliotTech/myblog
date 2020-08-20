@@ -36,7 +36,7 @@
             <a href="javascript:">文章分类</a>
             <dl class="layui-nav-child">
                 {% for category in categorys %}
-                    <dd><a href="/blog/{{ category.id }}">{{ category.name }}</a></dd>
+                    <dd><a href="/blog/category-{{ category.id }}">{{ category.name }}</a></dd>
                 {% endfor %}
             </dl>
         </li>
@@ -102,7 +102,7 @@
                     <span class="layui-nav-more"></span></a>
                 <dl class="layui-nav-child">
                     {% for category in categorys %}
-                    <dd><a href="/blog/{{ category.id }}">{{ category.name }}</a></dd>
+                    <dd><a href="/blog/category-{{ category.id }}">{{ category.name }}</a></dd>
                     {% endfor %}
                 </dl>
             </li>
