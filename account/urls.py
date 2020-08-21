@@ -1,11 +1,12 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 
 app_name = "account"
 
 urlpatterns = [
     path('loginRegister/', views.loginRegister, name='loginRegister'),
-    # 登录注册
+    # 登录注册页
     path('forgetPassword/', views.forgetPassword, name='forgetPassword'),
     # 忘记密码
     path('personalCenter/', views.personalCenter, name='personalCenter'),

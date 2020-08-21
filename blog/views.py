@@ -100,28 +100,31 @@ def show(request, article_id):
 
 # 时间轴
 def timeAxis(request):
-    topArticle = []
-    # 热门文章列表
-    for i in range(1, 10):
-        topArticle.append(i)
-    return render(request, 'blog/timeAxis.html', locals())
+    date_list_all = []  # 建立一个列表用来存放所有日期
+    date_obj = Article.objects.all().values('created_time')
+    for date in date_obj:
+        date = date['created_time'].strftime('%Y年%m月')
+        date_list_all.append(date)
+    date_list_count = []
+    # 日期去重
+    for i in date_list_all:
+        date_list_count.append(date_list_all.count(i))
+    date_list_sum = zip(date_list_all, date_list_count)
+    date_list = []
+    for (i, j) in date_list_sum:
+        if (i, j) not in date_list:
+            date_list.append((i, j))
+
+    return render(request, 'blog/timeAxis.html', {"date_list":date_list})
 
 
 # 留言板
 def messageBoard(request):
-    topArticle = []
-    # 热门文章列表
-    for i in range(1, 10):
-        topArticle.append(i)
     return render(request, 'blog/messageBoard.html', locals())
 
 
 # 关于
 def about(request):
-    topArticle = []
-    # 热门文章列表
-    for i in range(1, 10):
-        topArticle.append(i)
     return render(request, 'blog/about.html', locals())
 
 

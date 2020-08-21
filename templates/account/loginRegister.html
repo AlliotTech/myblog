@@ -25,16 +25,17 @@
                                 <div class="center-wrap">
                                     <div class="section text-center">
                                         <h4 class="mb-4 pb-3">登&nbsp;录</h4>
-                                        <form action="#">
+                                        <form action="{% url 'account:loginRegister' %}" method="post">
+                                            {% csrf_token %}
                                             <div class="form-group">
-                                                <input type="email" name="logemail" class="form-style" placeholder="邮箱"
-                                                       autocomplete="off" required="required"
-                                                       oninvalid="setCustomValidity('请输入邮箱号');"
+                                                <input type="text" name="username" class="form-style" placeholder="用户名"
+                                                       autocomplete="off" required
+                                                       oninvalid="setCustomValidity('请输入用户名');"
                                                        oninput="setCustomValidity('');">
-                                                <i class="input-icon layui-icon layui-icon-email"></i>
+                                                <i class="input-icon layui-icon layui-icon-username"></i>
                                             </div>
                                             <div class="form-group mt-2">
-                                                <input type="password" name="loginpwd" lay-verify="required"
+                                                <input type="password" name="password" lay-verify="required"
                                                        lay-vertype="tips" class="form-style" placeholder="密码"
                                                        autocomplete="off" required="required"
                                                        oninvalid="setCustomValidity('请输入密码');"
@@ -42,7 +43,7 @@
                                                 <i class="input-icon layui-icon layui-icon-password"></i>
                                             </div>
                                             <div class="form-group mt-2 verification">
-                                                <input type="password" name="logpass" class="form-style"
+                                                <input type="password" name="authcode" class="form-style"
                                                        placeholder="验证码" autocomplete="off" required="required"
                                                        oninvalid="setCustomValidity('请输入验证码');"
                                                        oninput="setCustomValidity('');">
@@ -50,9 +51,12 @@
                                                 <a href="#" title="点击刷新验证码"><img src="/static/images/yanzheng.png"
                                                                                  alt=""></a>
                                             </div>
-                                            <input class="btn mt-4" type="submit" value="登录">
-                                            <a href="/account/forgetPassword" class="link forget">忘记密码?</a>
+                                            <input class="btn mt-4" type="submit" value="登录" name="type">
+                                            <a href="{% url 'account:forgetPassword' %}" class="link forget">忘记密码?</a>
                                         </form>
+                                        {% if message %}
+                                            <h5 style="color: red">{{ message }}</h5>
+                                        {% endif %}
                                         <div>
                                             <p class="mb-0 mt-4 text-center">社交账号免注册登录</p>
                                             <div class="layui-btn-group">
@@ -71,7 +75,8 @@
                                 <div class="center-wrap">
                                     <div class="section text-center">
                                         <h4 class="mb-4 pb-3">注&nbsp;册</h4>
-                                        <form action="#">
+                                        <form action="{% url 'account:loginRegister' %}" method="post">
+                                            {% csrf_token %}
                                             <div class="form-group">
                                                 <input type="text" name="logname" class="form-style" placeholder="用户名"
                                                        autocomplete="off" required
@@ -113,7 +118,7 @@
                                                 <a href="#" title="点击刷新验证码"><img src="/static/images/yanzheng.png"
                                                                                  alt=""></a>
                                             </div>
-                                            <input class="btn mt-4" type="submit" value="注册">
+                                            <input class="btn mt-4" type="submit" value="注册" name="type">
                                         </form>
                                     </div>
                                 </div>

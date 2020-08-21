@@ -11,7 +11,7 @@
         <ol class="hot-list">
             {% for article in hotArticle %}
                 <li>
-                    <a href="/blog/{{ article.id }}" title="这是我的第1篇文章——这就是标题">{{ article.title }}</a>
+                    <a href="/blog/show-{{ article.id }}" title="{{ article.title }}">{{ article.title }}</a>
                 </li>
             {% endfor %}
         </ol>

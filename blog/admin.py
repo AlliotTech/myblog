@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Carousel, Category, Tag, Article, Link
+from .models import Category, Tag, Article
 # 导入需要管理的数据库表
 # Register your models here.
 
@@ -17,11 +17,6 @@ class ArticleAdmin(admin.ModelAdmin):
     # 设置哪些字段可以点击进入编辑界面
 
 
-# 轮播图
-@admin.register(Carousel)
-class CarouselAdmin(admin.ModelAdmin):
-    list_display = ('id', 'info', 'img', 'url')
-
 
 # 文章分类
 @admin.register(Category)
@@ -35,9 +30,6 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
 
 
-# 友情链接
-@admin.register(Link)
-class LinkAdmin(admin.ModelAdmin):
-    list_display = ('id', 'logo', 'name', 'url', 'describe')
+
 
 

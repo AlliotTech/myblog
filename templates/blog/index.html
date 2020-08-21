@@ -45,19 +45,19 @@
                                         <div class="list-article-info">
                                             <a href="/blog/category-{{ article.category_id }}" class="label-tag tag-color-{{ article.category.id }}">{{ article.category }}</a>
                                             <span>
-                                        <i class="fas fa-clock">
-                                            <span class="timeago" datetime="{{ article.created_time | date:"Y-m-d H:i:s" }}"></span>
-                                        </i>
-                                    </span>
-                                    <span>
-                                        <i class="fas fa-eye">{{ article.views }}</i>
-                                    </span>
-                                    <span>
-                                        <i class="fas fa-thumbs-up">{{ article.likes }}</i>
-                                    </span>
-                                    <span>
-                                        <i class="fas fa-star-half-alt">{{ article.score }}</i>
-                                    </span>
+                                                <i class="fas fa-clock">
+                                                    <span class="timeago" datetime="{{ article.created_time | date:"Y-m-d H:i:s" }}"></span>
+                                                </i>
+                                            </span>
+                                            <span>
+                                                <i class="fas fa-eye">{{ article.views }}</i>
+                                            </span>
+                                            <span>
+                                                <i class="fas fa-thumbs-up">{{ article.likes }}</i>
+                                            </span>
+                                            <span>
+                                                <i class="fas fa-star-half-alt">{{ article.score }}</i>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
