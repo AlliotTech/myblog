@@ -110,7 +110,7 @@
         // 导航栏当前标签页
         $(".nav2").addClass("layui-this");
         var category_id = "#category-" + {{ categoryName.id}}
-        {#console.log($("#category-1"))#}
+        $(category_id).addClass("layui-this")
         var m_category_id = "#m-category-" + {{ categoryName.id}}
         $(m_category_id).addClass("layui-this")
         $(m_category_id).parents("li").addClass("layui-nav-itemed")
