@@ -766,6 +766,7 @@ nav {
 
     .nav-rignt {
         width: 100px;
+        margin-right: 10px;
     }
 
     /*主页移动端适配*/
