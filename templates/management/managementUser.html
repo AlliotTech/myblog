@@ -54,6 +54,7 @@
 {% block js %}
     <script>
         // 导航栏当前标签页
-        document.querySelector('#nav4-1').classList.add('layui-this')
+        $('#nav4-1').addClass("layui-this")
+        $('#nav4-1').parents("li").addClass("layui-nav-itemed")
     </script>
 {% endblock %}

@@ -174,7 +174,8 @@
 {% block js %}
     <script>
         // 导航栏当前标签页
-        document.querySelector('#nav1-1').classList.add('layui-this')
+        $('#nav1-1').addClass("layui-this")
+        $('#nav1-1').parents("li").addClass("layui-nav-itemed")
     </script>
     <script>
         // 流量分析折线图

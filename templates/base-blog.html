@@ -37,7 +37,7 @@
             <a href="javascript:">文章分类</a>
             <dl class="layui-nav-child">
                 {% for category in categorys %}
-                    <dd><a href="/blog/category-{{ category.id }}">{{ category.name }}</a></dd>
+                    <dd id="category-{{ category.id }}"><a href="/blog/category-{{ category.id }}">{{ category.name }}</a></dd>
                 {% endfor %}
             </dl>
         </li>
@@ -101,14 +101,14 @@
                     <cite>首页</cite>
                 </a>
             </li>
-            <li data-name="component" class="layui-nav-item nav2">
+            <li data-name="component" class="layui-nav-item">
                 <a href="javascript:">
                     <i class="layui-icon layui-icon-component"></i>
                     <cite>文章分类</cite>
                     <span class="layui-nav-more"></span></a>
                 <dl class="layui-nav-child">
                     {% for category in categorys %}
-                        <dd><a href="/blog/category-{{ category.id }}">{{ category.name }}</a></dd>
+                        <dd id="m-category-{{ category.id }}"><a href="/blog/category-{{ category.id }}">{{ category.name }}</a></dd>
                     {% endfor %}
                 </dl>
             </li>
@@ -241,7 +241,6 @@
         })
     })
 </script>
-
 <script>
     // 日期显示为几天前
     layui.config({

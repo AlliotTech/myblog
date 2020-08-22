@@ -50,7 +50,8 @@
 {% block js %}
     <script>
         // 导航栏当前标签页
-        document.querySelector('#nav2-4').className = 'layui-this'
+        $('#nav2-4').addClass("layui-this")
+        $('#nav2-4').parents("li").addClass("layui-nav-itemed")
     </script>
     <script>
         //只读评分
