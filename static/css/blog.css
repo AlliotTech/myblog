@@ -704,6 +704,12 @@ nav {
     cursor: pointer;
     transition: background .2s ease-in-out;
 }
+.nav-user {
+    height: 60px;
+}
+.nav-user i {
+    font-size: 30px;
+}
 
 .nav-search {
     font-family: layui-icon !important;

@@ -100,10 +100,9 @@ nav .layui-nav {
     position: absolute;
     right: 0;
     top: 0;
-    width: 120px;
     height: 60px;
     z-index: 1;
-    margin-right: 10%;
+    margin-right: 120px;
 }
 
 .nav-rignt span {
@@ -113,6 +112,7 @@ nav .layui-nav {
 }
 
 .nav-rignt span a {
+    padding: 0 20px;
     font-size: 30px;
     display: inline;
     float: right;

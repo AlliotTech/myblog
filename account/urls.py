@@ -7,6 +7,8 @@ app_name = "account"
 urlpatterns = [
     path('loginRegister/', views.loginRegister, name='loginRegister'),
     # 登录注册页
+    path('logout/', auth_views.LogoutView.as_view(template_name='account/loginRegister.html'), name='logout'),
+    # 注销
     path('forgetPassword/', views.forgetPassword, name='forgetPassword'),
     # 忘记密码
     path('personalCenter/', views.personalCenter, name='personalCenter'),

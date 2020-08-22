@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Title</title>
+    <style>
+
+
+        body {
+            background: url("static/images/bg-img.jpg") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            box-sizing: border-box;
+        }
+        .main {
+            margin-top: 10%;
+        }
+        /*form styles*/
+        #msform {
+            width: 400px;
+            margin: 50px auto;
+            text-align: center;
+            position: relative;
+        }
+
+        #msform fieldset {
+            background: white;
+            border: 0 none;
+            border-radius: 20px;
+            box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            box-sizing: border-box;
+
+            /*stacking fieldsets above each other*/
+            position: relative;
+        }
+
+        /*Hide all except first fieldset*/
+        #msform fieldset:not(:first-of-type) {
+            display: none;
+        }
+
+        /*inputs*/
+        #msform input, #msform textarea {
+            padding: 13px 20px 13px 45px;
+            width: 83%;
+            font-weight: 500;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 22px;
+            letter-spacing: 0.5px;
+            outline: none;
+            background-color: #f6f6f6;
+            border: none;
+            -webkit-transition: all 200ms linear;
+            transition: all 200ms linear;
+            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .2);
+        }
+        #msform input:focus, #msform textarea:focus {
+            border: none;
+            outline: none;
+            box-shadow: 0 4px 8px 0 rgba(21,21,21,0.2);
+            background-color: #ecf0f1;
+        }
+
+        /*buttons*/
+        #msform .action-button {
+            width: 100px;
+            background: #27AE60;
+            font-weight: bold;
+            color: white;
+            border: 0 none;
+            border-radius: 1px;
+            cursor: pointer;
+            padding: 10px 5px;
+            margin: 10px 5px;
+        }
+
+        #msform .action-button:hover, #msform .action-button:focus {
+            box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
+        }
+
+        /*headings*/
+        .fs-title {
+            font-size: 25px;
+            text-transform: uppercase;
+            color: #2980b9;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        /*progressbar*/
+        #progressbar {
+            margin-bottom: 30px;
+            overflow: hidden;
+            /*CSS counters to number the steps*/
+            counter-reset: step;
+        }
+
+        #progressbar li {
+            list-style-type: none;
+            color: white;
+            text-transform: uppercase;
+            font-size: 15px;
+            width: 33.33%;
+            float: left;
+            position: relative;
+        }
+
+        #progressbar li:before {
+            content: counter(step);
+            counter-increment: step;
+            width: 20px;
+            line-height: 20px;
+            display: block;
+            font-size: 15px;
+            color: #333;
+            background: white;
+            border-radius: 10px;
+            margin: 0 auto 5px auto;
+        }
+
+        /*progressbar connectors*/
+        #progressbar li:after {
+            content: '';
+            width: 100%;
+            height: 2px;
+            background: white;
+            position: absolute;
+            left: -50%;
+            top: 9px;
+            z-index: -1; /*put it behind the numbers*/
+        }
+
+        #progressbar li:first-child:after {
+            /*connector not needed before the first step*/
+            content: none;
+        }
+
+        /*marking active/completed steps green*/
+        /*The number of the step and the connector before it = green*/
+        #progressbar li.active:before, #progressbar li.active:after {
+            background: #27AE60;
+            color: white;
+        }
+        .form-group {
+            position: relative;
+            display: block;
+            margin: 25px 0;
+            padding: 0;
+        }
+        .input-icon {
+            position: absolute;
+            top: 0;
+            left: 18px;
+            height: 48px;
+            font-size: 24px;
+            line-height: 48px;
+            text-align: left;
+            color: #3498db;
+            -webkit-transition: all 200ms linear;
+            transition: all 200ms linear;
+        }
+        .auth-btn {
+            position: absolute;
+            right: 0;
+            top: 5px;
+        }
+        fieldset p {
+            font-size: 20px;
+            padding: 67px 0;
+            color: #7f8c8d;
+        }
+        /*移动设备适配*/
+        @media screen and (max-width: 768px) {
+            .main {
+                margin-top: 40%;
+            }
+        }
+
+    </style>
+    <script src='static/jquery-3.5.1/jquery-3.5.1.min.js'></script>
+    <script src="static/jquery.easing/jquery.easing.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="static/layui/css/layui.css">
+    <script>
+        $(document).ready(function () {
+            //jQuery time
+            var current_fs, next_fs, previous_fs; //fieldsets
+            var left, opacity, scale; //fieldset properties which we will animate
+            var animating; //flag to prevent quick multi-click glitches
+
+            $(".next").click(function () {
+                if (animating) return false;
+                animating = true;
+
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
+
+                //activate next step on progressbar using the index of next_fs
+                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+                //show the next fieldset
+                next_fs.show();
+                //hide the current fieldset with style
+                current_fs.animate({opacity: 0}, {
+                    step: function (now, mx) {
+                        //as the opacity of current_fs reduces to 0 - stored in "now"
+                        //1. scale current_fs down to 80%
+                        scale = 1 - (1 - now) * 0.2;
+                        //2. bring next_fs from the right(50%)
+                        left = (now * 50) + "%";
+                        //3. increase opacity of next_fs to 1 as it moves in
+                        opacity = 1 - now;
+                        current_fs.css({
+                            'transform': 'scale(' + scale + ')',
+                            'position': 'absolute',
+                            'width': '100%'
+                        });
+                        next_fs.css({'left': left, 'opacity': opacity});
+                    },
+                    duration: 800,
+                    complete: function () {
+                        current_fs.hide();
+                        animating = false;
+                    },
+                    //this comes from the custom easing plugin
+                    easing: 'easeInOutBack'
+                });
+            });
+
+            $(".previous").click(function () {
+                if (animating) return false;
+                animating = true;
+
+                current_fs = $(this).parent();
+                previous_fs = $(this).parent().prev();
+
+                //de-activate current step on progressbar
+                $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+                //show the previous fieldset
+                previous_fs.show();
+                //hide the current fieldset with style
+                current_fs.animate({opacity: 0}, {
+                    step: function (now, mx) {
+                        //as the opacity of current_fs reduces to 0 - stored in "now"
+                        //1. scale previous_fs from 80% to 100%
+                        scale = 0.8 + (1 - now) * 0.2;
+                        //2. take current_fs to the right(50%) - from 0%
+                        left = ((1 - now) * 50) + "%";
+                        //3. increase opacity of previous_fs to 1 as it moves in
+                        opacity = 1 - now;
+                        current_fs.css({'left': left});
+                        previous_fs.css({'transform': 'scale(' + scale + ')', 'opacity': opacity});
+                    },
+                    duration: 800,
+                    complete: function () {
+                        current_fs.hide();
+                        animating = false;
+                    },
+                    //this comes from the custom easing plugin
+                    easing: 'easeInOutBack'
+                });
+            });
+
+            $(".submit").click(function () {
+                return false;
+            })
+        });
+    </script>
+</head>
+<body>
+<div class="main">
+    <!-- multistep form -->
+    <form id="msform">
+        <!-- progressbar -->
+        <ul id="progressbar">
+            <li class="active">身份验证</li>
+            <li>设置新密码</li>
+            <li>重置完成</li>
+        </ul>
+        <!-- fieldsets -->
+        <fieldset>
+            <h2 class="fs-title">身份验证</h2>
+            <div class="form-group">
+                <input type="email" name="logemail" class="form-style" placeholder="邮箱"
+                       autocomplete="off" required
+                       oninvalid="setCustomValidity('请输入邮箱号');"
+                       oninput="setCustomValidity('');">
+                <i class="input-icon layui-icon layui-icon-email"></i>
+            </div>
+            <div class="form-group mt-2 verification">
+                <input type="password" name="logpass" class="form-style"
+                       placeholder="验证码" autocomplete="off" required
+                       oninvalid="setCustomValidity('请输入验证码');"
+                       oninput="setCustomValidity('');">
+                <i class="input-icon layui-icon layui-icon-vercode"></i>
+                <button type="button" class="layui-btn layui-btn-primary auth-btn">获取验证码</button>
+            </div>
+            <input type="button" name="next" class="next action-button" value="下一步"/>
+        </fieldset>
+        <fieldset>
+            <h2 class="fs-title">设置新密码</h2>
+            <div class="form-group mt-2">
+                <input type="password" name="pwd-1" lay-verify="required"
+                       lay-vertype="tips" class="form-style" placeholder="新密码"
+                       autocomplete="off" required="required"
+                       pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$"
+                       oninvalid="setCustomValidity('密码为6到16位包含字母和数字的组合');"
+                       oninput="setCustomValidity('');">
+                <i class="input-icon layui-icon layui-icon-password"></i>
+            </div>
+            <div class="form-group mt-2">
+                <input type="password" name="pwd-1" lay-verify="required"
+                       lay-vertype="tips" class="form-style" placeholder="确认密码"
+                       autocomplete="off" required="required"
+                       pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$"
+                       oninvalid="setCustomValidity('密码为6到16位包含字母和数字的组合');"
+                       oninput="setCustomValidity('');">
+                <i class="input-icon layui-icon layui-icon-password"></i>
+            </div>
+            <input type="button" name="previous" class="previous action-button" value="上一步"/>
+            <input type="button" name="next" class="next action-button" value="下一步"/>
+        </fieldset>
+        <fieldset>
+            <h2 class="fs-title">重置完成</h2>
+            <p>-^0^- 密码重置成功，请重新登录!</p>
+            <input type="submit" name="submit" class="submit action-button" value="登录"/>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>
