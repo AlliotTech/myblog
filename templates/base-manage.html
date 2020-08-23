@@ -42,11 +42,11 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="../media/photo/photo.jpg" class="layui-nav-img">
-                    贤心
+                    admin
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
+                    <dd><a href="{% url 'management:dashboard' %}">网站管理</a></dd>
+                    <dd><a href="{% url 'account:logout' %}">退出登录</a></dd>
                 </dl>
             </li>
             <!--            <li class="layui-nav-item"><a href="">退了</a></li>-->

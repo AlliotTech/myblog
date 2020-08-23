@@ -28,18 +28,20 @@
                                         <form action="{% url 'account:loginRegister' %}" method="post">
                                             {% csrf_token %}
                                             <div class="form-group">
-                                                <input type="text" name="username" class="form-style" placeholder="用户名"
-                                                       autocomplete="off" required
-                                                       oninvalid="setCustomValidity('请输入用户名');"
-                                                       oninput="setCustomValidity('');">
+                                                {{ login_form.username }}
+{#                                                <input type="text" name="username" class="form-style" placeholder="用户名"#}
+{#                                                       autocomplete="off" required#}
+{#                                                       oninvalid="setCustomValidity('请输入用户名');"#}
+{#                                                       oninput="setCustomValidity('');">#}
                                                 <i class="input-icon layui-icon layui-icon-username"></i>
                                             </div>
                                             <div class="form-group mt-2">
-                                                <input type="password" name="password" lay-verify="required"
-                                                       lay-vertype="tips" class="form-style" placeholder="密码"
-                                                       autocomplete="off" required="required"
-                                                       oninvalid="setCustomValidity('请输入密码');"
-                                                       oninput="setCustomValidity('');">
+                                                {{ login_form.password }}
+{#                                                <input type="password" name="password" lay-verify="required"#}
+{#                                                       lay-vertype="tips" class="form-style" placeholder="密码"#}
+{#                                                       autocomplete="off" required="required"#}
+{#                                                       oninvalid="setCustomValidity('请输入密码');"#}
+{#                                                       oninput="setCustomValidity('');">#}
                                                 <i class="input-icon layui-icon layui-icon-password"></i>
                                             </div>
                                             <div class="form-group mt-2 verification">

@@ -44,13 +44,16 @@
 }
 /*发布文章*/
 .layui-layout-body .layui-layout .layui-header {
-    z-index: 100;
+    z-index: 10;
 }
 .layui-layout-body .layui-layout-admin .layui-side {
-    z-index: 100;
+    z-index: 10;
 }
 .layui-input-block .editormd {
-    z-index: 1000;
+    z-index: 20;
+}
+.layui-nav .layui-nav-item .layui-nav-child {
+    z-index: 30;
 }
 .article-photo-change img {
     width: 192px;

@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate, login
 from django.contrib import auth
+from account.forms import LoginForm
 # Create your views here.
 
 
@@ -9,27 +11,32 @@ def loginRegister(request):
     if request.method == "POST":
         reqtype = request.POST.get('type')
         if reqtype == "登录":
-            username = request.POST.get('username', None)
-            password = request.POST.get('password', None)
-            try:
-                user = auth.authenticate(username=username, password=password)
+            login_form = LoginForm(request.POST)
+            # 创建一个对象，获得post方法提交的数据
+            if login_form.is_valid():
+                # 验证传入的数据是否合法
+                login_data = login_form.cleaned_data
+                # 引入字典数据类型，存储用户名和密码
+                user = authenticate(username=login_data['username'], password=login_data['password'])
+                # 验证账号密码是否正确，正确返回user对象，错误返回null
                 if user:
-                    auth.login(request, user)  # session写操作
-                    request.session['is_login'] = True
+                    login(request, user)
+                    # 调用django默认的login方法，实现用户登录
                     return HttpResponseRedirect('/')
                 else:
-                    message = "密码不正确！"
-                    return render(request, 'account/loginRegister.html', locals())
-            except:
-                message = "用户名不存在！"
-                return render(request, 'account/loginRegister.html', locals())
-                # print(message)
+                    message = '用户名或密码错误'
+                    return render(request, "account/loginRegister.html", locals())
+            else:
+                message = '非法数据'
+                return render(request, "account/loginRegister.html", locals())
 
         if reqtype == "注册":
-            print("是注册")
+            pass
         return render(request, 'account/loginRegister.html', locals())
     else:
+        login_form = LoginForm()
         return render(request, 'account/loginRegister.html', locals())
+
 
 # 忘记密码
 def forgetPassword(request):
