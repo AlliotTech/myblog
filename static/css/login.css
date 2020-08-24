@@ -5,6 +5,10 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100%;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
@@ -325,6 +329,7 @@ form .btn {
     color: #ffeba7;
     box-shadow: 0 8px 24px 0 rgba(16, 39, 112, .2);
 }
+
 /*导航栏滑动搜索框*/
 nav {
     position: absolute;
@@ -379,6 +384,7 @@ nav {
     cursor: pointer;
     transition: background .2s ease-in-out;
 }
+
 .nav-search {
     font-family: layui-icon !important;
     transition: all 1s;
@@ -395,10 +401,12 @@ nav {
 .nav-search-close::before {
     content: "\1006";
 }
+
 /*忘记密码页面*/
 .main {
     height: 400px;
 }
+
 .form {
     width: 100%;
     height: 100%;
@@ -411,106 +419,114 @@ nav {
     padding: 20px 40px;
 
 }
+
 .form-head h1 {
     text-align: center;
     margin-bottom: 30px;
     color: #31acfb;
 }
-.finish-list , .finish-text em {
+
+.finish-list, .finish-text em {
     background-color: #27ae60;
 }
+
 .form-body {
     width: 100%;
     height: 200px;
     padding: 5% 20%;
 }
+
 .layui-form label {
     width: 100px;
 }
+
 .alert-box {
-            display: none;
-            position: relative;
-            margin: 96px auto 0;
-            padding: 15px 80px;
-            border-radius: 20px;
-            background: #FFF;
-            box-shadow: 5px 9px 17px rgba(102, 102, 102, 0.75);
-            width: 460px;
-            color: #FFF;
-            text-align: center
-        }
+    position: relative;
+    top: 20%;
+    margin: 0 auto;
+    padding: 15px 80px;
+    border-radius: 20px;
+    background: #FFF;
+    box-shadow: 5px 9px 17px rgba(102, 102, 102, 0.75);
+    width: 460px;
+    color: #FFF;
+    text-align: center
+}
 
-        .alert-box p {
-            margin: 0
-        }
+.alert-box p {
+    margin: 0
+}
 
-        .alert-circle {
-            position: absolute;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+.alert-circle {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
-        .alert-sec-circle {
-            stroke-dashoffset: 0;
-            stroke-dasharray: 735;
-            transition: stroke-dashoffset 1s linear
-        }
+.alert-sec-circle {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 735;
+    transition: stroke-dashoffset 1s linear
+}
 
-        .alert-sec-text {
-            position: absolute;
-            left: 50%;
-            top: 35%;
-            transform: translate(-50%, -50%);
-            color: #000;
-            font-size: 68px
-        }
+.alert-sec-text {
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    transform: translate(-50%, -50%);
+    color: #000;
+    font-size: 68px
+}
 
-        .alert-sec-unit {
-            font-size: 34px
-        }
+.alert-sec-unit {
+    font-size: 34px
+}
 
-        .alert-body {
-            margin: 270px 0 50px 0;
-        }
+.alert-body {
+    margin: 270px 0 50px 0;
+}
 
-        .alert-head {
-            color: #242424;
-            font-size: 28px;
-            padding: 15px;
-        }
+.alert-head {
+    color: #242424;
+    font-size: 28px;
+    padding: 15px;
+}
 
-        .alert-concent p {
-            line-height: 27px
-        }
+.alert-concent p {
+    line-height: 27px
+}
 
-        .alert-btn {
-            display: inline-block;
-            border-radius: 10px;
-            background-color: #4AB0F7;
-            height: 55px;
-            line-height: 55px;
-            width: 140px;
-            color: #FFF;
-            font-size: 20px;
-            text-decoration: none;
-            letter-spacing: 2px
-        }
+.alert-btn {
+    display: inline-block;
+    border-radius: 10px;
+    background-color: #4AB0F7;
+    height: 55px;
+    line-height: 55px;
+    width: 140px;
+    color: #FFF;
+    font-size: 20px;
+    text-decoration: none;
+    letter-spacing: 2px
+}
 
-        .alert-btn:hover {
-            background-color: #6BC2FF
-        }
-        h1 {
-            color: #31acfb;
-        }
+.alert-btn:hover {
+    background-color: #6BC2FF
+}
+
+h1 {
+    color: #31acfb;
+}
+
 /*移动设备*/
 @media screen and (max-width: 768px) {
     .row .col-12 .section {
-        padding-top: 1em!important;
-        padding-bottom: 0!important;
+        padding-top: 1em !important;
+        padding-bottom: 0 !important;
     }
+
     .alert-box {
-        width: 380px;
+        width: 350px;
         padding: 15px;
     }
 }
