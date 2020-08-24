@@ -37,7 +37,8 @@
             <a href="javascript:">文章分类</a>
             <dl class="layui-nav-child">
                 {% for category in categorys %}
-                    <dd id="category-{{ category.id }}"><a href="/blog/category-{{ category.id }}">{{ category.name }}</a></dd>
+                    <dd id="category-{{ category.id }}"><a
+                            href="/blog/category-{{ category.id }}">{{ category.name }}</a></dd>
                 {% endfor %}
             </dl>
         </li>
@@ -58,22 +59,23 @@
         <li class="layui-nav-item layui-hide-xs nav6">
             <a href="{% url 'blog:about' %}">关于</a>
         </li>
-            <li class="layui-nav-item nav-user-online layui-hide-xs nav7">
-                {% if user.is_authenticated %}
-{#                    用户已登录#}
-                    <a href="javascript:;"><img src="/media/photo/photo.jpg" class="layui-nav-img">admin</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="{% url 'account:personalCenter' %}">个人中心</a></dd>
-                        <dd><a href="{% url 'management:dashboard' %}">网站管理</a></dd>
-                        <dd><a href="{% url 'account:logout' %}">退出登录</a></dd>
-                    </dl>
-                {% else %}
-{#                    用户未登录#}
-                    <span>
-                        <a class="nav-user" href="{% url 'account:loginRegister' %}"><i class="layui-icon layui-icon-friends"></i></a>
+        <li class="layui-nav-item nav-user-online layui-hide-xs nav7">
+            {% if user.is_authenticated %}
+                {#                    用户已登录#}
+                <a href="javascript:;"><img src="/media/photo/photo.jpg" class="layui-nav-img">admin</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="{% url 'account:personalCenter' %}">个人中心</a></dd>
+                    <dd><a href="{% url 'management:dashboard' %}">网站管理</a></dd>
+                    <dd><a href="{% url 'account:logout' %}">退出登录</a></dd>
+                </dl>
+            {% else %}
+                {#                    用户未登录#}
+                <span>
+                        <a class="nav-user" href="{% url 'account:loginRegister' %}"><i
+                                class="layui-icon layui-icon-friends"></i></a>
                     </span>
-                {% endif %}
-            </li>
+            {% endif %}
+        </li>
 
 
         <li class="nav-rignt">
@@ -108,7 +110,8 @@
                     <span class="layui-nav-more"></span></a>
                 <dl class="layui-nav-child">
                     {% for category in categorys %}
-                        <dd id="m-category-{{ category.id }}"><a href="/blog/category-{{ category.id }}">{{ category.name }}</a></dd>
+                        <dd id="m-category-{{ category.id }}"><a
+                                href="/blog/category-{{ category.id }}">{{ category.name }}</a></dd>
                     {% endfor %}
                 </dl>
             </li>
@@ -141,30 +144,30 @@
                 </a>
             </li>
             {% if user.is_authenticated %}
-            <li data-name="component" class="layui-nav-item nav7">
-                <a href="javascript:">
-                    <i class="layui-icon layui-icon-friends"></i>
-                    <cite>admin</cite>
-                    <span class="layui-nav-more"></span></a>
-                <dl class="layui-nav-child">
-                    <dd data-name="button">
-                        <a href="{% url 'account:personalCenter' %}">个人中心</a>
-                    </dd>
-                    <dd data-name="nav">
-                        <a href="{% url 'management:dashboard' %}">网站管理</a>
-                    </dd>
-                    <dd data-name="button">
-                        <a href="{% url 'account:logout' %}">退出登录</a>
-                    </dd>
-                </dl>
-            </li>
+                <li data-name="component" class="layui-nav-item nav7">
+                    <a href="javascript:">
+                        <i class="layui-icon layui-icon-friends"></i>
+                        <cite>admin</cite>
+                        <span class="layui-nav-more"></span></a>
+                    <dl class="layui-nav-child">
+                        <dd data-name="button">
+                            <a href="{% url 'account:personalCenter' %}">个人中心</a>
+                        </dd>
+                        <dd data-name="nav">
+                            <a href="{% url 'management:dashboard' %}">网站管理</a>
+                        </dd>
+                        <dd data-name="button">
+                            <a href="{% url 'account:logout' %}">退出登录</a>
+                        </dd>
+                    </dl>
+                </li>
             {% else %}
-            <li data-name="component" class="layui-nav-item nav7">
-                <a href="{% url 'account:loginRegister' %}">
-                    <i class="layui-icon layui-icon-friends"></i>
-                    <cite>登录</cite>
-                </a>
-            </li>
+                <li data-name="component" class="layui-nav-item nav7">
+                    <a href="{% url 'account:loginRegister' %}">
+                        <i class="layui-icon layui-icon-friends"></i>
+                        <cite>登录</cite>
+                    </a>
+                </li>
             {% endif %}
         </ul>
     </div>
@@ -175,7 +178,7 @@
 {% endblock %}
 {#底部#}
 <!--回到顶部按钮-->
-<div id="back-top"><a href="javascript:;"><i class="layui-icon layui-icon-top"></i></a></div>
+<div id="back-top" class="back-top suspend"><a href="javascript:;"><i class="layui-icon layui-icon-top"></i></a></div>
 <footer>
     <div class="footer">
         <span><p>Copyright&nbsp; ©&nbsp; 2019-2020&nbsp; 崔亮的博客&nbsp; All Rights Reserved</p></span>
@@ -257,14 +260,16 @@
 <script>
     /*判断当在第一屏的时候，回到顶部按钮的时候隐藏*/
     $(window).scroll(function () {
-        if ($(window).scrollTop() > 200) { //垂直滚动条offset
-            {#console.log("不是第一屏")#}
-            $('#back-top').addClass('back-top suspend');
+        var scroll_len = $(window).scrollTop();
+        if (scroll_len > 120) {
+            $('#back-top').fadeIn(1000);
         } else {
-            $('.back-top').removeClass('back-top suspend');
-            {#console.log("是第一屏")#}
-        }
+            $('#back-top').fadeOut(1000);
+        };
     });
+    $('#back-top').click(function (e) {
+        $("body,html").animate({scrollTop: 0}, 300);
+    })
 </script>
 <script>
     //友情链接页面底部footer固定

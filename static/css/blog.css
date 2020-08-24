@@ -218,6 +218,7 @@ aside h4, .index-new h4 {
 
 /*回到顶部按钮*/
 .back-top {
+    display: none;
     position: fixed;
     right: 15px;
     bottom: 15px;

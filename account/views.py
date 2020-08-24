@@ -25,13 +25,12 @@ def loginRegister(request):
                     # 调用django默认的login方法，实现用户登录
                     return HttpResponseRedirect('/')
                 else:
-                    message = '用户名或密码错误'
+                    message = '密码错误'
                     login_form = LoginForm()
                     register_form = RegisterForm()
                     return render(request, "account/loginRegister.html", locals())
             else:
-                print(login_form.errors)
-                message = '非法数据'
+                message = login_form.errors
                 login_form = LoginForm()
                 register_form = RegisterForm()
                 return render(request, "account/loginRegister.html", locals())
@@ -39,35 +38,35 @@ def loginRegister(request):
         if reqtype == "注册":
             register_form = RegisterForm(request.POST)
             if register_form.is_valid():
+                print("验证通过")
+                print(register_form.data)
                 username = register_form.cleaned_data['username']
-                print(type(username))
                 password1 = register_form.cleaned_data['password1']
                 password2 = register_form.cleaned_data['password2']
                 email = register_form.cleaned_data['email']
-                same_name_user = User.objects.filter(username=username)
-                if same_name_user:  # 用户名唯一
-                    message = '用户已经存在，请重新选择用户名！'
-                    login_form = LoginForm()
-                    register_form = RegisterForm()
-                    return render(request, 'account/loginRegister.html', locals())
-                same_email_user = User.objects.filter(email=email)
-                if same_email_user:  # 邮箱地址唯一
-                    message = '该邮箱地址已被注册，请使用其他邮箱！'
-                    login_form = LoginForm()
-                    register_form = RegisterForm()
-                    return render(request, 'account/loginRegister.html', locals())
+                # same_name_user = User.objects.filter(username=username)
+                # if same_name_user:  # 用户名唯一
+                #     message = '用户已经存在，请重新选择用户名！'
+                #     login_form = LoginForm()
+                #     register_form = RegisterForm()
+                #     return render(request, 'account/loginRegister.html', locals())
+                # same_email_user = User.objects.filter(email=email)
+                # if same_email_user:  # 邮箱地址唯一
+                #     message = '该邮箱地址已被注册，请使用其他邮箱！'
+                #     login_form = LoginForm()
+                #     register_form = RegisterForm()
+                #     return render(request, 'account/loginRegister.html', locals())
                 # 检验通过，创建用户
                 new_user = User.objects.create()
                 new_user.username = username
-                new_user.password = password1
+                new_user.set_password(password1)
                 new_user.email = email
                 new_user.save()
                 message = '您已成功注册，快来登录吧！'
                 return HttpResponseRedirect('/account/loginRegister')
             else:
-                # print(register_form.data)
-                # print(register_form.errors)
-                message = '非法数据'
+                print(register_form.errors)
+                message = register_form.errors
                 login_form = LoginForm()
                 register_form = RegisterForm()
                 return render(request, "account/loginRegister.html", locals())
