@@ -262,20 +262,22 @@
     $(window).scroll(function () {
         var scroll_len = $(window).scrollTop();
         if (scroll_len > 120) {
-            $('#back-top').fadeIn(1000);
-        } else {
+            $('#back-top').fadeIn(1000, function (){
+
+            });
+        }
+        else {
             $('#back-top').fadeOut(1000);
-        };
+        }
     });
     $('#back-top').click(function (e) {
-        $("body,html").animate({scrollTop: 0}, 300);
+        $("body,html").animate({scrollTop: 0}, 1000);
     })
 </script>
 <script>
     //友情链接页面底部footer固定
     title = document.title
     if (title == '友情链接') {
-        console.log(title)
         $(document).ready(function () {
             var body_height = $(document.body).height();//浏览器当前窗口文档body的高度
             console.log(body_height)

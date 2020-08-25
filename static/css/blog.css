@@ -375,6 +375,7 @@ aside h4, .index-new h4 {
 }
 /*文章打赏评分*/
 .main-centre .article-reward .reward-box-show {
+    display: none;
     background: #f7f7fc;
     position: absolute;
     bottom: 70px;
@@ -398,37 +399,11 @@ aside h4, .index-new h4 {
 .main-centre .article-reward .reward-box-show img{
     width: 100%;
 }
-.reward-box-close {
-    display: none;
-}
-.main-centre .article-score .score-box-show {
-    background-color: #f7f7fc;
+/*评分弹窗内容*/
+.score-box-div {
+    padding: 15px 15px 0 15px;
+    font-size: 20px;
     text-align: center;
-    width: 180px;
-    position: absolute;
-    bottom: 40px;
-    right: -40px;
-    border-radius: 10px;
-    padding-top: 10px;
-}
-.main-centre .article-score .score-box-show:before {
-    content: ' ';
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border-width: 0 10px 10px;
-    border-style: solid;
-    border-color: transparent transparent #f7f7fc;
-    transform: rotate(180deg);
-    position: absolute;
-    bottom: -10px;
-    left: 76px;
-}
-.main-centre .article-score .score-box-show h5 {
-    display: inline-block;
-}
-.score-box-close {
-    display: none;
 }
 /*文章上下篇链接*/
 .main-centre .article-relevance {

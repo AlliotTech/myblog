@@ -67,21 +67,24 @@
                             </div>
                             <div class="article-action">
                                 <p>码字不易，转载请注明本文链接，您的打赏是对我最大的支持!</p>
-                                <div>
+                                <div id="article-action">
                                     <a class="article-like" href="javascript:">
                                         <i class="layui-icon layui-icon-praise" id="like-text">点赞</i>
                                     </a>
                                     <a class="article-reward" href="javascript:">打赏
-                                        <div id="reward-box" class="reward-box-close">
+                                        <div id="reward-box" class="reward-box-show">
                                             <h5>❤️您可以选择一种方式赞助本站</h5>
                                             <img src="../../static/images/pay.png">
                                         </div>
                                     </a>
                                     <a class="article-score" href="javascript:">
                                         <i class="layui-icon layui-icon-rate" id="score-text">评分</i>
-                                        <div id="score-box" class="score-box-close">
-                                            <h5>😊快来给文章打个分吧！</h5>
-                                            <span id="test14"></span>
+                                        <!--    隐藏弹窗内容-->
+                                        <div class="layui-hide" id="score-box">
+                                            <div class="score-box-div">
+                                                <h5>😊快来给文章打个分吧！</h5>
+                                                <span id="test14"></span>
+                                            </div>
                                         </div>
                                     </a>
                                 </div>
@@ -101,22 +104,25 @@
                                     </a>
                                 {% endif %}
                                 <div>
-                                    <p>文章分类：<span class="label-tag label-color-0"><a href="/blog/category-{{ article.category.id }}">{{ article.category.name }}</a></span></p>
+                                    <p>文章分类：<span class="label-tag label-color-0"><a
+                                            href="/blog/category-{{ article.category.id }}">{{ article.category.name }}</a></span>
+                                    </p>
                                     <p>文章标签：
                                         {% for tag in article.tags.all %}
-                                            <span class="label-tag tag-color-{{ tag.id }}"><a href="/blog/tag-{{ tag.id }}">{{ tag.name }}</a></span>
+                                            <span class="label-tag tag-color-{{ tag.id }}"><a
+                                                    href="/blog/tag-{{ tag.id }}">{{ tag.name }}</a></span>
                                         {% endfor %}
                                     </p>
                                 </div>
                                 {% if next_article %}
                                     <a href="/blog/show-{{ next_article.pk }}" class="article-next">
-                                    下一篇<i class="layui-icon layui-icon-right"></i>
+                                        下一篇<i class="layui-icon layui-icon-right"></i>
                                         <br>
                                         {{ next_article }}
                                     </a>
                                 {% else %}
                                     <a class="article-next">
-                                    下一篇<i class="layui-icon layui-icon-right"></i>
+                                        下一篇<i class="layui-icon layui-icon-right"></i>
                                         <br>
                                         没有了
                                     </a>
@@ -296,6 +302,7 @@
             <div class="layui-hide-xs layui-col-md1"></div>
         </div>
     </main>
+
 {% endblock %}
 
 {% block js %}
@@ -316,52 +323,27 @@
         });
     </script>
     <script>
-        //鼠标悬停赞赏弹窗
-        var articleReward = document.querySelector('.article-reward')
-        var rewardBox = document.querySelector('#reward-box')
-        articleReward.onmouseover = function () {
-            rewardBox.className = 'reward-box-show';
-        }
-        articleReward.onmouseout = function () {
-            rewardBox.className = 'reward-box-close';
-        }
-    </script>
-    <script>
-        //鼠标悬停评分弹窗
-        var articleScore = document.querySelector('.article-score')
-        var scoreBox = document.querySelector('#score-box')
-        var scoreText = document.querySelector('#score-text')
-        articleScore.onclick = function () {
-            scoreBox.className = 'score-box-show';
-        }
-        scoreBox.onclick = function () {
-            scoreBox.style.display = 'none';
-            layer.msg('感谢评分！');
-            scoreText.innerHTML = '已评分';
-            articleScore.style.width = '50%';
-        }
-    </script>
-    <script>
-        // 点赞
-        var articleLike = document.querySelector('.article-like')
-        var likeText = document.querySelector('#like-text')
-        articleLike.onclick = function () {
-            layer.msg('感谢点赞！');
-            likeText.innerHTML = '已点赞';
-            articleLike.style.width = '50%'
-        }
-    </script>
-    <script>
-        // 评分组件
-        layui.use(['rate'], function () {
-            var rate = layui.rate;
-            rate.render({
-                elem: '#test14'
-                , value: 2.5
-                , half: true
-                , theme: '#FE0000'
+        // 点赞打赏
+        $(function () {
+            // 点赞
+            $("#article-action>a").eq(0).click(function () {
+                $(this).animate({
+                    width: '45%'
+                }, 500, function () {
+                    $(this).css({'background': '#3498db', 'pointer-events': 'none'});
+                    $(this).find("i").text("已点赞")
+                    layer.msg('感谢点赞！', {icon: 6});
+                })
             })
-        });
+            // 打赏
+            $("#article-action>a").eq(1).hover(function () {
+                $("#reward-box").stop()
+                $("#reward-box").slideDown(500)
+            }, function () {
+                $("#reward-box").stop()
+                $("#reward-box").slideUp(500)
+            })
+        })
     </script>
     <script>
         layui.use('element', function () {
@@ -369,5 +351,47 @@
                 , element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
         });
     </script>
+    <script>
+        layui.use(['layer', 'rate'], function () {
+            var $ = layui.jquery;
+            var layer = layui.layer;
+            var rate = layui.rate;
 
+            $('#article-action .article-score').click(function () {
+                layer.open({
+                    type: 1,
+                    title: '文章评分',
+                    shadeClose: true,
+                    content: $('#score-box').html(),
+                    btn: ['确定'],
+                    btnAlign: 'c',
+                    success: function (layero, index) {
+                        rate.render({
+                            elem: $(layero).find('#test14'),
+                            choose: function (value) {
+                                // 获取评分
+                                console.log(value)
+                            }
+                        });
+                    },
+                    yes: function (index, layero) {
+                        layer.close(index);
+                        $(".article-score").css({'width': '45%', 'background': '#3498db', 'pointer-events': 'none'})
+                        $(".article-score").find('i').text("已评分")
+                        layer.msg('感谢评分！', {icon: 6});
+                    }
+                })
+            })
+        });
+    </script>
+    <script>
+        layui.use('layer', function () {
+            var layer = layui.layer;
+            layer.ready(function () {
+                layer.msg('很高兴一开场就见到你');
+            });
+        });
+
+
+    </script>
 {% endblock %}

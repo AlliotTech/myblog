@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>test</title>
+		<link rel="stylesheet" type="text/css" href="../static/layui/css/layui.css" />
+		<script src="../static/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			layui.use(['layer', 'rate'], function() {
+				var $ = layui.jquery;
+				var layer = layui.layer;
+				var rate = layui.rate;
+
+				$('#testOpen').click(function() {
+					layer.open({
+						type: 1,
+						shadeClose: true,
+						content: $('.layer-dialogs').html(),
+                        btn: ['确定'],
+						success: function(layero, index) {
+							rate.render({
+								elem: $(layero).find('#test1')
+							});
+						},
+						yes: function(index, layero) {
+						    alert("aaa")
+							var value = $('#test1').text(value);
+							alert($('#test1').text)
+							layer.alert(value)
+							layer.close(index)
+						}
+					})
+				})
+			});
+		</script>
+	</head>
+	<body>
+		<button type="button" class="layui-btn" id="testOpen">按钮</button>
+		<div class="layer-dialogs layui-hide">
+            <span id="test1"></span>
+		</div>
+	</body>
+</html>
