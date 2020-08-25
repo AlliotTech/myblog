@@ -13,6 +13,7 @@ def global_variable(request):
     tags = Tag.objects.all()
     hotArticle = Article.objects.all().order_by('-views')[:9]
     categorys = Category.objects.all()
+    recommend = Article.objects.all().order_by('-views')[:6]
     return locals()
 
 

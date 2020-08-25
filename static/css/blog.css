@@ -8,7 +8,7 @@
 }
 
 .page-main .main-left {
-    padding: 20px 0 0 0;
+    padding: 0 20px 0 0;
 }
 
 .page-main .page-main-centre {
@@ -107,7 +107,26 @@ aside h4, .index-new h4 {
     color: #d9534f;
     text-decoration: none;
 }
-
+/*推荐阅读*/
+.post-right-item .recommend-list div:nth-child(even) {
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.post-right-item .recommend-list div:nth-child(odd) {
+    padding-right: 5px;
+      padding-top: 5px;
+    padding-bottom: 5px;
+}
+.post-right-item .recommend-list img{
+    height: 100%;
+    width: 100%;
+    margin-bottom: 8px;
+    border-radius: 5px;
+}
+.post-right-item .recommend-list p{
+    text-align: center;
+}
 /*首页最新文章*/
 .index-new {
     margin-top: 1em;
@@ -404,6 +423,14 @@ aside h4, .index-new h4 {
     padding: 15px 15px 0 15px;
     font-size: 20px;
     text-align: center;
+}
+/*目录弹窗*/
+.content-div {
+    padding: 15px;
+}
+.content-div li {
+    line-height: 30px;
+    color:red;
 }
 /*文章上下篇链接*/
 .main-centre .article-relevance {

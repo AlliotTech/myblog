@@ -1,20 +1,67 @@
 {% load static %}
 {#右侧栏目部分#}
 <div class="layui-col-md3 main-right">
-    <!--        热门文章-->
     <aside class="post-right-item suspend">
         <h4>
             <strong>
-                <span>🔥 热门文章</span>
+                <span>👍 推荐阅读</span>
             </strong>
         </h4>
-        <ol class="hot-list">
-            {% for article in hotArticle %}
-                <li>
-                    <a href="/blog/show-{{ article.id }}" title="{{ article.title }}">{{ article.title }}</a>
-                </li>
+        <div class="layui-row recommend-list">
+            {% for tui in recommend %}
+                <div class="layui-col-xs12 layui-col-md6">
+                    <div>
+                        <a href="/blog/show-{{ tui.id }}" class="img-zoom"><img src="media/{{ tui.img }}"></a>
+                        <a href="/blog/show-{{ tui.id }}" title="{{ tui.title }}"><p>{{ tui.title }}</p></a>
+                    </div>
+                </div>
             {% endfor %}
-        </ol>
+        </div>
+    </aside>
+    <!--        热门文章-->
+    <aside class="post-right-item suspend hot-list">
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">
+                    <h4>
+                        <strong>
+                            <span>🔥 阅读排行</span>
+                        </strong>
+                    </h4>
+                </li>
+                <li>
+                    <h4>
+                        <strong>
+                            <span>🔥 评分排行</span>
+                        </strong>
+                    </h4>
+                </li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <ol>
+                        {% for article in hotArticle %}
+                            <li>
+                                <a href="/blog/show-{{ article.id }}"
+                                   title="{{ article.title }}">{{ article.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+                <div class="layui-tab-item">
+                     <ol>
+                        {% for article in hotArticle %}
+                            <li>
+                                <a href="/blog/show-{{ article.id }}"
+                                   title="{{ article.title }}">{{ article.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+
     </aside>
     <aside class="post-right-item suspend post-right-tag">
         <h4>
