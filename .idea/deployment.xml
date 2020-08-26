@@ -2,10 +2,10 @@
 <project version="4">
   <component name="PublishConfigData" autoUpload="Always" serverName="root@101.132.148.7:8022" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="root@101.132.148.7:8022">
+      <paths name="root@10.240.180.195:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/myblog" local="$PROJECT_DIR$" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

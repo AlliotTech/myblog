@@ -389,26 +389,36 @@
     </script>
     <script>
         // 目录
-        layui.use('layer', function () {
-            var layer = layui.layer;
-            layer.ready(function () {
-                setTimeout(function () {
-                    layer.open({
-                        type: 1
-                        , title: ['📋目录', 'font-size:26px;color:#1e9fff']
-                        , area: '230px'
-                        , maxWidth: '500'
-                        , shade: 0
-                        , anim: 5
-                        , offset: ['80px', '15px']
-                        , content: $('#content').html()
-                        , success: function (layero) {
-                            layer.setTop(layero); //重点2
-                        }
+        $(document).ready(function () {
+            w = $(window).width(); //浏览器当前窗口可视区域宽度
+            if (w > 768) {
+                openContent()
+            }
+
+            function openContent() {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    layer.ready(function () {
+                        setTimeout(function () {
+                            layer.open({
+                                type: 1
+                                , title: ['📋目录', 'font-size:26px;color:#1e9fff']
+                                , area: '230px'
+                                , maxWidth: '500'
+                                , shade: 0
+                                , anim: 5
+                                , offset: ['80px', '15px']
+                                , content: $('#content').html()
+                                , success: function (layero) {
+                                    layer.setTop(layero); //重点2
+                                }
+                            });
+                        }, 1000)
                     });
-                }, 1000)
-            });
-        })
-        ;
+                });
+            }
+        });
+
+
     </script>
 {% endblock %}

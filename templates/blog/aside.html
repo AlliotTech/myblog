@@ -19,49 +19,20 @@
         </div>
     </aside>
     <!--        热门文章-->
-    <aside class="post-right-item suspend hot-list">
-        <div class="layui-tab">
-            <ul class="layui-tab-title">
-                <li class="layui-this">
-                    <h4>
-                        <strong>
-                            <span>🔥 阅读排行</span>
-                        </strong>
-                    </h4>
-                </li>
+    <aside class="post-right-item suspend">
+        <h4>
+            <strong>
+                <span>🔥 阅读排行</span>
+            </strong>
+        </h4>
+        <div class="hot-list">
+            {% for article in hotArticle %}
                 <li>
-                    <h4>
-                        <strong>
-                            <span>🔥 评分排行</span>
-                        </strong>
-                    </h4>
+                    <a href="/blog/show-{{ article.id }}"
+                       title="{{ article.title }}">{{ article.title }}</a>
                 </li>
-            </ul>
-            <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show">
-                    <ol>
-                        {% for article in hotArticle %}
-                            <li>
-                                <a href="/blog/show-{{ article.id }}"
-                                   title="{{ article.title }}">{{ article.title }}</a>
-                            </li>
-                        {% endfor %}
-                    </ol>
-                </div>
-                <div class="layui-tab-item">
-                     <ol>
-                        {% for article in hotArticle %}
-                            <li>
-                                <a href="/blog/show-{{ article.id }}"
-                                   title="{{ article.title }}">{{ article.title }}</a>
-                            </li>
-                        {% endfor %}
-                    </ol>
-                </div>
-            </div>
+            {% endfor %}
         </div>
-
-
     </aside>
     <aside class="post-right-item suspend post-right-tag">
         <h4>

@@ -44,8 +44,9 @@
                     <img src="../media/photo/photo.jpg" class="layui-nav-img">
                     admin
                 </a>
-                <dl class="layui-nav-child">
+                <dl class="layui-nav-child layui-show">
                     <dd><a href="{% url 'management:dashboard' %}">网站管理</a></dd>
+                    <dd><a href="{% url 'account:logout' %}">退出登录</a></dd>
                     <dd><a href="{% url 'account:logout' %}">退出登录</a></dd>
                 </dl>
             </li>

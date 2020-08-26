@@ -279,4 +279,14 @@
             });
         });
     </script>
+    <script>
+        window.onload = function () {
+            var allmax = $('.fa-arrows-alt').parent('a')[0]
+            console.log($('.editormd-fullscreen'))
+           $('#input-textarea').delegate(allmax, "click", function (event){
+            //   alert("qwer");
+            //   event.stopPropagation();
+           })
+        };
+    </script>
 {% endblock %}

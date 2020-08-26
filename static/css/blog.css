@@ -55,7 +55,7 @@ aside h4, .index-new h4 {
 }
 /*热门文章*/
 .post-right-item .hot-list {
-    padding-left: 20px;
+    padding-top:10px;
     font-size: 16px;
     margin-bottom: 0;
 }
@@ -92,13 +92,12 @@ aside h4, .index-new h4 {
 }
 /*热门文章标题名称列表*/
 .post-right-item .hot-list li a {
-    display: block;
     padding: 6px 0;
     position: relative;
     font-size: 16px;
     font-family: Helvetica, Arial, sans-serif;
     color: #747f8c;
-    line-height: 22px;
+    line-height: 30px;
 }
 
 /*热门文章标题列表悬停效果*/
@@ -430,7 +429,7 @@ aside h4, .index-new h4 {
 }
 .content-div li {
     line-height: 30px;
-    color:red;
+    color: #7f8c8d;
 }
 /*文章上下篇链接*/
 .main-centre .article-relevance {
@@ -775,7 +774,9 @@ nav {
     /*主页移动端适配*/
     .page-main {
         padding-top: 40px;
-
+    }
+    .page-main .main-left {
+        padding-right: 0;
     }
 
 
@@ -807,5 +808,9 @@ nav {
     .footer-fixed {
         position: revert;
         width: auto;
+    }
+    /*文章内容页*/
+    .main-centre .article-info span {
+        padding-left: 10px;
     }
 }
