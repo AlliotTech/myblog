@@ -281,12 +281,14 @@
     </script>
     <script>
         window.onload = function () {
-            var allmax = $('.fa-arrows-alt').parent('a')[0]
-            console.log($('.editormd-fullscreen'))
-           $('#input-textarea').delegate(allmax, "click", function (event){
-            //   alert("qwer");
-            //   event.stopPropagation();
-           })
+            $(document).ready(function () {
+                w = $(window).width(); //浏览器当前窗口可视区域宽度
+                if (w > 768) {
+                    $('.layui-header').css("z-index", "0");
+                    $('.layui-side').css("z-index", "0");
+                    $('#test-editor').css("z-index", "1");
+                }
+            })
         };
     </script>
 {% endblock %}
