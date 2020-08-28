@@ -287,6 +287,16 @@
         })
     }
 </script>
+<script>
+    // 最多阅读 评论 评分切换
+    $('#top-list').find('a').hover(function () {
+        {#alert('移入')#}
+        $('#top-list-ul').stop().slideDown(500);
+    }, function (){
+        {#alert("移除")#}
+        $('#top-list-ul').stop().slideUp(500);
+    });
+</script>
 {% block js %}
 
 {% endblock %}

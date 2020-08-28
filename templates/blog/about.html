@@ -6,24 +6,17 @@
     <main class="page-main">
         <div class="layui-row">
             <!--    页面左侧留空-->
-            <div class="layui-hide-xs layui-col-md1 left-null"></div>
+            <div class="layui-hide-xs layui-col-md2 left-null"></div>
             <!--    页面主体部分-->
             <div class="layui-col-xs12 layui-col-md10 page-main-centre">
                 <div class="layui-row main-centre">
-                    <!--            主体左侧目录部分-->
-                    <div class="layui-col-md2 layui-hide-xs catalogue">
-                        <aside>
-                            <h4>
-                                <strong>
-                                    <i class="fas fa-list-ul"></i>
-                                    <span>目录</span>
-                                </strong>
-                            </h4>
+                    <div class="layui-hide" id="content">
+                        <div class="content-div">
                             <ul>
                                 <li>第一章：三字经</li>
                                 <li>第二章：百家姓</li>
                                 <li>第三章：唐诗三百首</li>
-                                <li>第四章：钢铁是怎样炼成的</li>
+                                <li>第四章：钢铁是怎样炼成的这真是一个难题</li>
                                 <li>第一章：三字经</li>
                                 <li>第二章：百家姓</li>
                                 <li>第三章：唐诗三百首</li>
@@ -32,8 +25,11 @@
                                 <li>第二章：百家姓</li>
                                 <li>第三章：唐诗三百首</li>
                                 <li>第四章：钢铁是怎样炼成的</li>
+                                <li>第一章：三字经</li>
+                                <li>第二章：百家姓</li>
+                                <li>第三章：唐诗三百首</li>
                             </ul>
-                        </aside>
+                        </div>
                     </div>
                     <!--            主体中间正文部分-->
                     <div class="layui-col-md7 main-left">
@@ -1005,8 +1001,6 @@
                     <!--            主体右侧部分-->
                 </div>
             </div>
-            <!--    页面右侧留空-->
-            <div class="layui-hide-xs layui-col-md1"></div>
         </div>
     </main>
 {% endblock %}
@@ -1015,5 +1009,37 @@
     <script>
         // 导航栏当前标签页
         $(".nav6").addClass("layui-this");
+    </script>
+    <script>
+        // 目录
+        $(document).ready(function () {
+            w = $(window).width(); //浏览器当前窗口可视区域宽度
+            if (w > 768) {
+                openContent()
+            }
+
+            function openContent() {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    layer.ready(function () {
+                        setTimeout(function () {
+                            layer.open({
+                                type: 1
+                                , title: ['📋目录', 'font-size:26px;color:#1e9fff']
+                                , area: '230px'
+                                , maxWidth: '500'
+                                , shade: 0
+                                , anim: 5
+                                , offset: ['80px', '15px']
+                                , content: $('#content').html()
+                                , success: function (layero) {
+                                    layer.setTop(layero); //重点2
+                                }
+                            });
+                        }, 1000)
+                    });
+                });
+            }
+        });
     </script>
 {% endblock %}

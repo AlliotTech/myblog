@@ -19,12 +19,20 @@
         </div>
     </aside>
     <!--        热门文章-->
-    <aside class="post-right-item suspend">
+    <aside class="post-right-item suspend" id="top-list">
         <h4>
-            <strong>
-                <span>🔥 阅读排行</span>
-            </strong>
+            <a href="javascript:;">
+                <strong>
+                    <span>🔥 阅读排行</span>
+                    <i class="layui-icon layui-icon-triangle-d"></i>
+                </strong>
+            </a>
         </h4>
+        <ul id="top-list-ul">
+            <li>🔥 评分排行</li>
+            <li>🔥 点赞排行</li>
+            <li>🔥 评论排行</li>
+        </ul>
         <div class="hot-list">
             {% for article in hotArticle %}
                 <li>

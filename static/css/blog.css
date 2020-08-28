@@ -30,7 +30,20 @@ aside h4, .index-new h4 {
     color: #1E9FFF;
     font-size: 25px;
 }
-
+#top-list-ul {
+    display: none;
+    position: absolute;
+    background: #ecf0f1;
+    z-index: 1;
+    color: #7f8c8d;
+    font-size: 25px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .1);
+}
+#top-list h4 span:hover {
+    cursor:pointer
+}
 /*主页侧边栏*/
 .post-right-item, .catalogue aside {
     padding: 15px 20px 15px 20px;
