@@ -19,28 +19,74 @@
         </div>
     </aside>
     <!--        热门文章-->
-    <aside class="post-right-item suspend" id="top-list">
-        <h4>
-            <a href="javascript:;">
-                <strong>
-                    <span>🔥 阅读排行</span>
-                    <i class="layui-icon layui-icon-triangle-d"></i>
-                </strong>
-            </a>
-        </h4>
-        <ul id="top-list-ul">
-            <li>🔥 评分排行</li>
-            <li>🔥 点赞排行</li>
-            <li>🔥 评论排行</li>
-        </ul>
-        <div class="hot-list">
-            {% for article in hotArticle %}
+    <aside class="post-right-item suspend">
+        <div id="top-list">
+            <ul>
                 <li>
-                    <a href="/blog/show-{{ article.id }}"
-                       title="{{ article.title }}">{{ article.title }}</a>
+                    <a href="javascript:;">
+                        <span class="list-title">
+                            <em>🔥 </em>
+                            <em>阅读排行</em>
+                            <i class="fas fa-caret-down"></i>
+{#                            <i class="fas fa-caret-up"></i>#}
+                        </span>
+                    </a>
+                    <ul class="top-list-son">
+                        <li>
+                            <a href="javascript:;" class="top-title-this">阅读排行</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">点赞排行</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">评分排行</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">评论排行</a>
+                        </li>
+                    </ul>
                 </li>
-            {% endfor %}
+            </ul>
         </div>
+        <div id="top-list-content">
+            <ol class="hot-list hot-list-show">
+                阅读排行
+                {% for article in hotArticle %}
+                    <li>
+                        <a href="/blog/show-{{ article.id }}"
+                           title="{{ article.title }}">{{ article.title }}</a>
+                    </li>
+                {% endfor %}
+            </ol>
+            <ol class="hot-list">
+                点赞排行
+                {% for article in hotArticle %}
+                    <li>
+                        <a href="/blog/show-{{ article.id }}"
+                           title="{{ article.title }}">{{ article.title }}</a>
+                    </li>
+                {% endfor %}
+            </ol>
+            <ol class="hot-list">
+                评分排行
+                {% for article in hotArticle %}
+                    <li>
+                        <a href="/blog/show-{{ article.id }}"
+                           title="{{ article.title }}">{{ article.title }}</a>
+                    </li>
+                {% endfor %}
+            </ol>
+            <ol class="hot-list">
+                评论排行
+                {% for article in hotArticle %}
+                    <li>
+                        <a href="/blog/show-{{ article.id }}"
+                           title="{{ article.title }}">{{ article.title }}</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+
     </aside>
     <aside class="post-right-item suspend post-right-tag">
         <h4>

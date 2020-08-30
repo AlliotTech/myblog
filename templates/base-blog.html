@@ -262,11 +262,10 @@
     $(window).scroll(function () {
         var scroll_len = $(window).scrollTop();
         if (scroll_len > 120) {
-            $('#back-top').fadeIn(1000, function (){
+            $('#back-top').fadeIn(1000, function () {
 
             });
-        }
-        else {
+        } else {
             $('#back-top').fadeOut(1000);
         }
     });
@@ -287,14 +286,42 @@
         })
     }
 </script>
+{#<script>#}
+{#    // 最多阅读 评论 评分切换#}
+{#$('#top-list').find('a').mouseover(function () {#}
+{#alert('移入')#}
+{#    $('.list-title').find('li').stop().slideDown(300);#}
+{#    $('#top-list').find('a').eq(0).hover(function () {#}
+{#        console.log($('#top-list').find('a').eq(0))#}
+{#        $('.list-title').stop().slideDown(300);#}
+{#    }, function () {#}
+{#        $('.list-title').stop().slideUp(300);#}
+{#    });#}
+{#</script>#}
 <script>
-    // 最多阅读 评论 评分切换
-    $('#top-list').find('a').hover(function () {
-        {#alert('移入')#}
-        $('#top-list-ul').stop().slideDown(500);
-    }, function (){
-        {#alert("移除")#}
-        $('#top-list-ul').stop().slideUp(500);
+    $(document).ready(function () {
+        // 标题菜单下拉展开
+        $("#top-list>ul>li").mouseenter(function () {
+            $(this).children("ul").stop().slideDown(300);
+            $(this).find("i").attr("class","fas fa-caret-up");
+        });
+        $("#top-list>ul>li").mouseleave(function () {
+            $(this).children("ul").stop().slideUp(300);
+            $(this).find("i").attr("class","fas fa-caret-down");
+        });
+        // 点击切换相应列表
+        $(".top-list-son li").click(function (){
+            var text = $(this).text();
+            $(this).siblings().find("a").removeClass("top-title-this")
+            $(this).find("a").addClass("top-title-this")
+            $(".list-title em").eq(1).html(text);
+            $(".top-list-son").slideUp(100);
+            var index = ($(this).index());
+            var $ol = $("#top-list-content ol").eq(index);
+            $ol.siblings().removeClass("hot-list-show")
+            $ol.addClass("hot-list-show");
+            {#console.log($ol)#}
+        })
     });
 </script>
 {% block js %}
