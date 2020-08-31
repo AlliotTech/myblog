@@ -332,11 +332,7 @@
             })
             // 打赏
             $("#article-action>a").eq(1).hover(function () {
-                $("#reward-box").stop()
-                $("#reward-box").slideDown(500)
-            }, function () {
-                $("#reward-box").stop()
-                $("#reward-box").slideUp(500)
+                $("#reward-box").stop().stop().slideToggle(500)
             })
         })
     </script>

@@ -25,7 +25,7 @@
                                         </a>
                                     </div>
                                     <div class="layui-col-xs12 layui-col-md10">
-                                        <textarea id="leave">11223344</textarea>
+                                        <textarea id="leave" placeholder="请输入内容">11223344</textarea>
                                     </div>
                                     <div class="layui-col-xs2 layui-col-md1">
                                         <button type="button" class="layui-btn layui-btn-normal">留言</button>
@@ -188,26 +188,38 @@
         $(".nav5").addClass("layui-this");
     </script>
     <script>
-        // 富文本编辑器
-        layui.use('layedit', function () {
-            var layedit = layui.layedit;
-            layedit.set({
-                uploadImage: {  //上传图片的设置
-                    url: '' //接口url
-                    , type: 'post' //默认post
-                }
+    // 富文本编辑器
+        layui.use(['form', 'layedit'], function () {
+            var form = layui.form;
+            form.render(); //更新全部
+
+            layui.use(['layedit', 'form'], function () {
+                var form = layui.form;
+                var layedit = layui.layedit;
+                // 图片接口放到建立编辑器前面，否则无效
+                layedit.set({
+                    uploadImage: {
+                        url: '/index.php/admin/base/layuifwb', //接口url
+                        type: 'post' //默认post
+                    }
+                });
+                // 设置编辑器
+                layedit.build('content', {
+                    height: 150 //设置编辑器高度
+                });
+
+                var index = layedit.build('leave'); //建立编辑器
+                form.verify({ // 这里就是把富文本数据同步到<textarea>中
+                    content: function (value) {
+                        return layedit.sync(index);
+                    }
+                });
             });
-            var edit = layedit.build('leave', {
-                height: 150 //设置编辑器高度
-            });
-            layer.msg(layedit.getContent(edit))
-            var content = layedit.getContent(edit);
-            console.log(content)
-        });
+        })
     </script>
     <script>
-        $(function (){
-            $(".message-body button").click(function (){
+        $(function () {
+            $(".message-body button").click(function () {
                 alert("adsf");
             })
         })

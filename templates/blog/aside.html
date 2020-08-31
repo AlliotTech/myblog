@@ -50,7 +50,7 @@
         </div>
         <div id="top-list-content">
             <ol class="hot-list hot-list-show">
-{#                阅读排行#}
+                {#                阅读排行#}
                 {% for article in viewTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
@@ -59,7 +59,7 @@
                 {% endfor %}
             </ol>
             <ol class="hot-list">
-{#                点赞排行#}
+                {#                点赞排行#}
                 {% for article in likeTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
@@ -68,7 +68,7 @@
                 {% endfor %}
             </ol>
             <ol class="hot-list">
-{#                评分排行#}
+                {#                评分排行#}
                 {% for article in scoreTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
@@ -77,7 +77,7 @@
                 {% endfor %}
             </ol>
             <ol class="hot-list">
-{#                评论排行#}
+                {#                评论排行#}
                 {% for article in scoreTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
@@ -346,22 +346,21 @@
     // 最多阅读 评论 评分切换
     $(function () {
         // 标题菜单下拉展开
-        $("#top-list>ul>li").mouseenter(function () {
+        $("#top-list>ul>li").hover(function () {
             $(this).children("ul").stop().slideDown(300);
-            $(this).find("i").attr("class","fas fa-caret-up");
-        });
-        $("#top-list>ul>li").mouseleave(function () {
+            $(this).find("i").attr("class", "fas fa-caret-up");
+        }, function () {
             $(this).children("ul").stop().slideUp(300);
-            $(this).find("i").attr("class","fas fa-caret-down");
+            $(this).find("i").attr("class", "fas fa-caret-down");
         });
         // 手机版点击下拉展开菜单
         $("#top-list>ul>li").click(function () {
             $(this).children("ul").stop().slideDown(300);
-            $(this).find("i").attr("class","fas fa-caret-up");
+            $(this).find("i").attr("class", "fas fa-caret-up");
         });
 
         // 点击切换相应列表
-        $(".top-list-son li").click(function (){
+        $(".top-list-son li").click(function () {
             var text = $(this).text();
             $(this).siblings().find("a").removeClass("top-title-this")
             $(this).find("a").addClass("top-title-this")
@@ -376,16 +375,12 @@
 </script>
 <script>
     // 关于博主联系方式
-    $(function (){
-        $("#weixin").parent("a").hover(function (){
-            $("#weixin").stop().fadeIn(500);
-        },function (){
-            $("#weixin").stop().fadeOut(500);
+    $(function () {
+        $("#weixin").parent("a").hover(function () {
+            $("#weixin").stop().fadeToggle(500);
         })
-        $("#qq").parent("a").hover(function (){
-            $("#qq").stop().fadeIn(500);
-        },function (){
-            $("#qq").stop().fadeOut(500);
+        $("#qq").parent("a").hover(function () {
+            $("#qq").stop().fadeToggle(500);
         })
     })
 </script>

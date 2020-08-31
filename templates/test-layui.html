@@ -3,96 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>测试页面</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="static/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="static/easyCropper/cropper.css" media="all">
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <script src="../static/layui/layui.js" charset="utf-8"></script>
+    <script src="../static/jquery-3.5.1/jquery-3.5.1.min.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+    <script type="text/javascript">
+        layui.use(['layedit'], function () {
+            var layedit = layui.layedit;
+            var $ = layui.jquery;
+            var edit = layedit.build('test');
+            layer.msg(layedit.getContent(edit));
+            console.log(layedit.getContent(edit));
+            $('#test').on('input',function (e){
+                console.log(e);
+            })
+        })
+    </script>
 </head>
 <body>
-<div class="layui-carousel" id="test1" lay-filter="test1">
-    <div carousel-item="">
-        <div><img src="media/cover/1.jpg"></div>
-        <div><img src="media/cover/2.jpg"></div>
-        <div><img src="media/cover/3.jpg"></div>
-        <div><img src="media/cover/4.jpg"></div>
-    </div>
-</div>
-<script src="static/layui/layui.js" charset="utf-8"></script>
-<script src="static/easyCropper/cropper.js" charset="utf-8"></script>
-<script src="static/easyCropper/easyCropper.js" charset="utf-8"></script>
-<script src="static/jquery-3.5.1/jquery-3.5.1.min.js" charset="utf-8"></script>
-<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-<script>
-    layui.use(['carousel', 'form'], function(){
-        var carousel = layui.carousel
-            ,form = layui.form;
+<textarea id="test">12312</textarea>
 
-        //常规轮播
-        carousel.render({
-            elem: '#test1'
-            ,arrow: 'always'
-        });
-
-        //改变下时间间隔、动画类型、高度
-        carousel.render({
-            elem: '#test2'
-            ,interval: 1800
-            ,anim: 'fade'
-            ,height: '120px'
-        });
-
-        //设定各种参数
-        var ins3 = carousel.render({
-            elem: '#test3'
-        });
-        //图片轮播
-        carousel.render({
-            elem: '#test10'
-            ,width: '778px'
-            ,height: '440px'
-            ,interval: 5000
-        });
-
-        //事件
-        carousel.on('change(test4)', function(res){
-            console.log(res)
-        });
-
-        var $ = layui.$, active = {
-            set: function(othis){
-                var THIS = 'layui-bg-normal'
-                    ,key = othis.data('key')
-                    ,options = {};
-
-                othis.css('background-color', '#5FB878').siblings().removeAttr('style');
-                options[key] = othis.data('value');
-                ins3.reload(options);
-            }
-        };
-
-        //监听开关
-        form.on('switch(autoplay)', function(){
-            ins3.reload({
-                autoplay: this.checked
-            });
-        });
-
-        $('.demoSet').on('keyup', function(){
-            var value = this.value
-                ,options = {};
-            if(!/^\d+$/.test(value)) return;
-
-            options[this.name] = value;
-            ins3.reload(options);
-        });
-
-        //其它示例
-        $('.demoTest .layui-btn').on('click', function(){
-            var othis = $(this), type = othis.data('type');
-            active[type] ? active[type].call(this, othis) : '';
-        });
-    });
-</script>
 </body>
 </html>
