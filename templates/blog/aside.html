@@ -50,8 +50,8 @@
         </div>
         <div id="top-list-content">
             <ol class="hot-list hot-list-show">
-                阅读排行
-                {% for article in hotArticle %}
+{#                阅读排行#}
+                {% for article in viewTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
                            title="{{ article.title }}">{{ article.title }}</a>
@@ -59,8 +59,8 @@
                 {% endfor %}
             </ol>
             <ol class="hot-list">
-                点赞排行
-                {% for article in hotArticle %}
+{#                点赞排行#}
+                {% for article in likeTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
                            title="{{ article.title }}">{{ article.title }}</a>
@@ -68,8 +68,8 @@
                 {% endfor %}
             </ol>
             <ol class="hot-list">
-                评分排行
-                {% for article in hotArticle %}
+{#                评分排行#}
+                {% for article in scoreTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
                            title="{{ article.title }}">{{ article.title }}</a>
@@ -77,8 +77,8 @@
                 {% endfor %}
             </ol>
             <ol class="hot-list">
-                评论排行
-                {% for article in hotArticle %}
+{#                评论排行#}
+                {% for article in scoreTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
                            title="{{ article.title }}">{{ article.title }}</a>
@@ -127,18 +127,28 @@
                 <span>cuiliang0302@qq.com</span>
             </div>
             <div class="about-logo">
-                        <span>
-                            <i class="layui-icon layui-icon-login-qq"></i>
-                        </span>
                 <span>
-                            <i class="layui-icon layui-icon-login-wechat"></i>
-                        </span>
+                    <a href="javascript:;">
+                        <i class="layui-icon layui-icon-login-qq"></i>
+                        <div id="qq">
+                            <img src="{% static 'images/qq.png' %}">
+                        </div>
+                    </a>
+                </span>
                 <span>
-                            <img src="{% static 'images/csdn.png' %}" width="20px">
-                        </span>
+                    <a href="javascript:;">
+                        <i class="layui-icon layui-icon-login-wechat"></i>
+                        <div id="weixin">
+                            <img src="{% static 'images/weixin.png' %}">
+                        </div>
+                    </a>
+                </span>
                 <span>
-                            <i class="fab fa-github"></i>
-                        </span>
+                    <a href="https://blog.csdn.net/qq_33816243"><img src="{% static 'images/csdn.png' %}"></a>
+                </span>
+                <span>
+                    <a href="https://github.com/cuiliang0302"><i class="fab fa-github"></i></a>
+                </span>
             </div>
         </div>
     </aside>
@@ -331,4 +341,51 @@
         sc = Math.sin(c * dtr);
         cc = Math.cos(c * dtr);
     }
+</script>
+<script>
+    // 最多阅读 评论 评分切换
+    $(function () {
+        // 标题菜单下拉展开
+        $("#top-list>ul>li").mouseenter(function () {
+            $(this).children("ul").stop().slideDown(300);
+            $(this).find("i").attr("class","fas fa-caret-up");
+        });
+        $("#top-list>ul>li").mouseleave(function () {
+            $(this).children("ul").stop().slideUp(300);
+            $(this).find("i").attr("class","fas fa-caret-down");
+        });
+        // 手机版点击下拉展开菜单
+        $("#top-list>ul>li").click(function () {
+            $(this).children("ul").stop().slideDown(300);
+            $(this).find("i").attr("class","fas fa-caret-up");
+        });
+
+        // 点击切换相应列表
+        $(".top-list-son li").click(function (){
+            var text = $(this).text();
+            $(this).siblings().find("a").removeClass("top-title-this")
+            $(this).find("a").addClass("top-title-this")
+            $(".list-title em").eq(1).html(text);
+            $(".top-list-son").hide();
+            var index = ($(this).index());
+            var $ol = $("#top-list-content ol").eq(index);
+            $ol.siblings().removeClass("hot-list-show")
+            $ol.addClass("hot-list-show");
+        })
+    });
+</script>
+<script>
+    // 关于博主联系方式
+    $(function (){
+        $("#weixin").parent("a").hover(function (){
+            $("#weixin").stop().fadeIn(500);
+        },function (){
+            $("#weixin").stop().fadeOut(500);
+        })
+        $("#qq").parent("a").hover(function (){
+            $("#qq").stop().fadeIn(500);
+        },function (){
+            $("#qq").stop().fadeOut(500);
+        })
+    })
 </script>

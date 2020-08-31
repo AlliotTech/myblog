@@ -25,7 +25,7 @@
                                         </a>
                                     </div>
                                     <div class="layui-col-xs12 layui-col-md10">
-                                        <textarea id="leave"></textarea>
+                                        <textarea id="leave">11223344</textarea>
                                     </div>
                                     <div class="layui-col-xs2 layui-col-md1">
                                         <button type="button" class="layui-btn layui-btn-normal">留言</button>
@@ -195,12 +195,21 @@
                 uploadImage: {  //上传图片的设置
                     url: '' //接口url
                     , type: 'post' //默认post
-
                 }
             });
-            layedit.build('leave', {
+            var edit = layedit.build('leave', {
                 height: 150 //设置编辑器高度
             });
+            layer.msg(layedit.getContent(edit))
+            var content = layedit.getContent(edit);
+            console.log(content)
         });
+    </script>
+    <script>
+        $(function (){
+            $(".message-body button").click(function (){
+                alert("adsf");
+            })
+        })
     </script>
 {% endblock %}

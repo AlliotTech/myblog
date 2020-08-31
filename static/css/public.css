@@ -76,6 +76,7 @@ em {
 .logo a {
     display: block;
     background: url("../images/logo.png") no-repeat;
+    background-size: 185px;
     height: 60px;
     width: 200px;
     font-size: 0;

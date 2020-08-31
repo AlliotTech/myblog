@@ -10,10 +10,20 @@ from PIL import Image
 
 # 全局调用函数,
 def global_variable(request):
+    # 所有标签
     tags = Tag.objects.all()
-    hotArticle = Article.objects.all().order_by('-views')[:9]
+    # 所有分类
     categorys = Category.objects.all()
-    recommend = Article.objects.all().order_by('-views')[:6]
+    # 推荐阅读
+    recommend = Article.objects.all().filter(recommend=True).order_by('-created_time')[:6]
+    # 阅读排行
+    viewTop = Article.objects.all().order_by('-views')[:9]
+    # 点赞排行
+    likeTop = Article.objects.all().order_by('-likes')[:9]
+    # 评分排行
+    scoreTop = Article.objects.all().order_by('-score')[:9]
+    # 评论排行
+
     return locals()
 
 

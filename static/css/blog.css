@@ -316,6 +316,7 @@ aside h4, .index-new h4 {
 .about-me {
     margin-left: 0;
     margin-top: 0;
+    position: relative;
 }
 
 /*关于博主文字*/
@@ -338,10 +339,34 @@ aside h4, .index-new h4 {
 }
 
 .about-logo span img {
-    height: 50px;
+    height: 25px;
+    width: 25px;
+    vertical-align: -4px;
 }
-
-
+.about-logo #weixin,#qq {
+    height: 185px;
+    position: absolute;
+    bottom: 33px;
+    z-index: 500;
+    left: -4px;
+    display: none;
+}
+.about-logo #weixin img,#qq img {
+    width: 100%;
+    height: 100%;
+}
+/*.about-logo #qq {*/
+/*    height: 185px;*/
+/*    position: absolute;*/
+/*    bottom: 33px;*/
+/*    z-index: 500;*/
+/*    left: -4px;*/
+/*    display: inline-block;*/
+/*}*/
+/*.about-logo #qq img {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*}*/
 /*回到顶部按钮*/
 .back-top {
     display: none;

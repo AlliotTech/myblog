@@ -48,6 +48,7 @@ class Article(models.Model):
     score = models.FloatField('文章评分', default=0)
     created_time = models.DateTimeField('发布时间', auto_now_add=True)
     modified_time = models.DateTimeField('修改时间', auto_now=True)
+    recommend = models.BooleanField('是否推荐显示', default=False)
 
     class Meta:
         verbose_name = '文章内容'
