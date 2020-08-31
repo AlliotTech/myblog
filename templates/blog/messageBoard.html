@@ -204,11 +204,9 @@
                     }
                 });
                 // 设置编辑器
-                layedit.build('content', {
+                var index = layedit.build('leave', {
                     height: 150 //设置编辑器高度
-                });
-
-                var index = layedit.build('leave'); //建立编辑器
+                }); //建立编辑器
                 form.verify({ // 这里就是把富文本数据同步到<textarea>中
                     content: function (value) {
                         return layedit.sync(index);
