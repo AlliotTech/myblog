@@ -20,25 +20,25 @@
                             <thead>
                             <tr>
                                 <th>用户名：</th>
-                                <th>张三</th>
+                                <th>{{ userinfo.user }}</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td>性别：</td>
-                                <td>男</td>
+                                <td>{{ userinfo.sex }}</td>
                             </tr>
                             <tr>
                                 <td>邮箱：</td>
-                                <td>asmin@qq.com</td>
+                                <td>{{ user.email }}</td>
                             </tr>
                             <tr>
                                 <td>手机：</td>
-                                <td>14353125323</td>
+                                <td>{{ userinfo.phone }}</td>
                             </tr>
                             <tr>
                                 <td>个性签名：</td>
-                                <td>我就是我，是颜色不一样的烟火</td>
+                                <td>{{ userinfo.aboutme }}</td>
                             </tr>
                             </tbody>
                         </table>

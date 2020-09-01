@@ -3,7 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from account.forms import *
+from account.models import UserInfo
 # Create your views here.
 
 
@@ -67,8 +69,13 @@ def forgetPassword(request):
     return render(request, 'account/forgetPassword.html', locals())
 
 
+
+@login_required()
+# 判断用户是否登录，django自带的装饰器函数
 # 个人中心
 def personalCenter(request):
+    userinfo = UserInfo.objects.get(user_id=request.user.id)
+    user = User.objects.get(username=request.user)
     return render(request, 'account/personalCenter.html', locals())
 
 

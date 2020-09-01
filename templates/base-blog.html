@@ -62,7 +62,7 @@
         <li class="layui-nav-item nav-user-online layui-hide-xs nav7">
             {% if user.is_authenticated %}
                 {#                    用户已登录#}
-                <a href="javascript:;"><img src="/media/photo/photo.jpg" class="layui-nav-img">admin</a>
+                <a href="javascript:;"><img src="/media/{{ photo }}" class="layui-nav-img">{{ user.username }}</a>
                 <dl class="layui-nav-child">
                     <dd><a href="{% url 'account:personalCenter' %}">个人中心</a></dd>
                     <dd><a href="{% url 'management:dashboard' %}">网站管理</a></dd>
@@ -147,7 +147,7 @@
                 <li data-name="component" class="layui-nav-item nav7">
                     <a href="javascript:">
                         <i class="layui-icon layui-icon-friends"></i>
-                        <cite>admin</cite>
+                        <cite>{{ user.username }}</cite>
                         <span class="layui-nav-more"></span></a>
                     <dl class="layui-nav-child">
                         <dd data-name="button">

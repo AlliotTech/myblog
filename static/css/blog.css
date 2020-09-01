@@ -682,7 +682,10 @@ aside h4, .index-new h4 {
     height: 50px;
     display: inline-block;
 }
-
+.layui-tab-content .list-body .box-body img {
+    width: 20px;
+    height: 20px;
+}
 .message-board .message-content .text-box {
     flex: 1;
     padding: 10px 15px;
@@ -722,7 +725,7 @@ aside h4, .index-new h4 {
     padding: 0 0.5em;
 }
 
-.message-board .text-box .box-body p {
+.message-board .text-box .box-body {
     padding: 1em 0;
 }
 

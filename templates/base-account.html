@@ -39,8 +39,8 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="../media/photo/photo.jpg" class="layui-nav-img">
-                    admin
+                    <img src="media/{{ userinfo.photo }}" class="layui-nav-img">
+                    {{ user.username }}
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="{% url 'account:personalCenter' %}">个人中心</a></dd>

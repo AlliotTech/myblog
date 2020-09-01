@@ -3,6 +3,7 @@ from typing import List
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from blog.models import *
+from account.models import UserInfo
 from PIL import Image
 # 图片压缩处理
 # Create your views here.
@@ -10,6 +11,10 @@ from PIL import Image
 
 # 全局调用函数,
 def global_variable(request):
+    # 登录用户信息
+    if request.user.id is not None:
+        userinfo = UserInfo.objects.get(user_id=request.user.id)
+        photo = userinfo.photo
     # 所有标签
     tags = Tag.objects.all()
     # 所有分类
