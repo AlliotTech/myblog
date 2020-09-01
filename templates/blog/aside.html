@@ -9,7 +9,7 @@
         </h4>
         <div class="layui-row recommend-list">
             {% for tui in recommend %}
-                <div class="layui-col-xs12 layui-col-md6">
+                <div class="layui-col-xs12 layui-col-md6 this-recommend">
                     <div>
                         <a href="/blog/show-{{ tui.id }}" class="img-zoom"><img src="media/{{ tui.img }}"></a>
                         <a href="/blog/show-{{ tui.id }}" title="{{ tui.title }}"><p>{{ tui.title }}</p></a>
@@ -381,6 +381,16 @@
         })
         $("#qq").parent("a").hover(function () {
             $("#qq").stop().fadeToggle(500);
+        })
+    })
+</script>
+<script>
+    // 推荐阅读当前高亮
+    $(function (){
+        $(".this-recommend").hover(function () {
+            $(this).siblings().stop().fadeTo(100, 0.6);
+        }, function (){
+            $(this).siblings().stop().fadeTo(100, 1);
         })
     })
 </script>

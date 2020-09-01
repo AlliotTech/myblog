@@ -348,7 +348,6 @@ aside h4, .index-new h4 {
     position: absolute;
     bottom: 33px;
     z-index: 500;
-    left: -4px;
     display: none;
 }
 .about-logo #weixin img,#qq img {

@@ -234,11 +234,11 @@
             {#console.log(p)#}
             if (t < p) {
                 {#console.log("下翻");#}
-                $('.nav-fixed').slideUp();
+                $('.nav-fixed').stop().slideUp();
 
             } else {
                 {#console.log("上翻");#}
-                $('.nav-fixed').slideDown();
+                $('.nav-fixed').stop().slideDown();
             }
             t = p;
         })
@@ -262,11 +262,11 @@
     $(window).scroll(function () {
         var scroll_len = $(window).scrollTop();
         if (scroll_len > 120) {
-            $('#back-top').fadeIn(1000, function () {
+            $('#back-top').stop().fadeIn(1000),function (){
 
-            });
+            };
         } else {
-            $('#back-top').fadeOut(1000);
+            $('#back-top').stop().fadeOut(1000);
         }
     });
     $('#back-top').click(function (e) {
