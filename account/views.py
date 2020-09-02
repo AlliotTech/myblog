@@ -69,11 +69,11 @@ def forgetPassword(request):
     return render(request, 'account/forgetPassword.html', locals())
 
 
-
 @login_required()
 # 判断用户是否登录，django自带的装饰器函数
 # 个人中心
 def personalCenter(request):
+    print("aaa")
     userinfo = UserInfo.objects.get(user_id=request.user.id)
     user = User.objects.get(username=request.user)
     return render(request, 'account/personalCenter.html', locals())
@@ -81,7 +81,28 @@ def personalCenter(request):
 
 # 修改信息
 def changeInformation(request):
-    return render(request, 'account/changeInformation.html', locals())
+    userinfo = UserInfo.objects.get(user_id=request.user.id)
+    user = User.objects.get(username=request.user)
+    if request.method == "POST":
+        user_form = UserForm(request.POST)
+        userinfo_form = UserInfoForm(request.POST)
+        if user_form.is_valid() and userinfo_form.is_valid():
+            user_data = user_form.cleaned_data
+            userinfo_data = userinfo_form.cleaned_data
+            print(user_data,userinfo_data)
+            request.user.email = user_data['email']
+            userinfo.sex = userinfo_data['sex']
+            # userinfo.photo = userinfo_data['photo']
+            userinfo.phone = userinfo_data['phone']
+            userinfo.aboutme = userinfo_data['aboutme']
+            request.user.save()
+            userinfo.save()
+            message = "修改成功"
+        else:
+            message = "非法数据"
+        return render(request, 'account/changeInformation.html', locals())
+    else:
+        return render(request, 'account/changeInformation.html', locals())
 
 
 # 修改密码

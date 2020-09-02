@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from account.models import UserInfo
 
 
 class LoginForm(forms.Form):
@@ -26,6 +27,7 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.Form):
+    # 用户注册表单
     username = forms.CharField(max_length=16,
                                error_messages={'required': '用户名不能为空'},
                                widget=forms.TextInput(attrs={'class': 'form-style',
@@ -79,3 +81,19 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError('邮箱已存在')
 
         return email
+
+
+class UserInfoForm(forms.ModelForm):
+    # 用户修改信息表单
+    class Meta:
+        model = UserInfo
+        fields = ("phone", "sex", "aboutme", "photo",)
+
+
+class UserForm(forms.ModelForm):
+    # 用户信息表单
+    class Meta:
+        model = User
+        fields = ("email",)
+
+
