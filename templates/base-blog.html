@@ -62,7 +62,8 @@
         <li class="layui-nav-item nav-user-online layui-hide-xs nav7">
             {% if user.is_authenticated %}
                 {#                    用户已登录#}
-                <a href="javascript:;"><img src="/media/{{ userinfo.photo }}" class="layui-nav-img">{{ user.username }}</a>
+                <a href="javascript:;"><img src="/media/{{ userinfo.photo }}" class="layui-nav-img">{{ user.username }}
+                </a>
                 <dl class="layui-nav-child">
                     <dd><a href="{% url 'account:personalCenter' %}">个人中心</a></dd>
                     {% if user.username == admin %}
@@ -266,7 +267,7 @@
     $(window).scroll(function () {
         var scroll_len = $(window).scrollTop();
         if (scroll_len > 120) {
-            $('#back-top').stop().fadeIn(1000),function (){
+            $('#back-top').stop().fadeIn(1000), function () {
 
             };
         } else {
@@ -290,7 +291,16 @@
         })
     }
 </script>
-
+<script>
+    //百度流量统计
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?1984fdca9f521b8933df3b853c4a379d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 {% block js %}
 
 {% endblock %}
