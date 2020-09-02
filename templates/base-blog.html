@@ -18,6 +18,16 @@
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
     <script src="{% static 'layui/layui.js' %}" charset="utf-8"></script>
     <script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
+    <script>
+        //百度流量统计
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?1984fdca9f521b8933df3b853c4a379d";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </head>
 <body>
 {#头部#}
@@ -290,16 +300,6 @@
             }
         })
     }
-</script>
-<script>
-    //百度流量统计
-    var _hmt = _hmt || [];
-    (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?1984fdca9f521b8933df3b853c4a379d";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
 </script>
 {% block js %}
 
