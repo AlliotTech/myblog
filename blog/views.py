@@ -14,7 +14,6 @@ def global_variable(request):
     # 登录用户信息
     if request.user.id is not None:
         userinfo = UserInfo.objects.get(user_id=request.user.id)
-        photo = userinfo.photo
     # 所有标签
     tags = Tag.objects.all()
     # 所有分类
@@ -147,3 +146,8 @@ def about(request):
 # 友情链接
 def blogroll(request):
     return render(request, 'blog/blogroll.html', locals())
+
+
+# 个人信息显示
+def personalShow(request):
+    return render(request, 'blog/personalShow.html', locals())

@@ -25,4 +25,6 @@ urlpatterns = [
     # 点赞记录
     path('historyScore/', views.historyScore, name='historyScore'),
     # 评分记录
+    path('historyLeave/', views.historyLeave, name='historyLeave'),
+    # 留言记录
 ]

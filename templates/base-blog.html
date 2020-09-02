@@ -62,10 +62,14 @@
         <li class="layui-nav-item nav-user-online layui-hide-xs nav7">
             {% if user.is_authenticated %}
                 {#                    用户已登录#}
-                <a href="javascript:;"><img src="/media/{{ photo }}" class="layui-nav-img">{{ user.username }}</a>
+                <a href="javascript:;"><img src="/media/{{ userinfo.photo }}" class="layui-nav-img">{{ user.username }}</a>
                 <dl class="layui-nav-child">
                     <dd><a href="{% url 'account:personalCenter' %}">个人中心</a></dd>
-                    <dd><a href="{% url 'management:dashboard' %}">网站管理</a></dd>
+                    {% if user.username == admin %}
+                        <dd><a href="{% url 'management:dashboard' %}">网站管理</a></dd>
+                    {% else %}
+                        <dd><a href="{% url 'account:changePassword' %}">修改密码</a></dd>
+                    {% endif %}
                     <dd><a href="{% url 'account:logout' %}">退出登录</a></dd>
                 </dl>
             {% else %}

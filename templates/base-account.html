@@ -58,18 +58,19 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">我的信息</a>
                     <dl class="layui-nav-child">
-                        <dd id="nav1-1"><a href="/account/personalCenter">我的主页</a></dd>
-                        <dd id="nav1-2"><a href="/account/changeInformation">修改信息</a></dd>
-                        <dd id="nav1-3"><a href="/account/changePassword">修改密码</a></dd>
+                        <dd id="nav1-1"><a href="{% url 'account:personalCenter' %}">我的主页</a></dd>
+                        <dd id="nav1-2"><a href="{% url 'account:changeInformation' %}">修改信息</a></dd>
+                        <dd id="nav1-3"><a href="{% url 'account:changePassword' %}">修改密码</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">我的足迹</a>
                     <dl class="layui-nav-child">
-                        <dd id="nav2-1"><a href="/account/historyBrowse">浏览记录</a></dd>
-                        <dd id="nav2-2"><a href="/account/historyComment">评论记录</a></dd>
-                        <dd id="nav2-3"><a href="/account/historyLike">点赞记录</a></dd>
-                        <dd id="nav2-4"><a href="/account/historyScore">评分记录</a></dd>
+                        <dd id="nav2-1"><a href="{% url 'account:historyBrowse' %}">浏览记录</a></dd>
+                        <dd id="nav2-2"><a href="{% url 'account:historyLike' %}">点赞记录</a></dd>
+                        <dd id="nav2-3"><a href="{% url 'account:historyScore' %}">评分记录</a></dd>
+                        <dd id="nav2-4"><a href="{% url 'account:historyComment' %}">评论记录</a></dd>
+                        <dd id="nav2-5"><a href="{% url 'account:historyLeave' %}">留言记录</a></dd>
                     </dl>
                 </li>
             </ul>

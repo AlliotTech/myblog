@@ -6,16 +6,8 @@ from .models import UserInfo
 # 用户详细信息
 @admin.register(UserInfo)
 class ArticleAdmin(admin.ModelAdmin):
-    def sexShow(self):
-        print(type(self.sex))
-        if int(self.sex):
-            return "女"
-        else:
-            return "男"
-
-    sexShow.short_description = "性别"
-    list_display = ('id', 'user', 'phone', sexShow, 'aboutme', 'photo')
+    list_display = ('id', 'user', 'phone', 'sex', 'aboutme', 'web', 'photo')
     # 文章列表里显示想要显示的字段
-    list_display_links = ('id', 'phone')
+    list_display_links = ('id', 'sex', 'phone')
     # 设置哪些字段可以点击进入编辑界面
 

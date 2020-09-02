@@ -1,0 +1,95 @@
+{% extends 'base-blog.html' %}
+
+{% block title %}查看信息{% endblock %}
+
+{% block content %}
+    <!--中间主体部分-->
+    <main class="page-main">
+        <div class="layui-row">
+            <!--    页面主体部分-->
+            <div class="layui-col-md-offset2 layui-col-sm12 layui-col-md8 page-main-centre">
+                <div class="layui-row main-centre">
+                    <!--            主体左侧部分-->
+                    <div class="layui-col-md9 main-left">
+                        <div class="index-new message-board">
+                            <div class="layui-row">
+                                <div class="layui-col-xs12 layui-col-md4 layui-hide-xs user-photo">
+                                    <img src="../../media/photo/photo.jpg" class="layui-nav-img">
+                                    <h1>张三</h1>
+                                </div>
+                                <div class="layui-col-xs12 layui-col-md8 user-info">
+                                    <table class="layui-table" lay-even="" lay-skin="nob">
+                                        <colgroup>
+                                            <col width="150">
+                                            <col width="150">
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <th>人物</th>
+                                            <th>民族</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>贤心</td>
+                                            <td>汉族</td>
+                                        </tr>
+                                        <tr>
+                                            <td>张爱玲</td>
+                                            <td>汉族</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Helen Keller</td>
+                                            <td>拉丁美裔</td>
+                                        </tr>
+                                        <tr>
+                                            <td>岳飞</td>
+                                            <td>汉族</td>
+                                        </tr>
+                                        <tr>
+                                            <td>孟子</td>
+                                            <td>华夏族（汉族）</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="index-new message-board">
+                            <div class="layui-tab layui-tab-card">
+                                <ul class="layui-tab-title">
+                                    <li class="layui-this">评论</li>
+                                    <li>留言</li>
+                                    <li>收藏</li>
+                                    <li>浏览</li>
+                                </ul>
+                                <div class="layui-tab-content" style="height: 100px;">
+                                    <div class="layui-tab-item layui-show">默认宽度是相对于父元素100%适应的，你也可以固定宽度。</div>
+                                    <div class="layui-tab-item">2</div>
+                                    <div class="layui-tab-item">3</div>
+                                    <div class="layui-tab-item">4</div>
+                                    <div class="layui-tab-item">5</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% include 'blog/aside.html' %}
+                    <!--            主体右侧部分-->
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block js %}
+    <script>
+        layui.use('element', function () {
+            var $ = layui.jquery
+                , element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+            $('.site-demo-active').on('click', function () {
+                var othis = $(this), type = othis.data('type');
+                active[type] ? active[type].call(this, othis) : '';
+            });
+        });
+    </script>
+{% endblock %}

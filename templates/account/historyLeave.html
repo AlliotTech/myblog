@@ -1,6 +1,6 @@
 {% extends 'base-account.html' %}
 
-{% block title %}评论记录{% endblock %}
+{% block title %}留言记录{% endblock %}
 
 {% block content %}
     <div class="manage-body page-main">
@@ -17,19 +17,17 @@
                     <thead>
                     <tr>
                         <th>序号</th>
-                        <th>标题</th>
-                        <th>分类</th>
-                        <th>评论内容</th>
+                        <th>留言内容</th>
+                        <th>留言时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for i in commentList %}
+                    {% for i in scoreList %}
                         <tr>
                             <td>{{ i }}</td>
-                            <td>第{{ i }}篇评论文章</td>
-                            <td><a href="#">Django</a></td>
-                            <td>你说的真对啊</td>
+                            <td>第{{ i }}次留言说：说的真对啊</td>
+                            <td>2020年9月2日22:45:27</td>
                             <td>
                                 <a class="layui-btn layui-btn-normal layui-btn-xs">
                                     <i class="layui-icon layui-icon-edit"></i>修改</a>
@@ -48,7 +46,7 @@
 {% block js %}
     <script>
         // 导航栏当前标签页
-        $('#nav2-4').addClass("layui-this")
-        $('#nav2-4').parents("li").addClass("layui-nav-itemed")
+        $('#nav2-5').addClass("layui-this")
+        $('#nav2-5').parents("li").addClass("layui-nav-itemed")
     </script>
 {% endblock %}

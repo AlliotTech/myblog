@@ -17,11 +17,11 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">性别</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="sex" value="0" title="男" id="sex-man">
+                        <input type="radio" name="sex" value="1" title="男" id="sex-man">
                         <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
                             <div>男</div>
                         </div>
-                        <input type="radio" name="sex" value="1" title="女" id="sex-woman">
+                        <input type="radio" name="sex" value="2" title="女" id="sex-woman">
                         <div class="layui-unselect layui-form-radio layui-form-radioed"><i
                                 class="layui-anim layui-icon"></i>
                             <div>女</div>
@@ -129,16 +129,11 @@
             var sex = {{ userinfo.sex }}
             console.log(sex,typeof sex)
             {#alert(sex,typeof (sex))#}
-            if (sex) {
-                $("#sex-woman").prop("checked", true)
-            } else {
+            if (sex == 1) {
                 $("#sex-man").prop("checked", true)
+            } else {
+                $("#sex-woman").prop("checked", true)
             }
         })
-    </script>
-    <script>
-        layui.use(['layer', 'rate'], function () {
-            layer.msg("{{ message }}")
-        });
     </script>
 {% endblock %}

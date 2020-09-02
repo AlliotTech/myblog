@@ -26,7 +26,7 @@
                             <tbody>
                             <tr>
                                 <td>性别：</td>
-                                <td>{{ userinfo.sex }}</td>
+                                <td>{{ userinfo.get_sex_display }}</td>
                             </tr>
                             <tr>
                                 <td>邮箱：</td>
@@ -35,6 +35,10 @@
                             <tr>
                                 <td>手机：</td>
                                 <td>{{ userinfo.phone }}</td>
+                            </tr>
+                            <tr>
+                                <td>个人站点：</td>
+                                <td>{{ userinfo.web }}</td>
                             </tr>
                             <tr>
                                 <td>个性签名：</td>
@@ -66,16 +70,20 @@
                                 <td>23篇</td>
                             </tr>
                             <tr>
-                                <td>发表评论数：</td>
-                                <td>23条</td>
-                            </tr>
-                            <tr>
                                 <td>收藏文章数：</td>
                                 <td>12篇</td>
                             </tr>
                             <tr>
                                 <td>评分文章数：</td>
                                 <td>18篇</td>
+                            </tr>
+                            <tr>
+                                <td>发表评论数：</td>
+                                <td>23条</td>
+                            </tr>
+                            <tr>
+                                <td>发表留言数：</td>
+                                <td>112条</td>
                             </tr>
                             </tbody>
                         </table>

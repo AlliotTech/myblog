@@ -111,7 +111,9 @@ nav .layui-nav {
     height: 100%;
     float: right;
 }
-
+.nav-rignt .nav-search {
+    margin-right: 50px;
+}
 .nav-rignt span a {
     padding: 0 20px;
     font-size: 30px;

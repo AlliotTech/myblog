@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from account.forms import *
 from account.models import UserInfo
+
+
 # Create your views here.
 
 
@@ -73,7 +75,6 @@ def forgetPassword(request):
 # 判断用户是否登录，django自带的装饰器函数
 # 个人中心
 def personalCenter(request):
-    print("aaa")
     userinfo = UserInfo.objects.get(user_id=request.user.id)
     user = User.objects.get(username=request.user)
     return render(request, 'account/personalCenter.html', locals())
@@ -89,7 +90,7 @@ def changeInformation(request):
         if user_form.is_valid() and userinfo_form.is_valid():
             user_data = user_form.cleaned_data
             userinfo_data = userinfo_form.cleaned_data
-            print(user_data,userinfo_data)
+            print(user_data, userinfo_data)
             request.user.email = user_data['email']
             userinfo.sex = userinfo_data['sex']
             # userinfo.photo = userinfo_data['photo']
@@ -97,10 +98,7 @@ def changeInformation(request):
             userinfo.aboutme = userinfo_data['aboutme']
             request.user.save()
             userinfo.save()
-            message = "修改成功"
-        else:
-            message = "非法数据"
-        return render(request, 'account/changeInformation.html', locals())
+        return HttpResponseRedirect('/account/personalCenter/')
     else:
         return render(request, 'account/changeInformation.html', locals())
 
@@ -141,3 +139,10 @@ def historyScore(request):
         scoreList.append(i)
     return render(request, 'account/historyScore.html', locals())
 
+
+# 留言记录
+def historyLeave(request):
+    scoreList = []
+    for i in range(1, 11):
+        scoreList.append(i)
+    return render(request, 'account/historyLeave.html', locals())

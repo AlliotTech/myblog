@@ -949,7 +949,11 @@ nav {
     display: inline;
     color: #95999c;
 }
-
+/*用户个人信息展示页面*/
+.user-photo img {
+    width: 150px;
+    height: 150px;
+}
 /*移动设备适配*/
 @media screen and (max-width: 768px) {
     /*搜索栏滑动下拉效果*/
