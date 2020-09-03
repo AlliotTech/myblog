@@ -12,11 +12,11 @@
                         <!--            轮播图片-->
                         <div class="carousel-img layui-carousel" id="test10">
                             <div carousel-item="" class="img-zoom">
-                                <div><img src="/media/carousel/carousel-1.jpg"></div>
-                                <div><img src="/media/carousel/carousel-2.jpg"></div>
-                                <div><img src="/media/carousel/carousel-3.jpg"></div>
-                                <div><img src="/media/carousel/carousel-4.jpg"></div>
-                                <div><img src="/media/carousel/carousel-5.jpg"></div>
+                                <div><img lay-src="/media/carousel/carousel-1.jpg"></div>
+                                <div><img lay-src="/media/carousel/carousel-2.jpg"></div>
+                                <div><img lay-src="/media/carousel/carousel-3.jpg"></div>
+                                <div><img lay-src="/media/carousel/carousel-4.jpg"></div>
+                                <div><img lay-src="/media/carousel/carousel-5.jpg"></div>
                             </div>
                         </div>
                         <!--            最新文章-->
@@ -31,7 +31,7 @@
                                     <div class="layui-col-xs12 layui-col-md4">
                                         <div class="img-cover img-zoom">
                                             <a href="/blog/show-{{ article.id }}" title="{{ article.title }}">
-                                                <img src="media/{{ article.img }}" width="100%">
+                                                <img lay-src="media/{{ article.img }}" width="100%">
                                             </a>
                                         </div>
                                     </div>

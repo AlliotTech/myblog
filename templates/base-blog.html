@@ -72,7 +72,7 @@
         <li class="layui-nav-item nav-user-online layui-hide-xs nav7">
             {% if user.is_authenticated %}
                 {#                    用户已登录#}
-                <a href="javascript:;"><img src="/media/{{ userinfo.photo }}" class="layui-nav-img">{{ user.username }}
+                <a href="javascript:;"><img lay-src="/media/{{ userinfo.photo }}" class="layui-nav-img">{{ user.username }}
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="{% url 'account:personalCenter' %}">个人中心</a></dd>
@@ -300,6 +300,14 @@
             }
         })
     }
+</script>
+<script>
+    // 图片懒加载
+    layui.use('flow', function () {
+        var flow = layui.flow;
+        //当你执行这样一个方法时，即对页面中的全部带有lay-src的img元素开启了懒加载（当然你也可以指定相关img）
+        flow.lazyimg();
+    });
 </script>
 {% block js %}
 

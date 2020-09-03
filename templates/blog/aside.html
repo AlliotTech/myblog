@@ -11,7 +11,7 @@
             {% for tui in recommend %}
                 <div class="layui-col-xs12 layui-col-md6 this-recommend">
                     <div>
-                        <a href="/blog/show-{{ tui.id }}" class="img-zoom"><img src="media/{{ tui.img }}"></a>
+                        <a href="/blog/show-{{ tui.id }}" class="img-zoom"><img lay-src="media/{{ tui.img }}"></a>
                         <a href="/blog/show-{{ tui.id }}" title="{{ tui.title }}"><p>{{ tui.title }}</p></a>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                     <a href="javascript:;">
                         <i class="layui-icon layui-icon-login-qq"></i>
                         <div id="qq">
-                            <img src="{% static 'images/qq.png' %}">
+                            <img lay-src="{% static 'images/qq.png' %}">
                         </div>
                     </a>
                 </span>
@@ -139,12 +139,12 @@
                     <a href="javascript:;">
                         <i class="layui-icon layui-icon-login-wechat"></i>
                         <div id="weixin">
-                            <img src="{% static 'images/weixin.png' %}">
+                            <img lay-src="{% static 'images/weixin.png' %}">
                         </div>
                     </a>
                 </span>
                 <span>
-                    <a href="https://blog.csdn.net/qq_33816243"><img src="{% static 'images/csdn.png' %}"></a>
+                    <a href="https://blog.csdn.net/qq_33816243"><img lay-src="{% static 'images/csdn.png' %}"></a>
                 </span>
                 <span>
                     <a href="https://github.com/cuiliang0302"><i class="fab fa-github"></i></a>
