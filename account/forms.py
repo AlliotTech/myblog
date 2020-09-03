@@ -87,7 +87,7 @@ class UserInfoForm(forms.ModelForm):
     # 用户修改信息表单
     class Meta:
         model = UserInfo
-        fields = ("phone", "sex", "aboutme", "photo",)
+        fields = ("phone", "sex", "web", "aboutme", "photo",)
 
 
 class UserForm(forms.ModelForm):

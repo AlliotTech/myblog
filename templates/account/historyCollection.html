@@ -1,6 +1,6 @@
 {% extends 'base-account.html' %}
 
-{% block title %}评分记录{% endblock %}
+{% block title %}收藏记录{% endblock %}
 
 {% block content %}
     <div class="manage-body page-main">
@@ -19,24 +19,27 @@
                         <th>序号</th>
                         <th>标题</th>
                         <th>分类</th>
-                        <th>评分</th>
+                        <th>标签</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for i in scoreList %}
+                    {% for i in collectionList %}
                         <tr>
                             <td>{{ i }}</td>
-                            <td>第{{ i }}篇评分文章</td>
+                            <td>第{{ i }}篇收藏文章</td>
                             <td><a href="#">Django</a></td>
                             <td>
-                                <div class="test9"></div>
+                                <a href="#" class="label-tag tag-color-1">1111</a>
+                                <a href="#" class="label-tag tag-color-2">2222</a>
+                                <a href="#" class="label-tag tag-color-3">33333</a>
                             </td>
                             <td>
-                                <a class="layui-btn layui-btn-normal layui-btn-xs"><i
-                                        class="layui-icon layui-icon-edit"></i>编辑</a>
-                                <a class="layui-btn layui-btn-danger layui-btn-xs"><i
-                                        class="layui-icon layui-icon-delete"></i>删除</a>
+                                <a class="layui-btn layui-btn-normal layui-btn-xs">
+                                    <i class="layui-icon layui-icon-read"></i>查看
+                                </a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs">
+                                    <i class="layui-icon layui-icon-heart"></i>取消</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -50,19 +53,7 @@
 {% block js %}
     <script>
         // 导航栏当前标签页
-        $('#nav2-3').addClass("layui-this")
-        $('#nav2-3').parents("li").addClass("layui-nav-itemed")
-    </script>
-    <script>
-        //只读评分
-        layui.use(['rate'], function () {
-            var rate = layui.rate;
-            rate.render({
-                elem: '.test9'
-                , value: 4
-                , readonly: true
-                , theme: '#FF8000'
-            });
-        });
+        $('#nav2-2').addClass("layui-this")
+        $('#nav2-2').parents("li").addClass("layui-nav-itemed")
     </script>
 {% endblock %}

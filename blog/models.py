@@ -43,9 +43,9 @@ class Article(models.Model):
     文章作者，这里User是从django.contrib.auth.models导入的。
     这里我们通过 ForeignKey 把文章和 User 关联了起来。
     """
-    views = models.PositiveIntegerField('阅读量', default=0)
-    likes = models.PositiveIntegerField('点赞数', default=0)
-    score = models.FloatField('文章评分', default=0)
+    view = models.PositiveIntegerField('阅读量', default=0)
+    like = models.PositiveIntegerField('点赞数', default=0)
+    collection = models.PositiveIntegerField('收藏数', default=0)
     created_time = models.DateTimeField('发布时间', auto_now_add=True)
     modified_time = models.DateTimeField('修改时间', auto_now=True)
     recommend = models.BooleanField('推荐显示', default=False)

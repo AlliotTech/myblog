@@ -516,7 +516,7 @@ aside h4, .index-new h4 {
     transform: scale(1.1);
 }
 
-.main-centre .article-action .article-score {
+.main-centre .article-action .article-collection {
     position: absolute;
     right: 0;
     background: radial-gradient(circle at 0 50%, transparent 25px, #ccc 16px) right top;
@@ -525,13 +525,13 @@ aside h4, .index-new h4 {
     padding-right: 30px;
 }
 
-.main-centre .article-action .article-score:hover {
+.main-centre .article-action .article-collection:hover {
     background: radial-gradient(circle at 0 50%, transparent 25px, #3498db 16px) right top;
     background-repeat: no-repeat;
     color: black;
 }
 
-.main-centre .article-action .article-score i {
+.main-centre .article-action .article-collection i {
     float: right;
 }
 
@@ -565,7 +565,7 @@ aside h4, .index-new h4 {
 }
 
 /*评分弹窗内容*/
-.score-box-div {
+.collection-box-div{
     padding: 15px 15px 0 15px;
     font-size: 20px;
     text-align: center;

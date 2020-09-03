@@ -19,15 +19,11 @@
                             </colgroup>
                             <thead>
                             <tr>
-                                <th>用户名：</th>
-                                <th>{{ userinfo.user }}</th>
+                                <th>性别：</th>
+                                <th>{{ userinfo.get_sex_display }}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>性别：</td>
-                                <td>{{ userinfo.get_sex_display }}</td>
-                            </tr>
                             <tr>
                                 <td>邮箱：</td>
                                 <td>{{ user.email }}</td>
@@ -72,10 +68,6 @@
                             <tr>
                                 <td>收藏文章数：</td>
                                 <td>12篇</td>
-                            </tr>
-                            <tr>
-                                <td>评分文章数：</td>
-                                <td>18篇</td>
                             </tr>
                             <tr>
                                 <td>发表评论数：</td>

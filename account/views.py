@@ -95,6 +95,7 @@ def changeInformation(request):
             userinfo.sex = userinfo_data['sex']
             # userinfo.photo = userinfo_data['photo']
             userinfo.phone = userinfo_data['phone']
+            userinfo.web = userinfo_data['web']
             userinfo.aboutme = userinfo_data['aboutme']
             request.user.save()
             userinfo.save()
@@ -124,20 +125,12 @@ def historyComment(request):
     return render(request, 'account/historyComment.html', locals())
 
 
-# 点赞记录
-def historyLike(request):
-    likeList = []
+# 收藏记录
+def historyCollection(request):
+    collectionList = []
     for i in range(1, 11):
-        likeList.append(i)
-    return render(request, 'account/historyLike.html', locals())
-
-
-# 评分记录
-def historyScore(request):
-    scoreList = []
-    for i in range(1, 11):
-        scoreList.append(i)
-    return render(request, 'account/historyScore.html', locals())
+        collectionList.append(i)
+    return render(request, 'account/historyCollection.html', locals())
 
 
 # 留言记录

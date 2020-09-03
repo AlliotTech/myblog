@@ -21,11 +21,11 @@ def global_variable(request):
     # 推荐阅读
     recommend = Article.objects.all().filter(recommend=True).order_by('-created_time')[:6]
     # 阅读排行
-    viewTop = Article.objects.all().order_by('-views')[:9]
+    viewTop = Article.objects.all().order_by('-view')[:9]
     # 点赞排行
-    likeTop = Article.objects.all().order_by('-likes')[:9]
-    # 评分排行
-    scoreTop = Article.objects.all().order_by('-score')[:9]
+    likeTop = Article.objects.all().order_by('-like')[:9]
+    # 收藏排行
+    collectionTop = Article.objects.all().order_by('-collection')[:9]
     # 评论排行
 
     return locals()
@@ -94,7 +94,7 @@ def tag(request, tag_id):
 def show(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     # 阅读量+1
-    article.views = article.views + 1
+    article.view = article.view + 1
     article.save()
     # 下一篇，找出id大于当前文章id的文章,升序排序后取第一个，即为下一篇
     next_article = Article.objects.filter(id__gt=article_id).order_by("id")[:1]

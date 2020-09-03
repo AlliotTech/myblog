@@ -56,7 +56,7 @@
                                 <i class="fas fa-thumbs-up">{{ article.likes }}</i>
                             </span>
                                 <span>
-                                <i class="fas fa-star-half-alt">{{ article.score }}</i>
+                                <i class="fas fa-heart">{{ article.collection }}</i>
                             </span>
                             </div>
                             <div class="article-content">
@@ -71,16 +71,14 @@
                                     <a class="article-reward" href="javascript:">打赏
                                         <div id="reward-box" class="reward-box-show">
                                             <h5>❤️您可以选择一种方式赞助本站</h5>
-                                            <img src="../../static/images/pay.png">
+                                            <img lay-src="../../static/images/pay.png">
                                         </div>
                                     </a>
-                                    <a class="article-score" href="javascript:">
-                                        <i class="layui-icon layui-icon-rate" id="score-text">评分</i>
-                                        <!--    隐藏弹窗内容-->
-                                        <div class="layui-hide" id="score-box">
-                                            <div class="score-box-div">
-                                                <h5>😊快来给文章打个分吧！</h5>
-                                                <span id="test14"></span>
+                                    <a class="article-collection" href="javascript:">
+                                        <i class="layui-icon layui-icon-heart" id="collection-text">收藏</i>
+                                        <div id="collection-box" class="layui-hide">
+                                            <div class="collection-box-div">
+                                            您尚未登录，请先登录然后收藏文章
                                             </div>
                                         </div>
                                     </a>
@@ -137,7 +135,7 @@
                                     <div class="layui-row message-body">
                                         <div class="layui-hide-xs layui-col-md1">
                                             <a href="#">
-                                                <img src="../media/photo/photo.jpg" class="layui-nav-img">
+                                                <img lay-src="../media/photo/photo.jpg" class="layui-nav-img">
                                             </a>
                                         </div>
                                         <div class="layui-col-xs12 layui-col-md10">
@@ -160,7 +158,7 @@
                                             <ol class="list-body">
                                                 <li class="message-content">
                                                     <a href="#">
-                                                        <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                        <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
                                                     </a>
                                                     <div class="text-box">
                                                         <div class="box-info">
@@ -180,7 +178,7 @@
                                             <ol class="list-body">
                                                 <li class="message-content">
                                                     <a href="#">
-                                                        <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                        <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
                                                     </a>
                                                     <div class="text-box">
                                                         <div class="box-info">
@@ -200,7 +198,7 @@
                                             <ol class="list-body">
                                                 <li class="message-content">
                                                     <a href="#">
-                                                        <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                        <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
                                                     </a>
                                                     <div class="text-box">
                                                         <div class="box-info">
@@ -219,7 +217,7 @@
                                                 </li>
                                                 <div class="reply-1 message-content">
                                                     <a href="#">
-                                                        <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                        <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
                                                     </a>
                                                     <div class="text-box">
                                                         <div class="box-info">
@@ -239,7 +237,7 @@
                                                 </div>
                                                 <div class="reply-2 message-content">
                                                     <a href="#">
-                                                        <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                        <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
                                                     </a>
                                                     <div class="text-box">
                                                         <div class="box-info">
@@ -264,7 +262,7 @@
                                             <ol class="list-body">
                                                 <li class="message-content">
                                                     <a href="#">
-                                                        <img src="../media/photo/nologin.png" class="layui-nav-img">
+                                                        <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
                                                     </a>
                                                     <div class="text-box">
                                                         <div class="box-info">
@@ -343,32 +341,23 @@
         });
     </script>
     <script>
-        <img lay-src
+        layui.use(['layer', 'rate'], function () {
             var $ = layui.jquery;
             var layer = layui.layer;
             var rate = layui.rate;
 
-            $('#article-action .article-score').click(function () {
+            $('#article-action .article-collection').click(function () {
                 layer.open({
                     type: 1,
-                    title: '文章评分',
+                    title: '添加收藏',
                     shadeClose: true,
-                    content: $('#score-box').html(),
-                    btn: ['确定'],
+                    content: $('#collection-box').html(),
+                    btn: ['登录'],
                     btnAlign: 'c',
-                    success: function (layero, index) {
-                        rate.render({
-                            elem: $(layero).find('#test14'),
-                            choose: function (value) {
-                                // 获取评分
-                                console.log(value)
-                            }
-                        });
-                    },
                     yes: function (index, layero) {
                         layer.close(index);
-                        $(".article-score").css({'width': '45%', 'background': '#3498db', 'pointer-events': 'none'})
-                        $(".article-score").find('i').text("已评分")
+                        $(".article-collection").css({'width': '45%', 'background': '#3498db', 'pointer-events': 'none'})
+                        $(".article-collection").find('i').text("已收藏")
                         layer.msg('感谢评分！', {icon: 6});
                     }
                 })

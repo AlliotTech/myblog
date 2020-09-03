@@ -11,7 +11,7 @@
             {% for tui in recommend %}
                 <div class="layui-col-xs12 layui-col-md6 this-recommend">
                     <div>
-                        <a href="/blog/show-{{ tui.id }}" class="img-zoom"><img lay-src="media/{{ tui.img }}"></a>
+                        <a href="/blog/show-{{ tui.id }}" class="img-zoom"><img src="media/{{ tui.img }}"></a>
                         <a href="/blog/show-{{ tui.id }}" title="{{ tui.title }}"><p>{{ tui.title }}</p></a>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                             <a href="javascript:;">点赞排行</a>
                         </li>
                         <li>
-                            <a href="javascript:;">评分排行</a>
+                            <a href="javascript:;">收藏排行</a>
                         </li>
                         <li>
                             <a href="javascript:;">评论排行</a>
@@ -68,8 +68,8 @@
                 {% endfor %}
             </ol>
             <ol class="hot-list">
-                {#                评分排行#}
-                {% for article in scoreTop %}
+                {#                收藏排行#}
+                {% for article in collectionTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
                            title="{{ article.title }}">{{ article.title }}</a>
@@ -144,7 +144,7 @@
                     </a>
                 </span>
                 <span>
-                    <a href="https://blog.csdn.net/qq_33816243"><img lay-src="{% static 'images/csdn.png' %}"></a>
+                    <a href="https://blog.csdn.net/qq_33816243"><img src="{% static 'images/csdn.png' %}"></a>
                 </span>
                 <span>
                     <a href="https://github.com/cuiliang0302"><i class="fab fa-github"></i></a>

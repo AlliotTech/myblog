@@ -21,10 +21,8 @@ urlpatterns = [
     # 浏览记录
     path('historyComment/', views.historyComment, name='historyComment'),
     # 评论记录
-    path('historyLike/', views.historyLike, name='historyLike'),
-    # 点赞记录
-    path('historyScore/', views.historyScore, name='historyScore'),
-    # 评分记录
+    path('historyCollection/', views.historyCollection, name='historyCollection'),
+    # 收藏记录
     path('historyLeave/', views.historyLeave, name='historyLeave'),
     # 留言记录
 ]
