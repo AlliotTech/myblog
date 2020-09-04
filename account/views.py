@@ -1,12 +1,11 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
-from django.contrib import auth
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
+
 from account.forms import *
 from account.models import UserInfo
-
+from django.utils import timezone
 
 # Create your views here.
 
@@ -90,7 +89,6 @@ def changeInformation(request):
         if user_form.is_valid() and userinfo_form.is_valid():
             user_data = user_form.cleaned_data
             userinfo_data = userinfo_form.cleaned_data
-            print(user_data, userinfo_data)
             request.user.email = user_data['email']
             userinfo.sex = userinfo_data['sex']
             # userinfo.photo = userinfo_data['photo']
@@ -139,3 +137,49 @@ def historyLeave(request):
     for i in range(1, 11):
         scoreList.append(i)
     return render(request, 'account/historyLeave.html', locals())
+
+
+# 头像上传
+def photoUpload(request):
+    if request.method == "POST":
+        dir = 'photo/'
+        file = request.FILES.get('file')
+        filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
+        filepath = 'media/' + dir +filename
+        # 图片资源写入服务器
+        code = upload(file, filepath)
+        if (code == 1):
+            # 图片路径写入数据库
+            url = dir+filename
+            print(url)
+            userinfo = UserInfo.objects.get(user_id=request.user.id)
+            print(userinfo.photo)
+            userinfo.photo = url
+            userinfo.save()
+            data = {
+                "msg": "上传成功",
+                "src": filepath,
+                "code": "1",
+            }
+            return JsonResponse(data)
+        else:
+            data = {
+                "msg": "上传失败",
+                "code": "0",
+            }
+        return JsonResponse(data)
+
+
+# 图片保存
+def upload(file, filepath):
+    try:
+        with open(filepath, 'wb+') as f:
+            for chrunk in file.chunks():
+                f.write(chrunk)
+        f.close()
+        return 1
+    except:
+        return 0
+
+
+

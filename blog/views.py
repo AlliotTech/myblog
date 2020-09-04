@@ -1,7 +1,7 @@
 from typing import List
 
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from blog.models import *
 from account.models import UserInfo
 from PIL import Image
@@ -147,7 +147,3 @@ def about(request):
 def blogroll(request):
     return render(request, 'blog/blogroll.html', locals())
 
-
-# 个人信息显示
-def personalShow(request):
-    return render(request, 'blog/personalShow.html', locals())

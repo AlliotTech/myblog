@@ -16,7 +16,7 @@ class UserInfo(models.Model):
     sex = models.CharField(verbose_name='性别', max_length=1, choices=sex_choice, default=1)
     web = models.URLField(verbose_name='个人网站', null=True, blank=True)
     aboutme = models.TextField(verbose_name='个性签名', null=True, blank=True)
-    photo = models.ImageField(upload_to='photo/%Y/%m/', verbose_name='头像', null=True, blank=True)
+    photo = models.ImageField(upload_to='photo/', verbose_name='头像', null=True, blank=True)
 
     class Meta:
         verbose_name = '用户详细信息'

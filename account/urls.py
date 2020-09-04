@@ -25,4 +25,7 @@ urlpatterns = [
     # 收藏记录
     path('historyLeave/', views.historyLeave, name='historyLeave'),
     # 留言记录
+
+    path('photoUpload/', views.photoUpload, name='photoUpload'),
+    # ajax头像上传
 ]

@@ -20,6 +20,4 @@ urlpatterns = [
     # 关于
     path('blogroll/', views.blogroll, name='blogroll'),
     # 友情链接
-    path('personalShow/', views.personalShow, name='personalShow'),
-    # 个人信息展示
 ]

@@ -97,11 +97,12 @@ layui.config({
                             processData: false,
                             contentType: false,
                             success:function(result){
-                                if(result.code == 0){
+                                console.log(result)
+                                if(result.code == 1){
                                     layer.msg(result.msg,{icon: 1});
                                     layer.closeAll('page');
-                                    return done(result.data.src);
-                                }else if(result.code == -1){
+                                    return done(result.src);
+                                }else if(result.code == 0){
                                     layer.alert(result.msg,{icon: 2});
                                 }
 

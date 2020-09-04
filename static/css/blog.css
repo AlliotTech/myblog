@@ -969,6 +969,9 @@ nav {
         width: 100px;
         margin-right: 10px;
     }
+    .nav-rignt .nav-search {
+        margin-right: 0;
+    }
 
     /*主页移动端适配*/
     .page-main {

@@ -355,6 +355,7 @@
                     btn: ['登录'],
                     btnAlign: 'c',
                     yes: function (index, layero) {
+                        window.location.href = "{% url 'account:loginRegister' %}"
                         layer.close(index);
                         $(".article-collection").css({'width': '45%', 'background': '#3498db', 'pointer-events': 'none'})
                         $(".article-collection").find('i').text("已收藏")

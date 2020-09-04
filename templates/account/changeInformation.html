@@ -1,7 +1,9 @@
 {% extends 'base-account.html' %}
 {% load static %}
 {% block title %}修改信息{% endblock %}
-
+{% block link %}
+    <script src="{% static 'js/csrf.js' %}" charset="utf-8"></script>
+{% endblock %}
 {% block content %}
     <div class="manage-body page-main">
         <div class="cintent-card">
@@ -31,7 +33,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">头像</label>
                     <div class="layui-input-inline layui-btn-container photo-change img-zoom">
-                        <img src="/media/{{ userinfo.photo }}">
+                        <img src="/media/{{ userinfo.photo }}" id="photo-img">
                         <button type="button" class="layui-btn layui-btn-normal" id="editimg">修改头像</button>
                     </div>
                 </div>
@@ -122,10 +124,10 @@
                 , saveH: 150
                 , mark: 1 / 1    //选取比例
                 , area: open_height  //弹窗宽度
-                , url: "upload/uploadImg"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
-                , done: function (url) { //上传完毕回调
-                    $("#inputimgurl").val(url);
-                    $("#srcimgurl").attr('src', url);
+                , url: "{% url "account:photoUpload" %}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+                , done: function (src) { //上传完毕回调
+                    $("#photo-img").attr('src', src);
+                    $(".layui-nav-img").attr('src', src);
                 }
             });
         });
@@ -134,9 +136,7 @@
         // 性别显示
         $(window).ready(function () {
             var sex = {{ userinfo.sex }}
-            console.log(sex,typeof sex)
-            {#alert(sex,typeof (sex))#}
-            if (sex == 1) {
+            if (sex === 1) {
                 $("#sex-man").prop("checked", true)
             } else {
                 $("#sex-woman").prop("checked", true)
