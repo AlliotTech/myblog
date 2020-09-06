@@ -10,14 +10,14 @@
             <form class="layui-form" action="." method="post">
                 {% csrf_token %}
                 <div class="layui-form-item">
-                    <label class="layui-form-label">用户名</label>
+                    <label class="layui-form-label">用户名：</label>
                     <div class="layui-input-inline">
                         <input type="text" name="username" value="{{ user.username }}" readonly="" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">用户名唯一，登录使用，不可修改！</div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">性别</label>
+                    <label class="layui-form-label">性别：</label>
                     <div class="layui-input-block">
                         <input type="radio" name="sex" value="1" title="男" id="sex-man">
                         <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
@@ -31,14 +31,14 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">头像</label>
+                    <label class="layui-form-label">头像：</label>
                     <div class="layui-input-inline layui-btn-container photo-change img-zoom">
                         <img src="/media/{{ userinfo.photo }}" id="photo-img">
                         <button type="button" class="layui-btn layui-btn-normal" id="editimg">修改头像</button>
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">手机</label>
+                    <label class="layui-form-label">手机：</label>
                     <div class="layui-input-inline">
                         <input type="text" name="phone" value="{{ userinfo.phone }}" lay-verify="phone"
                                autocomplete="off"
@@ -46,21 +46,22 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">邮箱</label>
+                    <label class="layui-form-label">邮箱：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="email" value="{{ user.email }}" lay-verify="email" autocomplete="off"
+                        <input type="text" name="email" value="{{ user.email }}" readonly="" lay-verify="email" autocomplete="off"
                                class="layui-input">
                     </div>
+                    <div class="layui-form-mid layui-word-aux">账号绑定邮箱，暂不支持修改！</div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">个人站点</label>
+                    <label class="layui-form-label">个人站点：</label>
                     <div class="layui-input-inline">
                         <input type="text" name="web" value="{{ userinfo.web }}" lay-verify="web" autocomplete="off"
                                class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">个性签名</label>
+                    <label class="layui-form-label">个性签名：</label>
                     <div class="layui-input-block">
                         <textarea name="aboutme" placeholder="请输入内容"
                                   class="layui-textarea">{{ userinfo.aboutme }}</textarea>
@@ -104,7 +105,7 @@
         $(function () {
             w = $(window).width(); //浏览器当前窗口可视区域宽度
             if (w > 768) {
-                open_height = '50%'
+                open_height = '70%'
             } else {
                 open_height = '100%'
             }

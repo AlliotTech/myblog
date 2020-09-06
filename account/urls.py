@@ -26,6 +26,9 @@ urlpatterns = [
     path('historyLeave/', views.historyLeave, name='historyLeave'),
     # 留言记录
 
+
+    path('registerCheck', views.registerCheck, name='registerCheck'),
+    # ajax用户注册信息验证
     path('photoUpload/', views.photoUpload, name='photoUpload'),
     # ajax头像上传
 ]

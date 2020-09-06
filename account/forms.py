@@ -5,7 +5,7 @@ from account.models import UserInfo
 
 class LoginForm(forms.Form):
     # 输入用户名密码登录表单
-    username = forms.CharField(max_length=16,
+    user = forms.CharField(max_length=16,
                                error_messages={'required': '用户名不能为空'},
                                widget=forms.TextInput(attrs={'class': 'form-style',
                                                              'placeholder': '用户名',
@@ -19,16 +19,16 @@ class LoginForm(forms.Form):
                                                                  'oninput': 'setCustomValidity("");'}))
 
     def clean_username(self):
-        username = self.cleaned_data['username']
-        print(username)
-        if User.objects.filter(username=username).exists():
-            return username
+        user = self.cleaned_data['username']
+        print(user)
+        if User.objects.filter(username=user).exists():
+            return user
         raise forms.ValidationError('用户名错误')
 
 
 class RegisterForm(forms.Form):
     # 用户注册表单
-    username = forms.CharField(max_length=16,
+    username = forms.CharField(max_length=10,
                                error_messages={'required': '用户名不能为空'},
                                widget=forms.TextInput(attrs={'class': 'form-style',
                                                              'placeholder': '用户名',
@@ -56,31 +56,6 @@ class RegisterForm(forms.Form):
     class Meta:
         model = User
         fields = ("username", "email")
-
-    def clean_password2(self):
-        password1 = self.cleaned_data['password1']
-        password2 = self.cleaned_data['password2']
-        if password1 != password2:
-            raise forms.ValidationError("密码不一致")
-
-        return password1
-
-
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        print(username)
-        if User.objects.filter(username=username).exists():
-            raise forms.ValidationError('用户名已存在')
-
-        return username
-
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        print(email)
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError('邮箱已存在')
-
-        return email
 
 
 class UserInfoForm(forms.ModelForm):

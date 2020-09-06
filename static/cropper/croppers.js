@@ -97,7 +97,6 @@ layui.config({
                             processData: false,
                             contentType: false,
                             success:function(result){
-                                console.log(result)
                                 if(result.code == 1){
                                     layer.msg(result.msg,{icon: 1});
                                     layer.closeAll('page');

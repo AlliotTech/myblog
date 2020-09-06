@@ -7,6 +7,7 @@ from account.forms import *
 from account.models import UserInfo
 from django.utils import timezone
 
+
 # Create your views here.
 
 
@@ -21,7 +22,7 @@ def loginRegister(request):
                 # 验证传入的数据是否合法
                 login_data = login_form.cleaned_data
                 # 引入字典数据类型，存储用户名和密码
-                user = authenticate(username=login_data['username'], password=login_data['password'])
+                user = authenticate(username=login_data['user'], password=login_data['password'])
                 # 验证账号密码是否正确，正确返回user对象，错误返回null
                 if user:
                     login(request, user)
@@ -44,15 +45,19 @@ def loginRegister(request):
                 # 检验通过，创建用户
                 username = register_form.cleaned_data['username']
                 password1 = register_form.cleaned_data['password1']
-                password2 = register_form.cleaned_data['password2']
                 email = register_form.cleaned_data['email']
                 new_user = User.objects.create()
                 new_user.username = username
                 new_user.set_password(password1)
                 new_user.email = email
                 new_user.save()
-                message = '您已成功注册，快来登录吧！'
-                return HttpResponseRedirect('/account/loginRegister')
+                # 创建用户信息表记录
+                UserInfo.objects.create(user_id=new_user.id)
+                # 创建完用户自动登录
+                user = authenticate(username=username, password=password1)
+                # 调用django默认的login方法，实现用户登录
+                login(request, user)
+                return HttpResponseRedirect('/')
             else:
                 message = register_form.errors
                 login_form = LoginForm()
@@ -139,18 +144,48 @@ def historyLeave(request):
     return render(request, 'account/historyLeave.html', locals())
 
 
-# 头像上传
+# ajax用户注册验证
+def registerCheck(request):
+    username = request.GET.get('username')
+    if username is not None:
+        if User.objects.filter(username=username).exists():
+            data = {
+                "code": 0,
+                "msg": "用户名已存在"
+            }
+        else:
+            data = {
+                "code": 1,
+                "msg": "用户名可以使用"
+            }
+        return JsonResponse(data)
+    email = request.GET.get('email')
+    if email is not None:
+        if User.objects.filter(email=email).exists():
+            data = {
+                "code": 0,
+                "msg": "邮箱已注册"
+            }
+        else:
+            data = {
+                "code": 1,
+                "msg": "邮箱可以使用"
+            }
+        return JsonResponse(data)
+
+
+# ajax头像上传
 def photoUpload(request):
     if request.method == "POST":
         dir = 'photo/'
         file = request.FILES.get('file')
         filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
-        filepath = 'media/' + dir +filename
+        filepath = 'media/' + dir + filename
         # 图片资源写入服务器
         code = upload(file, filepath)
         if (code == 1):
             # 图片路径写入数据库
-            url = dir+filename
+            url = dir + filename
             print(url)
             userinfo = UserInfo.objects.get(user_id=request.user.id)
             print(userinfo.photo)
@@ -180,6 +215,3 @@ def upload(file, filepath):
         return 1
     except:
         return 0
-
-
-
