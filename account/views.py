@@ -2,12 +2,15 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
-
+from myblog import settings
 from account.forms import *
 from account.models import UserInfo
 from django.utils import timezone
-
-
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
+from django.core.mail import send_mail
+import datetime
+import random
 # Create your views here.
 
 
@@ -29,11 +32,13 @@ def loginRegister(request):
                     # 调用django默认的login方法，实现用户登录
                     return HttpResponseRedirect('/')
                 else:
-                    message = '密码错误'
+                    message = '用户名或密码错误！'
                     login_form = LoginForm()
                     register_form = RegisterForm()
                     return render(request, "account/loginRegister.html", locals())
             else:
+                hashkey = CaptchaStore.generate_key()
+                image_url = captcha_image_url(hashkey)
                 message = login_form.errors
                 login_form = LoginForm()
                 register_form = RegisterForm()
@@ -65,6 +70,8 @@ def loginRegister(request):
                 return render(request, "account/loginRegister.html", locals())
         return render(request, 'account/loginRegister.html', locals())
     else:
+        hashkey = CaptchaStore.generate_key()
+        image_url = captcha_image_url(hashkey)
         login_form = LoginForm()
         register_form = RegisterForm()
         return render(request, 'account/loginRegister.html', locals())
@@ -172,6 +179,30 @@ def registerCheck(request):
                 "msg": "邮箱可以使用"
             }
         return JsonResponse(data)
+
+
+# ajax获取邮件验证码
+def emailCode(request):
+    if request.method == "GET":
+        email = request.GET["email"]
+        print(email)
+        # email_title = '注册账号'
+        # email_body = '欢迎注册账号'
+        # email = '16609376866@163.com'  # 对方的邮箱
+        # send_status = send_mail(email_title, email_body, settings.DEFAULT_FROM_EMAIL, [email])
+        data = {
+
+        }
+        code = ""
+        for i in range(6):
+            code = code + str(random.randint(0, 9))
+        print(code)
+        create_time = datetime.datetime.now()
+        print(create_time)
+        # endtime = datetime.datetime.now()
+        # print(endtime – starttime).seconds
+
+    return JsonResponse(data)
 
 
 # ajax头像上传

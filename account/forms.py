@@ -1,29 +1,31 @@
+from captcha.fields import CaptchaField
 from django import forms
 from django.contrib.auth.models import User
+
 from account.models import UserInfo
 
 
 class LoginForm(forms.Form):
     # 输入用户名密码登录表单
-    user = forms.CharField(max_length=16,
-                               error_messages={'required': '用户名不能为空'},
-                               widget=forms.TextInput(attrs={'class': 'form-style',
-                                                             'placeholder': '用户名',
-                                                             'oninvalid': 'setCustomValidity("请输入用户名");',
-                                                             'oninput': 'setCustomValidity("");'}))
-    password = forms.CharField(max_length=16,
-                               error_messages={'required': '密码不能为空'},
-                               widget=forms.PasswordInput(attrs={'class': 'form-style',
-                                                                 'placeholder': '密码',
-                                                                 'oninvalid': 'setCustomValidity("请输入密码");',
-                                                                 'oninput': 'setCustomValidity("");'}))
+    user = forms.CharField(
+        max_length=16,
+        error_messages={'required': '用户名不能为空'},
+        widget=forms.TextInput(attrs={'class': 'form-style',
+                                      'placeholder': '用户名',
+                                      'oninvalid': 'setCustomValidity("请输入用户名");',
+                                      'oninput': 'setCustomValidity("");'}))
+    password = forms.CharField(
+        max_length=16,
+        error_messages={'required': '密码不能为空'},
+        widget=forms.PasswordInput(attrs={'class': 'form-style',
+                                          'placeholder': '密码',
+                                          'oninvalid': 'setCustomValidity("请输入密码");',
+                                          'oninput': 'setCustomValidity("");'}))
 
-    def clean_username(self):
-        user = self.cleaned_data['username']
-        print(user)
-        if User.objects.filter(username=user).exists():
-            return user
-        raise forms.ValidationError('用户名错误')
+    captcha = CaptchaField(
+        required=True,
+        error_messages={'required': '验证码不能为空'},
+    )
 
 
 class RegisterForm(forms.Form):
@@ -70,5 +72,3 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ("email",)
-
-

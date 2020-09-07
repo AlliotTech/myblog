@@ -29,36 +29,35 @@
                                             {% csrf_token %}
                                             <div class="form-group">
                                                 {{ login_form.user }}
-                                                {#                                                <input type="text" name="username" class="form-style" placeholder="用户名"#}
-                                                {#                                                       autocomplete="off" required#}
-                                                {#                                                       oninvalid="setCustomValidity('请输入用户名');"#}
-                                                {#                                                       oninput="setCustomValidity('');">#}
                                                 <i class="input-icon layui-icon layui-icon-username"></i>
                                             </div>
                                             <div class="form-group mt-2">
                                                 {{ login_form.password }}
-                                                {#                                                <input type="password" name="password" lay-verify="required"#}
-                                                {#                                                       lay-vertype="tips" class="form-style" placeholder="密码"#}
-                                                {#                                                       autocomplete="off" required="required"#}
-                                                {#                                                       oninvalid="setCustomValidity('请输入密码');"#}
-                                                {#                                                       oninput="setCustomValidity('');">#}
                                                 <i class="input-icon layui-icon layui-icon-password"></i>
                                             </div>
                                             <div class="form-group mt-2 verification">
-                                                <input type="password" name="authcode" class="form-style"
-                                                       placeholder="验证码" autocomplete="off" required="required"
-                                                       oninvalid="setCustomValidity('请输入验证码');"
-                                                       oninput="setCustomValidity('');">
+                                                {#                                                {{ login_form.captcha }}#}
+                                                {#                                                #}
+                                                {#                                                <img class="captcha" alt="captcha" src="{{image_url}}">#}
+                                                {#                                                <a href="#" title="点击刷新验证码"><img src="/static/images/yanzheng.png"#}
+                                                {#                                                                                 alt=""></a>#}
+                                                <input id="id_reg_captcha_0" name="captcha_0" type="hidden"
+                                                       value="{{ hashkey }}">
+                                                <input autocomplete="off" id="id_captcha_1" name="captcha_1" type="text"
+                                                       class="form-style"
+                                                       placeholder="验证码">
+                                                <a href="javascript:;" title="点击刷新验证码"><img src="{{ image_url }}"
+                                                                                            alt="captcha"
+                                                                                            class="captcha"></a>
                                                 <i class="input-icon layui-icon layui-icon-vercode"></i>
-                                                <a href="#" title="点击刷新验证码"><img src="/static/images/yanzheng.png"
-                                                                                 alt=""></a>
                                             </div>
+                                            {% if message %}
+                                                <h5 style="color: red">{{ message }}</h5>
+                                            {% endif %}
                                             <input class="btn mt-4" type="submit" value="登录" name="type">
-                                            <a href="{% url 'account:forgetPassword' %}" class="link forget">忘记密码?</a>
+                                            <a class="forget" href="{% url 'account:forgetPassword' %}"
+                                               class="link forget">忘记密码?</a>
                                         </form>
-                                        {% if message %}
-                                            <h5 style="color: red">{{ message }}</h5>
-                                        {% endif %}
                                         <div>
                                             <h6 class="mb-0 mt-4 text-center">社交账号免注册登录</h6>
                                             <div class="layui-btn-group">
@@ -127,13 +126,22 @@
     layui.use(['layer', 'form'], function () {
         var $ = layui.jquery,
             layer = layui.layer;
+        // 刷新验证码
+        $('.captcha').click(function () {
+            $.getJSON("/captcha/refresh/", function (result) {
+                $('.captcha').attr('src', result['image_url']);
+                $('#id_captcha_0').val(result['key'])
+            });
+
+        });
         // 用户名验证
         $("#username input").bind('input propertychange', function () {
             username = $(this).val();
             if (parseInt(username.length) >= 3 && parseInt(username.length) <= 10) {
                 $.ajax({
                     type: "GET",
-                    url: "{% url 'account:registerCheck' %}" + "?username=" + username,
+                    url: "{% url 'account:registerCheck' %}",
+                    data: {username: username},
                     success: function (result) {
                         if (result.code == 1) {
                             $("#username input").siblings("p").text("");
@@ -164,7 +172,8 @@
                 $("#email input").css("border", "none");
                 $.ajax({
                     type: "GET",
-                    url: "{% url 'account:registerCheck' %}" + "?email=" + email,
+                    url: "{% url 'account:registerCheck' %}",
+                    data: {email: email},
                     success: function (result) {
                         if (result.code == 1) {
                             $("#email input").siblings("p").text("");
@@ -182,6 +191,18 @@
         })
         // 发送邮件验证码
         $("#send_btn").click(function () {
+            email = $(this).siblings("input").val()
+            $.ajax({
+                type: "GET",
+                url: "{% url 'account:emailCode' %}",
+                data: {email: email},
+                success: function (result) {
+                    alert("成了")
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
             $("#send_btn").addClass("layui-btn-disabled");     //控制按钮为禁用
             var second = 60;
             var intervalObj = setInterval(function () {
@@ -195,7 +216,7 @@
                 second--;
             }, 1000);
         });
-        // 密码验证
+        // 密码1验证
         $("#password1 input").bind('input propertychange', function () {
             password1 = $("#password1 input").val();
             password2 = $("#password2 input").val();

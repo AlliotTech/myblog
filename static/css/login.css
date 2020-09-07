@@ -197,7 +197,7 @@ h6 span {
     padding: 0;
 }
 
-.form-group a {
+.form-group .forget {
     position: absolute;
     top: 5px;
     right: 5px;
@@ -529,6 +529,19 @@ h1 {
     top: 5px;
 }
 
+.verification #id_captcha_1 {
+    position: absolute;
+    left: 0;
+    z-index: 0;
+}
+
+.verification img {
+    position: relative;
+    left: 120px;
+    top: 5px;
+    z-index: 2;
+}
+
 /*移动设备*/
 @media screen and (max-width: 768px) {
     .row .col-12 .section {
@@ -539,5 +552,8 @@ h1 {
     .alert-box {
         width: 350px;
         padding: 15px;
+    }
+    .verification img {
+        left: 75px;
     }
 }

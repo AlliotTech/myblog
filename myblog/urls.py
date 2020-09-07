@@ -30,4 +30,6 @@ urlpatterns = [
     # 博客前台
     path('management/', include('management.urls', namespace='management')),
     # 博客后台
+    path('captcha', include('captcha.urls')),
+    # 验证码
 ]
