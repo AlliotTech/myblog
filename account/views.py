@@ -11,6 +11,8 @@ from captcha.helpers import captcha_image_url
 from django.core.mail import send_mail
 import datetime
 import random
+
+
 # Create your views here.
 
 
@@ -45,30 +47,43 @@ def loginRegister(request):
                 return render(request, "account/loginRegister.html", locals())
 
         if reqtype == "注册":
-            register_form = RegisterForm(request.POST)
-            if register_form.is_valid():
-                # 检验通过，创建用户
-                username = register_form.cleaned_data['username']
-                password1 = register_form.cleaned_data['password1']
-                email = register_form.cleaned_data['email']
-                new_user = User.objects.create()
-                new_user.username = username
-                new_user.set_password(password1)
-                new_user.email = email
-                new_user.save()
-                # 创建用户信息表记录
-                UserInfo.objects.create(user_id=new_user.id)
-                # 创建完用户自动登录
-                user = authenticate(username=username, password=password1)
-                # 调用django默认的login方法，实现用户登录
-                login(request, user)
-                return HttpResponseRedirect('/')
-            else:
-                message = register_form.errors
-                login_form = LoginForm()
-                register_form = RegisterForm()
-                return render(request, "account/loginRegister.html", locals())
-        return render(request, 'account/loginRegister.html', locals())
+            print("注册了")
+            # 校验邮件验证码
+            request_code = request.POST.get('email_code')
+            try:
+                session_code = request.session['email_code']
+            except KeyError:
+                data = {
+                    "code": 3,
+                    "msg": "邮件验证码已过期！"
+                }
+                return JsonResponse(data)
+            if request_code != session_code:
+                data = {
+                    "code": 2,
+                    "msg": "邮件验证码错误！"
+                }
+                return JsonResponse(data)
+            # 校验通过，创建用户
+            username = request.POST['username']
+            password = request.POST['password']
+            email = request.POST['email']
+            new_user = User.objects.create()
+            new_user.username = username
+            new_user.set_password(password)
+            new_user.email = email
+            new_user.save()
+            # 创建用户信息表记录
+            UserInfo.objects.create(user_id=new_user.id)
+            # 创建完用户自动登录
+            user = authenticate(username=username, password=password)
+            # 调用django默认的login方法，实现用户登录
+            login(request, user)
+            data = {
+                "code": 1,
+                "msg": "注册成功，自动跳转至首页并登陆！"
+            }
+            return JsonResponse(data)
     else:
         hashkey = CaptchaStore.generate_key()
         image_url = captcha_image_url(hashkey)
@@ -186,22 +201,23 @@ def emailCode(request):
     if request.method == "GET":
         email = request.GET["email"]
         print(email)
+        email_code = ""
+        for i in range(6):
+            email_code = email_code + str(random.randint(0, 9))
+        print(email_code)
+        request.session['email_code'] = email_code
+        # 过期时间 单位s
+        request.session.set_expiry(300)
+        # request.session['email_code_time'] = email_code_time
         # email_title = '注册账号'
         # email_body = '欢迎注册账号'
         # email = '16609376866@163.com'  # 对方的邮箱
         # send_status = send_mail(email_title, email_body, settings.DEFAULT_FROM_EMAIL, [email])
+        # print(send_status)
         data = {
-
+            "code": 1,
+            "msg": "验证码已发送"
         }
-        code = ""
-        for i in range(6):
-            code = code + str(random.randint(0, 9))
-        print(code)
-        create_time = datetime.datetime.now()
-        print(create_time)
-        # endtime = datetime.datetime.now()
-        # print(endtime – starttime).seconds
-
     return JsonResponse(data)
 
 
