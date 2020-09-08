@@ -76,7 +76,7 @@
                                             <div class="form-group" id="username">
                                                 {{ register_form.username }}
                                                 <i class="input-icon layui-icon layui-icon-username"></i>
-                                                <p></p>
+                                                <p class="point"></p>
                                             </div>
                                             <div class="form-group mt-2" id="email">
                                                 {{ register_form.email }}
@@ -84,7 +84,7 @@
                                                 <button type="button" class="layui-btn layui-btn-primary" id="send_btn">
                                                     获取验证码
                                                 </button>
-                                                <p></p>
+                                                <p class="point"></p>
                                             </div>
                                             <div class="form-group mt-2" id="email_code">
                                                 <input type="password" name="email_code" class="form-style"
@@ -96,12 +96,12 @@
                                             <div class="form-group mt-2" id="password1">
                                                 {{ register_form.password1 }}
                                                 <i class="input-icon layui-icon layui-icon-password"></i>
-                                                <p></p>
+                                                <p class="point"></p>
                                             </div>
                                             <div class="form-group mt-2" id="password2">
                                                 {{ register_form.password2 }}
                                                 <i class="input-icon layui-icon layui-icon-password"></i>
-                                                <p></p>
+                                                <p class="point"></p>
                                             </div>
                                             <input id="register-btn" class="btn mt-4" type="submit" value="注册"
                                                    name="type">
@@ -132,7 +132,7 @@
 
         });
         // 用户名验证
-        $("#username input").bind('input propertychange', function () {
+        $("#username input").blur(function () {
             username = $(this).val();
             if (parseInt(username.length) >= 3 && parseInt(username.length) <= 10) {
                 $.ajax({
@@ -158,7 +158,7 @@
             }
         })
         // 邮箱验证
-        $("#email input").bind('input propertychange', function () {
+        $("#email input").blur(function () {
             email = $(this).val();
             var enoughRegex = new RegExp("[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?", "g");
             if (enoughRegex.test(email) == false) {
@@ -189,31 +189,38 @@
         // 发送邮件验证码
         $("#send_btn").click(function () {
             email = $(this).siblings("input").val()
-            $.ajax({
-                type: "GET",
-                url: "{% url 'account:emailCode' %}",
-                data: {email: email},
-                success: function (result) {
-                    if (result.code == 1) {
-                        layer.msg(result.msg, {icon: 1});
+            if (email.length == 0) {
+                layer.msg("请输入邮箱号", {icon: 2})
+            } else if ($(".point").eq(1).text().length != 0){
+                layer.msg("请输入正确的邮箱号", {icon: 2})
+            }
+            else {
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'account:emailCode' %}",
+                    data: {email: email},
+                    success: function (result) {
+                        if (result.code == 1) {
+                            layer.msg(result.msg, {icon: 1});
+                        }
+                    },
+                    error: function (xhr) {
+                        alert(xhr.text());
                     }
-                },
-                error: function (xhr) {
-                    alert(xhr.text());
-                }
-            })
-            $("#send_btn").addClass("layui-btn-disabled");     //控制按钮为禁用
-            var second = 60;
-            var intervalObj = setInterval(function () {
-                $("#send_btn").text("重新获取" + "(" + second + ")");
-                if (second == 0) {
-                    $("#send_btn").text("获取验证码");
-                    $("#send_btn").removeClass("layui-btn-disabled");//将按钮可用
-                    /* 清除已设置的setInterval对象 */
-                    clearInterval(intervalObj);
-                }
-                second--;
-            }, 1000);
+                })
+                $("#send_btn").addClass("layui-btn-disabled");     //控制按钮为禁用
+                var second = 60;
+                var intervalObj = setInterval(function () {
+                    $("#send_btn").text("重新获取" + "(" + second + ")");
+                    if (second == 0) {
+                        $("#send_btn").text("获取验证码");
+                        $("#send_btn").removeClass("layui-btn-disabled");//将按钮可用
+                        /* 清除已设置的setInterval对象 */
+                        clearInterval(intervalObj);
+                    }
+                    second--;
+                }, 1500);
+            }
         });
         // 密码1验证
         $("#password1 input").bind('input propertychange', function () {
@@ -250,38 +257,47 @@
         // 用户注册提交
         $("#register-btn").click(function (e) {
             e.preventDefault();
-            var username = $("#username input").val();
-            var email = $("#email input").val();
-            var email_code = $("#email_code input").val();
-            var password = $("#password1 input").val();
-            $.ajax({
-                type: "POST",
-                url: "{% url 'account:loginRegister' %}",
-                data: {
-                    username: username,
-                    email: email,
-                    email_code: email_code,
-                    password: password,
-                    type: "注册",
-                },
-                success: function (result) {
-                    if (result.code == 3) {
-                        layer.alert(result.msg, {icon: 2});
-                        $("#email_code input").val("");
-                    } else if (result.code == 2) {
-                        layer.alert(result.msg, {icon: 2});
-                        $("#email_code input").val("");
-                    } else {
-                        layer.msg(result.msg, {icon: 1});
-                        setTimeout(function () {
-                            window.location.href = "/";
-                        }, 3000);
-                    }
-                },
-                error: function (xhr) {
-                    alert(xhr.text());
-                }
+            // 判断提示内容是否存在
+            var point_length = 0
+            $(".point").each(function () {
+                point_length = point_length + ($(this).text()).length
             })
+            if (point_length == 0) {
+                var username = $("#username input").val();
+                var email = $("#email input").val();
+                var email_code = $("#email_code input").val();
+                var password = $("#password1 input").val();
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'account:loginRegister' %}",
+                    data: {
+                        username: username,
+                        email: email,
+                        email_code: email_code,
+                        password: password,
+                        type: "注册",
+                    },
+                    success: function (result) {
+                        if (result.code == 3) {
+                            layer.alert(result.msg, {icon: 2});
+                            $("#email_code input").val("");
+                        } else if (result.code == 2) {
+                            layer.alert(result.msg, {icon: 2});
+                            $("#email_code input").val("");
+                        } else {
+                            layer.msg(result.msg, {icon: 6});
+                            setTimeout(function () {
+                                window.location.href = "/";
+                            }, 1000);
+                        }
+                    },
+                    error: function (xhr) {
+                        alert(xhr.text());
+                    }
+                })
+            } else {
+                layer.alert("请确认表单填写内容", {icon: 2})
+            }
         })
     });
 </script>

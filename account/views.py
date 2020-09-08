@@ -114,17 +114,20 @@ def changeInformation(request):
         user_form = UserForm(request.POST)
         userinfo_form = UserInfoForm(request.POST)
         if user_form.is_valid() and userinfo_form.is_valid():
+            print(user_form.is_valid())
+            print(userinfo_form.is_valid())
             user_data = user_form.cleaned_data
             userinfo_data = userinfo_form.cleaned_data
             request.user.email = user_data['email']
             userinfo.sex = userinfo_data['sex']
-            # userinfo.photo = userinfo_data['photo']
             userinfo.phone = userinfo_data['phone']
             userinfo.web = userinfo_data['web']
             userinfo.aboutme = userinfo_data['aboutme']
             request.user.save()
             userinfo.save()
-        return HttpResponseRedirect('/account/personalCenter/')
+            return HttpResponseRedirect('/account/personalCenter/')
+        else:
+            return render(request, 'account/changeInformation.html', locals())
     else:
         return render(request, 'account/changeInformation.html', locals())
 

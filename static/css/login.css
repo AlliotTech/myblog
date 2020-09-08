@@ -54,7 +54,7 @@ h6 {
     line-height: 1.7;
 }
 
-p {
+.point {
     position: absolute;
     color: red;
 }
