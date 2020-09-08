@@ -132,33 +132,39 @@
 
         });
         // 用户名验证
-        $("#username input").blur(function () {
+        var name_timer = null;
+        $("#username input").bind('input propertychange', function () {
+            clearTimeout(name_timer);
             username = $(this).val();
             if (parseInt(username.length) >= 3 && parseInt(username.length) <= 10) {
-                $.ajax({
-                    type: "GET",
-                    url: "{% url 'account:registerCheck' %}",
-                    data: {username: username},
-                    success: function (result) {
-                        if (result.code == 1) {
-                            $("#username input").siblings("p").text("");
-                            $("#username input").css("border", "none");
-                        } else if (result.code == 0) {
-                            $("#username input").siblings("p").text("用户名已存在");
-                            $("#username input").css("border", "solid 1px red");
+                name_timer = setTimeout(function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'account:registerCheck' %}",
+                        data: {username: username},
+                        success: function (result) {
+                            if (result.code == 1) {
+                                $("#username input").siblings("p").text("");
+                                $("#username input").css("border", "none");
+                            } else if (result.code == 0) {
+                                $("#username input").siblings("p").text("用户名已存在");
+                                $("#username input").css("border", "solid 1px red");
+                            }
+                        },
+                        error: function (xhr) {
+                            alert(xhr.text());
                         }
-                    },
-                    error: function (xhr) {
-                        alert(xhr.text());
-                    }
-                })
+                    })
+                }, 1500)
             } else {
                 $("#username input").siblings("p").text("用户名长度为3到10位");
                 $("#username input").css("border", "solid 1px red");
             }
         })
         // 邮箱验证
-        $("#email input").blur(function () {
+        var email_timer = null;
+        $("#email input").bind('input propertychange', function () {
+            clearTimeout(email_timer)
             email = $(this).val();
             var enoughRegex = new RegExp("[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?", "g");
             if (enoughRegex.test(email) == false) {
@@ -167,23 +173,25 @@
             } else {
                 $("#email input").siblings("p").text("");
                 $("#email input").css("border", "none");
-                $.ajax({
-                    type: "GET",
-                    url: "{% url 'account:registerCheck' %}",
-                    data: {email: email},
-                    success: function (result) {
-                        if (result.code == 1) {
-                            $("#email input").siblings("p").text("");
-                            $("#email input").css("border", "none")
-                        } else if (result.code == 0) {
-                            $("#email input").siblings("p").text("此邮箱已注册");
-                            $("#email input").css("border", "solid 1px red");
+                email_timer = setTimeout(function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'account:registerCheck' %}",
+                        data: {email: email},
+                        success: function (result) {
+                            if (result.code == 1) {
+                                $("#email input").siblings("p").text("");
+                                $("#email input").css("border", "none")
+                            } else if (result.code == 0) {
+                                $("#email input").siblings("p").text("此邮箱已注册");
+                                $("#email input").css("border", "solid 1px red");
+                            }
+                        },
+                        error: function (xhr) {
+                            alert(xhr.text());
                         }
-                    },
-                    error: function (xhr) {
-                        alert(xhr.text());
-                    }
-                })
+                    })
+                }, 1500)
             }
         })
         // 发送邮件验证码
@@ -191,10 +199,9 @@
             email = $(this).siblings("input").val()
             if (email.length == 0) {
                 layer.msg("请输入邮箱号", {icon: 2})
-            } else if ($(".point").eq(1).text().length != 0){
+            } else if ($(".point").eq(1).text().length != 0) {
                 layer.msg("请输入正确的邮箱号", {icon: 2})
-            }
-            else {
+            } else {
                 $.ajax({
                     type: "GET",
                     url: "{% url 'account:emailCode' %}",
@@ -202,6 +209,9 @@
                     success: function (result) {
                         if (result.code == 1) {
                             layer.msg(result.msg, {icon: 1});
+                        }
+                        else if (result.code == 0){
+                            layer.alert(result.msg, {icon: 2});
                         }
                     },
                     error: function (xhr) {

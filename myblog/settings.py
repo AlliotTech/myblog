@@ -147,12 +147,3 @@ LOGIN_URL = '/account/loginRegister/'
 
 # 验证码配置
 CAPTCHA_IMAGE_SIZE = (120, 40)
-
-# 邮箱配置
-EMAIL_USE_SSL = True
-EMAIL_HOST = 'smtp.qq.com'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'cuiliang0302@qq.com'
-EMAIL_HOST_PASSWORD = 'rncgbsydacnzgdee'
-EMAIL_FROM = 'python<cuiliang0302@qq.com>'
-DEFAULT_FROM_EMAIL = 'cuiliang0302@qq.com'
