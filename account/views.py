@@ -40,7 +40,7 @@ def sendEmail(receive, username, action, code):
             <span style="color: #e74c3c;font-weight: bold;font-size: 40px">""" + code + """</span>，以完成操作，验证码有效期为3分钟。
         </p>
         <br>
-        <p style="color: #bdc3c7;text-indent:2em">注意：此操作可能会对您的账号进行邮箱绑定、修改密码、重置密码操作。
+        <p style="color: #bdc3c7;text-indent:2em">注意：此操作可能会对您的账号进行""" + action + """操作。
             如非本人操作，请及时登录并修改密码以保证账户安全，请勿泄露此验证码！</p>
     </div>
     <div style="background-color: #ecf0f1;padding: 20px;">
@@ -257,8 +257,8 @@ def registerCheck(request):
         return JsonResponse(data)
 
 
-# ajax获取邮件验证码
-def emailCode(request):
+# ajax获取注册邮件验证码
+def registerCode(request):
     if request.method == "GET":
         email = request.GET["email"]
         email_code = ""
@@ -268,6 +268,30 @@ def emailCode(request):
         # 过期时间 单位s
         request.session.set_expiry(180)
         if sendEmail(email, "新用户", "注册账号", email_code):
+            data = {
+                "code": 1,
+                "msg": "验证码已发送"
+            }
+        else:
+            data = {
+                "code": 0,
+                "msg": "验证码发送失败"
+            }
+    return JsonResponse(data)
+
+
+# ajax获取重置密码邮件验证码
+def forgetCode(request):
+    if request.method == "GET":
+        email = request.GET["email"]
+        username = User.objects.get(email=email)
+        email_code = ""
+        for i in range(6):
+            email_code = email_code + str(random.randint(0, 9))
+        request.session['email_code'] = email_code
+        # 过期时间 单位s
+        request.session.set_expiry(180)
+        if sendEmail(email, str(username), "重置密码", email_code):
             data = {
                 "code": 1,
                 "msg": "验证码已发送"

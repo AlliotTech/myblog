@@ -91,6 +91,7 @@ h6 span {
 .checkbox:checked + label,
 .checkbox:not(:checked) + label {
     position: relative;
+    top:-50px;
     display: block;
     text-align: center;
     width: 60px;
@@ -127,7 +128,10 @@ h6 span {
     transform: translateX(44px) rotate(-180deg);
 }
 
-
+.container .change-title span {
+    display: inline-block;
+    padding: 0 40px;
+}
 .card-3d-wrap {
     position: relative;
     width: 440px;
@@ -407,6 +411,11 @@ nav {
     content: "\1006";
 }
 
+.change-title {
+    color: #f1c40f;
+    font-weight: bold;
+}
+
 /*忘记密码页面*/
 .main {
     height: 400px;
@@ -553,9 +562,11 @@ h1 {
         width: 350px;
         padding: 15px;
     }
+
     .verification img {
         left: 75px;
     }
+
     #send_btn {
         padding: 0 5px;
     }

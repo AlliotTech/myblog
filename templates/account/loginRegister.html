@@ -16,7 +16,7 @@
         <div class="row full-height justify-content-center">
             <div class="col-12 text-center align-self-center">
                 <div class="section pb-5 pt-sm-2 text-center">
-                    <h6 class="mb-0 pb-3"><span>登录</span><span>注册</span></h6>
+                    <h3 class="mb-0 pb-3 change-title"><span>登录&nbsp;</span><span>&nbsp;注册</span></h3>
                     <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
                     <label for="reg-log"></label>
                     <div class="card-3d-wrap mx-auto">
@@ -50,7 +50,7 @@
                                                 <h5 style="color: #fff">{{ message }}</h5>
                                             {% endif %}
                                             <input class="btn mt-4" type="submit" value="登录" name="type">
-                                            <a class="forget" href="{% url 'account:forgetPassword' %}"
+                                            <a href="{% url 'account:forgetPassword' %}"
                                                class="link forget">忘记密码?</a>
                                         </form>
                                         <div>
@@ -199,37 +199,43 @@
             email = $(this).siblings("input").val()
             if (email.length == 0) {
                 layer.msg("请输入邮箱号", {icon: 2})
-            } else if ($(".point").eq(1).text().length != 0) {
-                layer.msg("请输入正确的邮箱号", {icon: 2})
-            } else {
-                $.ajax({
-                    type: "GET",
-                    url: "{% url 'account:emailCode' %}",
-                    data: {email: email},
-                    success: function (result) {
-                        if (result.code == 1) {
-                            layer.msg(result.msg, {icon: 1});
-                            $("#send_btn").addClass("layui-btn-disabled");     //控制按钮为禁用
-                            var second = 60;
-                            var intervalObj = setInterval(function () {
-                                $("#send_btn").text("重新获取" + "(" + second + ")");
-                                if (second == 0) {
-                                    $("#send_btn").text("获取验证码");
-                                    $("#send_btn").removeClass("layui-btn-disabled");//将按钮可用
-                                    /* 清除已设置的setInterval对象 */
-                                    clearInterval(intervalObj);
-                                }
-                                second--;
-                            }, 1500);
-                        } else if (result.code == 0) {
-                            layer.alert(result.msg, {icon: 2});
-                        }
-                    },
-                    error: function (xhr) {
-                        alert(xhr.text());
-                    }
-                })
+                return false;
             }
+            if ($(".point").eq(1).text().length != 0) {
+                layer.msg("请输入正确的邮箱号", {icon: 2})
+                return false;
+            }
+            if ($("#send_btn").hasClass("layui-btn-disabled")) {
+                layer.msg("验证码已发送，请稍后再试", {icon: 2})
+                return false;
+            }
+            $.ajax({
+                type: "GET",
+                url: "{% url 'account:registerCode' %}",
+                data: {email: email},
+                success: function (result) {
+                    if (result.code == 1) {
+                        layer.msg(result.msg, {icon: 1});
+                        $("#send_btn").addClass("layui-btn-disabled");     //控制按钮为禁用
+                        var second = 60;
+                        var intervalObj = setInterval(function () {
+                            $("#send_btn").text("重新获取" + "(" + second + ")");
+                            if (second == 0) {
+                                $("#send_btn").text("获取验证码");
+                                $("#send_btn").removeClass("layui-btn-disabled");//将按钮可用
+                                /* 清除已设置的setInterval对象 */
+                                clearInterval(intervalObj);
+                            }
+                            second--;
+                        }, 1000);
+                    } else if (result.code == 0) {
+                        layer.alert(result.msg, {icon: 2});
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
         });
         // 密码1验证
         $("#password1 input").bind('input propertychange', function () {
