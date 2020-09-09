@@ -36,12 +36,18 @@ class RegisterForm(forms.Form):
                                                              'placeholder': '用户名',
                                                              'oninvalid': 'setCustomValidity("请输入用户名");',
                                                              'oninput': 'setCustomValidity("");'}))
-    email = forms.CharField(max_length=50,
+    email = forms.CharField(max_length=30,
                             error_messages={'required': '邮箱号不能为空'},
                             widget=forms.EmailInput(attrs={'class': 'form-style',
                                                            'placeholder': '邮箱号',
                                                            'oninvalid': 'setCustomValidity("请输入邮箱号");',
                                                            'oninput': 'setCustomValidity("");'}))
+    email_code = forms.CharField(max_length=6,
+                                 error_messages={'required': '邮箱验证码不能为空'},
+                                 widget=forms.EmailInput(attrs={'class': 'form-style',
+                                                                'placeholder': '邮箱验证码',
+                                                                'oninvalid': 'setCustomValidity("请输入邮箱验证码");',
+                                                                'oninput': 'setCustomValidity("");'}))
     password1 = forms.CharField(max_length=16,
                                 error_messages={'required': '密码不能为空'},
                                 widget=forms.PasswordInput(attrs={'class': 'form-style',
