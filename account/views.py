@@ -1,54 +1,75 @@
+import random
+import smtplib
+from email.header import Header
+from email.mime.text import MIMEText
+from email.utils import formataddr
+
+import pysnooper
+from captcha.helpers import captcha_image_url
+from captcha.models import CaptchaStore
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.utils import timezone
+
 from account.forms import *
 from account.models import UserInfo
-from django.utils import timezone
-from captcha.models import CaptchaStore
-from captcha.helpers import captcha_image_url
-import smtplib
-from email.mime.text import MIMEText
-import random
+from myblog.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_FROM
 
 
-# Create your views here.
-# 发送邮件
-def sendEmail(receive, username, code):
-    # 收件人、用户名、验证码
-    # 邮件服务器配置
-    mail_host = "smtp.qq.com"  # 设置服务器
-    mail_user = "cuiliang0302@qq.com"  # 用户名
-    mail_pass = "rncgbsydacnzgdee"  # 口令
-    content = '<div style="background-color: #ebedf0; padding: 20px">' \
-              '<div style="text-align: center">' \
-              '<h1>【崔亮的博客】邮件验证码</h1>' \
-              '</div>' \
-              '<div style="width: 60%; background-color: white; border-radius: 10px; ' \
-              'padding: 20px; margin: 0 auto; box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);">' \
-              '<p>尊敬的' + username + '：</p>' \
-                                    '<p style="text-indent:2em">您本次的验证码为：</p>' \
-                                    '<h1 style="text-align: center;color: red;font-weight: bold">' + code + '</h1>' \
-                '<p style="text-indent:2em">此邮件由' \
-                '<a href="https://www.cuiliangblog.cn">崔亮的博客</a>发送，有效期为3分钟，请勿回复此邮件！</p>' \
-                '<p style="text-indent:2em">您收到这封邮件，是由于在' \
-                '<a href="https://www.cuiliangblog.cn">崔亮的博客</a>' \
-                '进行了新用户注册，或进行重置密码操作。如果您并没有访问过崔亮的博客，或没有进行上述操作， 请忽略这封邮件！' \
-                '</p>' \
-                '<br>' \
-                '<p style="text-indent:2em">感谢您的访问，祝您使用愉快！</p>' \
-                '</div>' \
-                '</div>'
-    me = "cuiliangblog" + "<" + mail_user + ">"
+# @pysnooper.snoop()
+def sendEmail(receive, username, action, code):
+    """
+    :param str receive: 收件人
+    :param str username: 收件人用户名
+    :param str action: 操作内容
+    :param str code: 验证码
+    :return:
+    """
+    content = """
+    <body style="background-color: #ebedf0;margin: 0;padding: 0">
+<div id="content" style="width: 75%;margin: 10% auto;background-color: white;border-radius: 10px;box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);">
+    <div style="text-align: center;background-color: #ecf0f1;height: 80px">
+        <h2 style="margin: 0 auto;line-height: 80px;">【崔亮的博客】验证码</h2>
+    </div>
+    <div style="padding: 0 20px;">
+        <p style="font-weight: bold">尊敬的""" + username + """：您好！</p>
+        <p style="text-indent:2em;font-weight: bold">您正在进行
+            <span style="color: #e74c3c">""" + action + """</span>操作，请在验证码输入框输入：
+            <span style="color: #e74c3c;font-weight: bold;font-size: 40px">""" + code + """</span>，以完成操作，验证码有效期为3分钟。
+        </p>
+        <br>
+        <p style="color: #bdc3c7;text-indent:2em">注意：此操作可能会对您的账号进行邮箱绑定、修改密码、重置密码操作。
+            如非本人操作，请及时登录并修改密码以保证账户安全，请勿泄露此验证码！</p>
+    </div>
+    <div style="background-color: #ecf0f1;padding: 20px;">
+        <p style="color: #bdc3c7;text-indent:2em;margin: 0 auto;line-height: 30px">您会收到这封邮件，是由于在
+            <a href="https://www.cuiliangblog.cn" style="text-decoration: none">崔亮的博客</a>
+            进行了新用户注册或修改密码、重置密码操作。如果您并没有访问过
+            <a href="https://www.cuiliangblog.cn" style="text-decoration: none">崔亮的博客</a>
+            ，或没有进行上述操作， 请忽略这封邮件！
+        </p>
+    </div>
+</div>
+<script>
+    var width = document.body.clientWidth;
+    if (width < 500) {
+        document.querySelector("#content").style.width="95%"
+    }
+</script>
+</body>
+    """
     msg = MIMEText(content, _subtype='html', _charset='utf-8')
     msg['Subject'] = "[崔亮的博客] Email 验证码"
-    msg['From'] = me
+    msg['From'] = formataddr(pair=(EMAIL_FROM, EMAIL_HOST_USER))
+    form_user = formataddr((Header(EMAIL_FROM, 'utf-8').encode(), EMAIL_HOST_USER))
     msg['To'] = receive
     try:
-        server = smtplib.SMTP()
-        server.connect(mail_host)
-        server.login(mail_user, mail_pass)
-        server.sendmail(me, receive, msg.as_string())
+        server = smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT)
+        server.connect(EMAIL_HOST)
+        server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+        server.sendmail(form_user, receive, msg.as_string())
         server.close()
         return True
     except Exception as e:
@@ -87,7 +108,6 @@ def loginRegister(request):
                 return render(request, "account/loginRegister.html", locals())
 
         if reqtype == "注册":
-            print("注册了")
             # 校验邮件验证码
             request_code = request.POST.get('email_code')
             try:
@@ -154,8 +174,6 @@ def changeInformation(request):
         user_form = UserForm(request.POST)
         userinfo_form = UserInfoForm(request.POST)
         if user_form.is_valid() and userinfo_form.is_valid():
-            print(user_form.is_valid())
-            print(userinfo_form.is_valid())
             user_data = user_form.cleaned_data
             userinfo_data = userinfo_form.cleaned_data
             request.user.email = user_data['email']
@@ -243,15 +261,13 @@ def registerCheck(request):
 def emailCode(request):
     if request.method == "GET":
         email = request.GET["email"]
-        print(email)
         email_code = ""
         for i in range(6):
             email_code = email_code + str(random.randint(0, 9))
-        print(email_code)
         request.session['email_code'] = email_code
         # 过期时间 单位s
-        request.session.set_expiry(300)
-        if sendEmail(email, "新用户", email_code):
+        request.session.set_expiry(180)
+        if sendEmail(email, "新用户", "注册账号", email_code):
             data = {
                 "code": 1,
                 "msg": "验证码已发送"

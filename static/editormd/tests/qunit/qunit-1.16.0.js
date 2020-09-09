@@ -170,7 +170,7 @@ config.modules.push( config.currentModule );
 			current = params[ i ].split( "=" );
 			current[ 0 ] = decodeURIComponent( current[ 0 ] );
 
-			// allow just a key to turn on a flag, e.g., test.html?noglobals
+			// allow just a key to turn on a flag, e.g., email.html?noglobals
 			current[ 1 ] = current[ 1 ] ? decodeURIComponent( current[ 1 ] ) : true;
 			if ( urlParams[ current[ 0 ] ] ) {
 				urlParams[ current[ 0 ] ] = [].concat( urlParams[ current[ 0 ] ], current[ 1 ] );

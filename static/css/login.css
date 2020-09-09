@@ -556,4 +556,7 @@ h1 {
     .verification img {
         left: 75px;
     }
+    #send_btn {
+        padding: 0 5px;
+    }
 }

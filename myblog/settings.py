@@ -147,3 +147,14 @@ LOGIN_URL = '/account/loginRegister/'
 
 # 验证码配置
 CAPTCHA_IMAGE_SIZE = (120, 40)
+
+# 邮件服务器配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'cuiliangblog@qq.com'
+EMAIL_HOST_PASSWORD = 'zvqjycbbaeqtbage'
+EMAIL_FROM = '崔亮的博客'
+# FROM_EMAIL = 'cuiliang0302@qq.com'
+
