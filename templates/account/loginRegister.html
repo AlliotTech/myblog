@@ -47,7 +47,7 @@
                                                 <i class="input-icon layui-icon layui-icon-vercode"></i>
                                             </div>
                                             {% if message %}
-                                                <h5 style="color: red">{{ message }}</h5>
+                                                <h5 style="color: #fff">{{ message }}</h5>
                                             {% endif %}
                                             <input class="btn mt-4" type="submit" value="登录" name="type">
                                             <a class="forget" href="{% url 'account:forgetPassword' %}"
@@ -121,6 +121,8 @@
     layui.use(['layer', 'form'], function () {
         var $ = layui.jquery,
             layer = layui.layer;
+        // 修改登录时提示信息
+        $(".errorlist>li").eq(1).css("color","red")
         // 刷新验证码
         $('.captcha').click(function () {
             $.getJSON("/captcha/refresh/", function (result) {
