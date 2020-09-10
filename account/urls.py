@@ -33,6 +33,8 @@ urlpatterns = [
     # ajax头像上传
     path('registerCode/', views.registerCode, name='registerCode'),
     # ajax获取注册邮件验证码
-    path('forgetCode/', views.forgetCode, name='forgetCode'),
+    path('forgetGetCode/', views.forgetGetCode, name='forgetGetCode'),
     # ajax获取注册邮件验证码
+    path('forgetCheckCode/', views.forgetCheckCode, name='forgetCheckCode'),
+    # ajax获取校验邮件验证码
 ]

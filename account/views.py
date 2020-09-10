@@ -168,6 +168,7 @@ def loginRegister(request):
 
 # 忘记密码
 def forgetPassword(request):
+    forget_form = ForgetForm()
     return render(request, 'account/forgetPassword.html', locals())
 
 
@@ -295,7 +296,7 @@ def registerCode(request):
 
 
 # ajax获取重置密码邮件验证码
-def forgetCode(request):
+def forgetGetCode(request):
     if request.method == "GET":
         email = request.GET["email"]
         username = User.objects.get(email=email)
@@ -316,6 +317,35 @@ def forgetCode(request):
                 "msg": "验证码发送失败"
             }
     return JsonResponse(data)
+
+
+# ajax 重置密码检查邮件验证码
+def forgetCheckCode(request):
+    if request.method == "POST":
+        # 校验邮件验证码
+        request_code = request.POST.get('email_code')
+        try:
+            session_code = request.session['email_code']
+        except KeyError:
+            data = {
+                "code": 3,
+                "msg": "邮件验证码已过期！"
+            }
+            return JsonResponse(data)
+        if request_code != session_code:
+            data = {
+                "code": 2,
+                "msg": "邮件验证码错误！"
+            }
+            return JsonResponse(data)
+        # 校验通过
+        else:
+            data = {
+                "code": 1,
+                "msg": "邮件验证码校验通过！"
+            }
+            return JsonResponse(data)
+
 
 
 # ajax头像上传

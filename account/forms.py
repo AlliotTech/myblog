@@ -80,10 +80,33 @@ class UserForm(forms.ModelForm):
         fields = ("email",)
 
 
-# class forgetPassword(forms.ModelForm):
-#     # 用户重置密码
-#     class Meta:
-#         model = User
-#         fields = ("email",)
+class ForgetForm(forms.Form):
+    # 重置密码表单
+    email = forms.CharField(max_length=30,
+                            error_messages={'required': '邮箱号不能为空'},
+                            widget=forms.EmailInput(attrs={'class': 'form-style',
+                                                           'placeholder': '邮箱号',
+                                                           'oninvalid': 'setCustomValidity("请输入邮箱号");',
+                                                           'oninput': 'setCustomValidity("");'}))
+    email_code = forms.CharField(max_length=6,
+                                 error_messages={'required': '邮箱验证码不能为空'},
+                                 widget=forms.EmailInput(attrs={'class': 'form-style',
+                                                                'placeholder': '邮箱验证码',
+                                                                'oninvalid': 'setCustomValidity("请输入邮箱验证码");',
+                                                                'oninput': 'setCustomValidity("");'}))
+    password1 = forms.CharField(max_length=16,
+                                error_messages={'required': '密码不能为空'},
+                                widget=forms.PasswordInput(attrs={'class': 'form-style',
+                                                                  'placeholder': '密码',
+                                                                  'oninvalid': 'setCustomValidity("请输入密码");',
+                                                                  'oninput': 'setCustomValidity("");'}))
+    password2 = forms.CharField(max_length=16,
+                                error_messages={'required': '密码不能为空'},
+                                widget=forms.PasswordInput(attrs={'class': 'form-style',
+                                                                  'placeholder': '确认密码',
+                                                                  'oninvalid': 'setCustomValidity("请输入密码");',
+                                                                  'oninput': 'setCustomValidity("");'}))
 
-
+    class Meta:
+        model = User
+        fields = ("username", "email")
