@@ -4,10 +4,10 @@ from email.header import Header
 from email.mime.text import MIMEText
 from email.utils import formataddr
 
-import pysnooper
 from captcha.helpers import captcha_image_url
 from captcha.models import CaptchaStore
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
@@ -16,7 +16,8 @@ from django.utils import timezone
 from account.forms import *
 from account.models import UserInfo
 from myblog.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_FROM
-
+from django.contrib.auth.backends import ModelBackend
+from django.db.models import Q
 
 # @pysnooper.snoop()
 def sendEmail(receive, username, action, code):
@@ -75,6 +76,19 @@ def sendEmail(receive, username, action, code):
     except Exception as e:
         print(str(e))
         return False
+
+
+# 设置邮箱、用户名都可以登录
+class CustomBackend(ModelBackend):
+    """邮箱也能登录"""
+
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        try:
+            user = User.objects.get(Q(username=username) | Q(email=username))
+            if user.check_password(password):
+                return user
+        except Exception as e:
+            return None
 
 
 # 登录注册
