@@ -1,32 +1,27 @@
 import random
-import smtplib
-from email.header import Header
-from email.mime.text import MIMEText
-from email.utils import formataddr
 
 from captcha.helpers import captcha_image_url
 from captcha.models import CaptchaStore
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMultiAlternatives
+from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 
 from account.forms import *
 from account.models import UserInfo
-from myblog.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_FROM
-from django.contrib.auth.backends import ModelBackend
-from django.db.models import Q
 
-# @pysnooper.snoop()
+
 def sendEmail(receive, username, action, code):
     """
     :param str receive: 收件人
     :param str username: 收件人用户名
     :param str action: 操作内容
     :param str code: 验证码
-    :return:
+    :return: 1 发送成功
     """
     content = """
     <body style="background-color: #ebedf0;margin: 0;padding: 0">
@@ -61,27 +56,15 @@ def sendEmail(receive, username, action, code):
 </script>
 </body>
     """
-    msg = MIMEText(content, _subtype='html', _charset='utf-8')
-    msg['Subject'] = "[崔亮的博客] Email 验证码"
-    msg['From'] = formataddr(pair=(EMAIL_FROM, EMAIL_HOST_USER))
-    form_user = formataddr((Header(EMAIL_FROM, 'utf-8').encode(), EMAIL_HOST_USER))
-    msg['To'] = receive
-    try:
-        server = smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT)
-        server.connect(EMAIL_HOST)
-        server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
-        server.sendmail(form_user, receive, msg.as_string())
-        server.close()
-        return True
-    except Exception as e:
-        print(str(e))
-        return False
+    subject = "[崔亮的博客] Email 验证码"
+    from_email = "崔亮的博客<cuiliangblog@qq.com>"
+    msg = EmailMultiAlternatives(subject, content, from_email, [receive])
+    msg.content_subtype = "html"
+    return msg.send()
 
 
-# 设置邮箱、用户名都可以登录
 class CustomBackend(ModelBackend):
-    """邮箱也能登录"""
-
+    # 设置邮箱、用户名都可以登录
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             user = User.objects.get(Q(username=username) | Q(email=username))
@@ -91,8 +74,12 @@ class CustomBackend(ModelBackend):
             return None
 
 
-# 登录注册
 def loginRegister(request):
+    """
+    登录注册
+    :param request:
+    :return:
+    """
     if request.method == "POST":
         reqtype = request.POST.get('type')
         if reqtype == "登录":
@@ -345,7 +332,6 @@ def forgetCheckCode(request):
                 "msg": "邮件验证码校验通过！"
             }
             return JsonResponse(data)
-
 
 
 # ajax头像上传

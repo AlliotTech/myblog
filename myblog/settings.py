@@ -155,7 +155,6 @@ EMAIL_HOST = 'smtp.qq.com'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'cuiliangblog@qq.com'
 EMAIL_HOST_PASSWORD = 'zvqjycbbaeqtbage'
-EMAIL_FROM = '崔亮的博客'
 
 # 支持邮箱登录
 AUTHENTICATION_BACKENDS = ('account.views.CustomBackend',)
