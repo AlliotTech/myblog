@@ -1,5 +1,6 @@
-# 定时更新登录页背景图
 #!/usr/bin/python3
+# 定时更新登录页背景图
+
 import os
 import os.path
 import os.path
