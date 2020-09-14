@@ -31,10 +31,8 @@ urlpatterns = [
     # ajax用户注册信息验证
     path('photoUpload/', views.photoUpload, name='photoUpload'),
     # ajax头像上传
-    path('registerCode/', views.registerCode, name='registerCode'),
-    # ajax获取注册邮件验证码
-    path('forgetGetCode/', views.forgetGetCode, name='forgetGetCode'),
-    # ajax获取注册邮件验证码
-    path('forgetCheckCode/', views.forgetCheckCode, name='forgetCheckCode'),
-    # ajax获取校验邮件验证码
+    path('emailCode/', views.emailCode, name='emailCode'),
+    # ajax获取邮件验证码
+    path('checkEmailCode/', views.checkEmailCode, name='checkEmailCode'),
+    # ajax校验邮件验证码
 ]

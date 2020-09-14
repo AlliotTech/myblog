@@ -57,6 +57,7 @@ h6 {
 .point {
     position: absolute;
     color: red;
+    top:50px;
 }
 
 .center-wrap h4 {
@@ -131,6 +132,9 @@ h6 span {
 .container .change-title span {
     display: inline-block;
     padding: 0 40px;
+    -webkit-text-fill-color: #f1c40f;
+    -webkit-text-stroke-color: #e74c3c;
+    -webkit-text-stroke-width: 1px;
 }
 .card-3d-wrap {
     position: relative;
@@ -197,7 +201,7 @@ h6 span {
 .form-group {
     position: relative;
     display: block;
-    margin: 20px 0;
+    margin: 25px 0;
     padding: 0;
 }
 

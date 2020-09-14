@@ -25,33 +25,38 @@
                                 <div class="center-wrap">
                                     <div class="section text-center">
                                         <h4 class="mb-4 pb-3">登&nbsp;录</h4>
-                                        <form action="{% url 'account:loginRegister' %}" method="post">
+                                        <form id="login" action="{% url 'account:loginRegister' %}" method="post">
                                             {% csrf_token %}
                                             <div class="form-group">
                                                 {{ login_form.user }}
                                                 <i class="input-icon layui-icon layui-icon-username"></i>
+                                                <p class="point"></p>
                                             </div>
                                             <div class="form-group mt-2">
                                                 {{ login_form.password }}
                                                 <i class="input-icon layui-icon layui-icon-password"></i>
+                                                <p class="point"></p>
                                             </div>
                                             <div class="form-group mt-2 verification">
                                                 <input id="id_reg_captcha_0" name="captcha_0" type="hidden"
                                                        value="{{ hashkey }}">
                                                 <input autocomplete="off" id="id_captcha_1" name="captcha_1" type="text"
-                                                       class="form-style"
-                                                       placeholder="验证码">
+                                                       class="form-style" placeholder="验证码">
                                                 <a href="javascript:;" title="点击刷新验证码"><img src="{{ image_url }}"
                                                                                             alt="captcha"
                                                                                             class="captcha"></a>
                                                 <i class="input-icon layui-icon layui-icon-vercode"></i>
+                                                <p class="point"></p>
                                             </div>
                                             {% if message %}
-                                                <h5 style="color: #fff">{{ message }}</h5>
+                                                <h5 style="color: red">{{ message }}</h5>
                                             {% endif %}
-                                            <input class="btn mt-4" type="submit" value="登录" name="type">
+                                            <button class="btn mt-4" type="button" id="login-btn"
+                                                    onclick="login_check()">提交
+                                            </button>
                                             <a href="{% url 'account:forgetPassword' %}"
                                                class="link forget">忘记密码?</a>
+                                            <input name="type" type="hidden" value="登录">
                                         </form>
                                         <div>
                                             <h6 class="mb-0 mt-4 text-center">社交账号免注册登录</h6>
@@ -71,8 +76,7 @@
                                 <div class="center-wrap">
                                     <div class="section text-center">
                                         <h4 class="pb-3">注&nbsp;册</h4>
-                                        <form>
-                                            {% csrf_token %}
+                                        <form id="register">
                                             <div class="form-group" id="username">
                                                 {{ register_form.username }}
                                                 <i class="input-icon layui-icon layui-icon-username"></i>
@@ -101,8 +105,7 @@
                                                 <i class="input-icon layui-icon layui-icon-password"></i>
                                                 <p class="point"></p>
                                             </div>
-                                            <input id="register-btn" class="btn mt-4" type="submit" value="注册"
-                                                   name="type">
+                                            <button id="register-btn" class="btn mt-4" type="button">注册</button>
                                         </form>
                                     </div>
                                 </div>
@@ -118,24 +121,66 @@
 <script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
 <script src="{% static 'js/csrf.js' %}" charset="utf-8"></script>
 <script>
+    // 检查表单输入值是否为空
+    function check_null(input) {
+        $(input).each(function () {
+            if ($(this).val().length == 0) {
+                var point = "请输入" + $(this).attr("placeholder")
+                $(this).siblings("p").text(point)
+            } else {
+                $(this).siblings("p").text("")
+            }
+            $(this).bind('input propertychange', function () {
+                if ($(this).val().length == 0) {
+                    var point = "请输入" + $(this).attr("placeholder")
+                    $(this).siblings("p").text(point)
+                } else {
+                    $(this).siblings("p").text("")
+                }
+            })
+        })
+    }
+
+    // 登录表单验证
+    function login_check() {
+        // 表单内容验证
+        check_null("#login input")
+        // 判断提示内容是否存在
+        var point_length = 0
+        $("#login .point").each(function () {
+            point_length = point_length + ($(this).text()).length
+        })
+        if (point_length != 0) {
+            return false;
+        }
+        $("#login").submit();
+    }
+
     layui.use(['layer', 'form'], function () {
         var $ = layui.jquery,
             layer = layui.layer;
-        // 修改登录时提示信息
-        $(".errorlist>li").eq(1).css("color","red")
+        // ajax加载动画
+        var load
+        $(document).on('ajaxStart', function () {
+            load = layer.load();
+        })
+        $(document).on('ajaxComplete', function () {
+            layer.close(load);
+        })
+
         // 刷新验证码
         $('.captcha').click(function () {
             $.getJSON("/captcha/refresh/", function (result) {
                 $('.captcha').attr('src', result['image_url']);
                 $('#id_captcha_0').val(result['key'])
             });
-
         });
+
         // 用户名验证
         var name_timer = null;
-        $("#username input").bind('input propertychange', function () {
+        $("input[ name='username' ]").bind('input propertychange', function () {
             clearTimeout(name_timer);
-            username = $(this).val();
+            var username = $(this).val();
             if (parseInt(username.length) >= 3 && parseInt(username.length) <= 10) {
                 name_timer = setTimeout(function () {
                     $.ajax({
@@ -144,11 +189,11 @@
                         data: {username: username},
                         success: function (result) {
                             if (result.code == 1) {
-                                $("#username input").siblings("p").text("");
-                                $("#username input").css("border", "none");
-                            } else if (result.code == 0) {
-                                $("#username input").siblings("p").text("用户名已存在");
-                                $("#username input").css("border", "solid 1px red");
+                                $("input[ name='username' ]").siblings("p").text("");
+                                $("input[ name='username' ]").css("border", "none");
+                            } else {
+                                $("input[ name='username' ]").siblings("p").text("用户名已存在");
+                                $("input[ name='username' ]").css("border", "solid 1px red");
                             }
                         },
                         error: function (xhr) {
@@ -157,22 +202,23 @@
                     })
                 }, 1500)
             } else {
-                $("#username input").siblings("p").text("用户名长度为3到10位");
-                $("#username input").css("border", "solid 1px red");
+                $(this).siblings("p").text("用户名长度为3到10位");
+                $(this).css("border", "solid 1px red");
             }
         })
+
         // 邮箱验证
         var email_timer = null;
-        $("#email input").bind('input propertychange', function () {
+        $("input[ name='email' ]").bind('input propertychange', function () {
             clearTimeout(email_timer)
-            email = $(this).val();
+            var email = $(this).val();
             var enoughRegex = new RegExp("[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?", "g");
             if (enoughRegex.test(email) == false) {
-                $("#email input").siblings("p").text("请输入正确的邮箱号");
-                $("#email input").css("border", "solid 1px red");
+                $(this).siblings("p").text("请输入正确的邮箱号");
+                $(this).css("border", "solid 1px red");
             } else {
-                $("#email input").siblings("p").text("");
-                $("#email input").css("border", "none");
+                $(this).siblings("p").text("");
+                $(this).css("border", "none");
                 email_timer = setTimeout(function () {
                     $.ajax({
                         type: "GET",
@@ -180,11 +226,11 @@
                         data: {email: email},
                         success: function (result) {
                             if (result.code == 1) {
-                                $("#email input").siblings("p").text("");
-                                $("#email input").css("border", "none")
-                            } else if (result.code == 0) {
-                                $("#email input").siblings("p").text("此邮箱已注册");
-                                $("#email input").css("border", "solid 1px red");
+                                $("input[ name='email' ]").siblings("p").text("");
+                                $("input[ name='email' ]").css("border", "none")
+                            } else {
+                                $("input[ name='email' ]").siblings("p").text("此邮箱已注册");
+                                $("input[ name='email' ]").css("border", "solid 1px red");
                             }
                         },
                         error: function (xhr) {
@@ -196,7 +242,7 @@
         })
         // 发送邮件验证码
         $("#send_btn").click(function () {
-            email = $(this).siblings("input").val()
+            var email = $(this).siblings("input").val()
             if (email.length == 0) {
                 layer.msg("请输入邮箱号", {icon: 2})
                 return false;
@@ -211,8 +257,9 @@
             }
             $.ajax({
                 type: "GET",
-                url: "{% url 'account:registerCode' %}",
-                data: {email: email},
+                url: "{% url 'account:emailCode' %}",
+                data: {email: email,
+                    action:"注册新用户"},
                 success: function (result) {
                     if (result.code == 1) {
                         layer.msg(result.msg, {icon: 1});
@@ -228,7 +275,7 @@
                             }
                             second--;
                         }, 1000);
-                    } else if (result.code == 0) {
+                    } else {
                         layer.alert(result.msg, {icon: 2});
                     }
                 },
@@ -237,51 +284,70 @@
                 }
             })
         });
+        // 邮箱验证码非空验证
+        $("input[ name='email_code' ]").bind('input propertychange', function () {
+            var email_code = $(this).val();
+            if (email_code.length == 0) {
+                $(this).siblings("p").text("请输入邮件验证码");
+                $(this).css("border", "solid 1px red");
+            } else {
+                $(this).siblings("p").text("");
+                $(this).css("border", "none");
+            }
+        })
         // 密码1验证
-        $("#password1 input").bind('input propertychange', function () {
-            password1 = $("#password1 input").val();
-            password2 = $("#password2 input").val();
+        $("input[ name='password1' ]").bind('input propertychange', function () {
+            var password1 = $("input[ name='password1' ]").val();
+            var password2 = $("input[ name='password2' ]").val();
             var enoughRegex = new RegExp("^(?![a-zA-z]+$)(?!\\d+$)(?![!@#$%^&*]+$)[a-zA-Z\\d!@#$%^&*]{6,20}$", "g");
             if (enoughRegex.test(password1) == false) {
-                $("#password1 input").siblings("p").text("密码为6到20位字母加数字组合");
-                $("#password1 input").css("border", "solid 1px red");
+                $(this).siblings("p").text("密码为6到20位字母加数字组合");
+                $(this).css("border", "solid 1px red");
             } else {
-                $("#password1 input").siblings("p").text("");
-                $("#password1 input").css("border", "none");
+                $(this).siblings("p").text("");
+                $(this).css("border", "none");
             }
         })
         // 密码2验证
-        $("#password2 input").bind('input propertychange', function () {
-            password1 = $("#password1 input").val();
-            password2 = $("#password2 input").val();
+        $("input[ name='password2' ]").bind('input propertychange', function () {
+            var password1 = $("input[ name='password1' ]").val();
+            var password2 = $("input[ name='password2' ]").val();
             var enoughRegex = new RegExp("^(?![a-zA-z]+$)(?!\\d+$)(?![!@#$%^&*]+$)[a-zA-Z\\d!@#$%^&*]{6,20}$", "g");
             if (enoughRegex.test(password2) == false) {
-                $("#password2 input").siblings("p").text("密码为6到20位字母加数字组合");
-                $("#password2 input").css("border", "solid 1px red");
+                $(this).siblings("p").text("密码为6到20位字母加数字组合");
+                $(this).css("border", "solid 1px red");
             } else {
                 if (password1 === password2) {
-                    $("#password2 input").siblings("p").text("");
-                    $("#password2 input").css("border", "none");
-                    $("#password1 input").siblings("p").text("");
-                    $("#password1 input").css("border", "none");
+                    $(this).siblings("p").text("");
+                    $(this).css("border", "none");
+                    $(this).siblings("p").text("");
+                    $(this).css("border", "none");
                 } else {
-                    $("#password2 input").siblings("p").text("密码不一致");
+                    $(this).siblings("p").text("密码不一致");
                 }
             }
         })
         // 用户注册提交
         $("#register-btn").click(function (e) {
             e.preventDefault();
+            // 非空验证
+            $("#register input").each(function () {
+                if ($(this).val().length == 0) {
+                    var point = "请输入" + $(this).attr("placeholder")
+                    $(this).siblings("p").text(point)
+                }
+            })
             // 判断提示内容是否存在
             var point_length = 0
             $(".point").each(function () {
                 point_length = point_length + ($(this).text()).length
             })
             if (point_length == 0) {
-                var username = $("#username input").val();
-                var email = $("#email input").val();
-                var email_code = $("#email_code input").val();
-                var password = $("#password1 input").val();
+                var username = $("input[ name='username' ]").val();
+                var email = $("input[ name='email' ]").val();
+                var email_code = $("input[ name='email_code' ]").val();
+                var password1 = $("input[ name='password1' ]").val();
+                var password2 = $("input[ name='password2' ]").val();
                 $.ajax({
                     type: "POST",
                     url: "{% url 'account:loginRegister' %}",
@@ -289,21 +355,19 @@
                         username: username,
                         email: email,
                         email_code: email_code,
-                        password: password,
+                        password1: password1,
+                        password2: password2,
                         type: "注册",
                     },
                     success: function (result) {
-                        if (result.code == 3) {
-                            layer.alert(result.msg, {icon: 2});
-                            $("#email_code input").val("");
-                        } else if (result.code == 2) {
-                            layer.alert(result.msg, {icon: 2});
-                            $("#email_code input").val("");
-                        } else {
+                        if (result.code == 1) {
                             layer.msg(result.msg, {icon: 6});
                             setTimeout(function () {
                                 window.location.href = "/";
                             }, 1000);
+                        } else {
+                            layer.alert(result.msg, {icon: 2});
+                            $("input[ name='email_code' ]").val("");
                         }
                     },
                     error: function (xhr) {

@@ -5,108 +5,81 @@ from django.contrib.auth.models import User
 from account.models import UserInfo
 
 
+# 用户登录表单
 class LoginForm(forms.Form):
-    # 输入用户名密码登录表单
     user = forms.CharField(
+        label='用户名',
         max_length=20,
         error_messages={'required': '用户名或邮箱号不能为空'},
         widget=forms.TextInput(attrs={'class': 'form-style',
-                                      'placeholder': '用户名或邮箱号',
-                                      'oninvalid': 'setCustomValidity("请输入用户名或邮箱号");',
-                                      'oninput': 'setCustomValidity("");'}))
+                                      'placeholder': '用户名或邮箱号'}))
     password = forms.CharField(
         max_length=16,
         error_messages={'required': '密码不能为空'},
         widget=forms.PasswordInput(attrs={'class': 'form-style',
-                                          'placeholder': '密码',
-                                          'oninvalid': 'setCustomValidity("请输入密码");',
-                                          'oninput': 'setCustomValidity("");'}))
+                                          'placeholder': '密码'}))
 
     captcha = CaptchaField(
         required=True,
-        error_messages={'required': '验证码不能为空'},
-    )
+        error_messages={'required': '验证码不能为空'})
 
 
-class RegisterForm(forms.Form):
-    # 用户注册表单
-    username = forms.CharField(max_length=10,
-                               error_messages={'required': '用户名不能为空'},
-                               widget=forms.TextInput(attrs={'class': 'form-style',
-                                                             'placeholder': '用户名',
-                                                             'oninvalid': 'setCustomValidity("请输入用户名");',
-                                                             'oninput': 'setCustomValidity("");'}))
-    email = forms.CharField(max_length=30,
-                            error_messages={'required': '邮箱号不能为空'},
-                            widget=forms.EmailInput(attrs={'class': 'form-style',
-                                                           'placeholder': '邮箱号',
-                                                           'oninvalid': 'setCustomValidity("请输入邮箱号");',
-                                                           'oninput': 'setCustomValidity("");'}))
+# 用户注册表单
+class RegisterForm(forms.ModelForm):
     email_code = forms.CharField(max_length=6,
                                  error_messages={'required': '邮箱验证码不能为空'},
-                                 widget=forms.EmailInput(attrs={'class': 'form-style',
-                                                                'placeholder': '邮箱验证码',
-                                                                'oninvalid': 'setCustomValidity("请输入邮箱验证码");',
-                                                                'oninput': 'setCustomValidity("");'}))
+                                 widget=forms.TextInput(attrs={'class': 'form-style',
+                                                               'placeholder': '邮箱验证码'}))
     password1 = forms.CharField(max_length=16,
                                 error_messages={'required': '密码不能为空'},
                                 widget=forms.PasswordInput(attrs={'class': 'form-style',
-                                                                  'placeholder': '密码',
-                                                                  'oninvalid': 'setCustomValidity("请输入密码");',
-                                                                  'oninput': 'setCustomValidity("");'}))
+                                                                  'placeholder': '密码'}))
     password2 = forms.CharField(max_length=16,
                                 error_messages={'required': '密码不能为空'},
                                 widget=forms.PasswordInput(attrs={'class': 'form-style',
-                                                                  'placeholder': '确认密码',
-                                                                  'oninvalid': 'setCustomValidity("请输入密码");',
-                                                                  'oninput': 'setCustomValidity("");'}))
+                                                                  'placeholder': '确认密码'}))
 
     class Meta:
         model = User
         fields = ("username", "email")
+        widgets = {
+            'username': forms.TextInput(attrs={'placeholder': '用户名', 'class': 'form-style'}),
+            'email': forms.EmailInput(attrs={'placeholder': '邮箱号', 'class': 'form-style'})
+        }
 
 
+# 重置密码表单
+class ForgetForm(forms.ModelForm):
+    email_code = forms.CharField(max_length=6,
+                                 error_messages={'required': '邮箱验证码不能为空'},
+                                 widget=forms.EmailInput(attrs={'class': 'form-style',
+                                                                'placeholder': '邮箱验证码'}))
+    password1 = forms.CharField(max_length=16,
+                                error_messages={'required': '密码不能为空'},
+                                widget=forms.PasswordInput(attrs={'class': 'form-style',
+                                                                  'placeholder': '密码'}))
+    password2 = forms.CharField(max_length=16,
+                                error_messages={'required': '密码不能为空'},
+                                widget=forms.PasswordInput(attrs={'class': 'form-style',
+                                                                  'placeholder': '确认密码'}))
+
+    class Meta:
+        model = User
+        fields = ("email",)
+        widgets = {
+            'email': forms.EmailInput(attrs={'placeholder': '邮箱号', 'class': 'form-style'})
+        }
+
+
+# 用户修改信息表单
 class UserInfoForm(forms.ModelForm):
-    # 用户修改信息表单
     class Meta:
         model = UserInfo
         fields = ("phone", "sex", "web", "aboutme",)
 
 
+# 用户信息表单
 class UserForm(forms.ModelForm):
-    # 用户信息表单
     class Meta:
         model = User
         fields = ("email",)
-
-
-class ForgetForm(forms.Form):
-    # 重置密码表单
-    email = forms.CharField(max_length=30,
-                            error_messages={'required': '邮箱号不能为空'},
-                            widget=forms.EmailInput(attrs={'class': 'form-style',
-                                                           'placeholder': '邮箱号',
-                                                           'oninvalid': 'setCustomValidity("请输入邮箱号");',
-                                                           'oninput': 'setCustomValidity("");'}))
-    email_code = forms.CharField(max_length=6,
-                                 error_messages={'required': '邮箱验证码不能为空'},
-                                 widget=forms.EmailInput(attrs={'class': 'form-style',
-                                                                'placeholder': '邮箱验证码',
-                                                                'oninvalid': 'setCustomValidity("请输入邮箱验证码");',
-                                                                'oninput': 'setCustomValidity("");'}))
-    password1 = forms.CharField(max_length=16,
-                                error_messages={'required': '密码不能为空'},
-                                widget=forms.PasswordInput(attrs={'class': 'form-style',
-                                                                  'placeholder': '密码',
-                                                                  'oninvalid': 'setCustomValidity("请输入密码");',
-                                                                  'oninput': 'setCustomValidity("");'}))
-    password2 = forms.CharField(max_length=16,
-                                error_messages={'required': '密码不能为空'},
-                                widget=forms.PasswordInput(attrs={'class': 'form-style',
-                                                                  'placeholder': '确认密码',
-                                                                  'oninvalid': 'setCustomValidity("请输入密码");',
-                                                                  'oninput': 'setCustomValidity("");'}))
-
-    class Meta:
-        model = User
-        fields = ("username", "email")
