@@ -57,14 +57,14 @@ def zip_img(in_file, out_file):
 
 def main():
     # 下载保存图片
-    dirname = "/tmp"
+    dirname = "/root/bgc"
     img_url = get_img_url()
     file_path = save_img(img_url, dirname)
 
     # 压缩图片
 
-    img_dir = "/root"  # 输出目录
-    img_name = 'bgc.jpg'
+    img_dir = "/root/myblog/static/images"  # 输出目录
+    img_name = 'bg-img.jpg'
     img_path = img_dir+"/"+img_name
     zip_img(file_path, img_path)
 
