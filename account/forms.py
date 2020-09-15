@@ -12,39 +12,52 @@ class LoginForm(forms.Form):
         max_length=20,
         error_messages={'required': '用户名或邮箱号不能为空'},
         widget=forms.TextInput(attrs={'class': 'form-style',
-                                      'placeholder': '用户名或邮箱号'}))
+                                      'placeholder': '用户名或邮箱号',
+                                      'lay-verify': 'required',
+                                      'lay-reqtext': '请输入用户名或邮箱号！'}))
     password = forms.CharField(
         max_length=16,
         error_messages={'required': '密码不能为空'},
         widget=forms.PasswordInput(attrs={'class': 'form-style',
-                                          'placeholder': '密码'}))
+                                          'placeholder': '密码',
+                                          'lay-verify': 'required',
+                                          'lay-reqtext': '请输入密码！'}))
 
     captcha = CaptchaField(
         required=True,
         error_messages={'required': '验证码不能为空'})
 
+    # 用户注册表单
 
-# 用户注册表单
+
 class RegisterForm(forms.ModelForm):
     email_code = forms.CharField(max_length=6,
                                  error_messages={'required': '邮箱验证码不能为空'},
                                  widget=forms.TextInput(attrs={'class': 'form-style',
-                                                               'placeholder': '邮箱验证码'}))
+                                                               'placeholder': '邮箱验证码',
+                                                               'lay-verify': 'required',
+                                                               'lay-reqtext': '请输入邮件验证码！'}))
     password1 = forms.CharField(max_length=16,
                                 error_messages={'required': '密码不能为空'},
                                 widget=forms.PasswordInput(attrs={'class': 'form-style',
-                                                                  'placeholder': '密码'}))
+                                                                  'placeholder': '密码',
+                                                                  'lay-verify': 'password|password_same',
+                                                                  'lay-reqtext': '请输入密码！'}))
     password2 = forms.CharField(max_length=16,
                                 error_messages={'required': '密码不能为空'},
                                 widget=forms.PasswordInput(attrs={'class': 'form-style',
-                                                                  'placeholder': '确认密码'}))
+                                                                  'placeholder': '确认密码',
+                                                                  'lay-verify': 'password|password_same',
+                                                                  'lay-reqtext': '请输入确认密码！'}))
 
     class Meta:
         model = User
         fields = ("username", "email")
         widgets = {
-            'username': forms.TextInput(attrs={'placeholder': '用户名', 'class': 'form-style'}),
-            'email': forms.EmailInput(attrs={'placeholder': '邮箱号', 'class': 'form-style'})
+            'username': forms.TextInput(attrs={'placeholder': '用户名', 'class': 'form-style',
+                                               'lay-verify': 'username', 'lay-reqtext': '请输入用户名！'}),
+            'email': forms.EmailInput(attrs={'placeholder': '邮箱号', 'class': 'form-style',
+                                             'lay-verify': 'email', 'lay-reqtext': '请输入邮箱号！'})
         }
 
 
