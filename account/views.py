@@ -1,3 +1,4 @@
+import json
 import random
 
 from captcha.helpers import captcha_image_url
@@ -63,8 +64,8 @@ def sendEmail(receive, username, action, code):
     return msg.send()
 
 
+# 设置邮箱、用户名都可以登录
 class CustomBackend(ModelBackend):
-    # 设置邮箱、用户名都可以登录
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             user = User.objects.get(Q(username=username) | Q(email=username))
@@ -75,6 +76,7 @@ class CustomBackend(ModelBackend):
             return None
 
 
+# 登录注册页
 def loginRegister(request):
     if request.method == "POST":
         type = request.POST.get('type')
@@ -92,16 +94,16 @@ def loginRegister(request):
                     # 调用django默认的login方法，实现用户登录
                     return HttpResponseRedirect('/')
                 else:
-                    message = '用户名或密码错误！'
+                    message = json.dumps('用户名或密码错误！')
                     hashkey = CaptchaStore.generate_key()
                     image_url = captcha_image_url(hashkey)
                     login_form = LoginForm()
                     register_form = RegisterForm()
                     return render(request, "account/loginRegister.html", locals())
             else:
+                message = json.dumps('验证码错误！')
                 hashkey = CaptchaStore.generate_key()
                 image_url = captcha_image_url(hashkey)
-                message = '验证码错误！'
                 login_form = LoginForm()
                 register_form = RegisterForm()
                 return render(request, "account/loginRegister.html", locals())
@@ -228,7 +230,11 @@ def changeInformation(request):
 
 # 修改密码
 def changePassword(request):
-    return render(request, 'account/changePassword.html', locals())
+    if request.method == "POST":
+        pass
+    else:
+        change_password_form = ChangePasswordForm()
+        return render(request, 'account/changePassword.html', locals())
 
 
 # 浏览记录

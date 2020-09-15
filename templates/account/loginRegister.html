@@ -48,9 +48,9 @@
                                                 <i class="input-icon layui-icon layui-icon-vercode"></i>
                                                 <p class="point"></p>
                                             </div>
-                                            {% if message %}
-                                                <h5 style="color: red">{{ message }}</h5>
-                                            {% endif %}
+                                            {#                                            {% if message %}#}
+                                            {#                                                <h5 style="color: red">{{ message }}</h5>#}
+                                            {#                                            {% endif %}#}
                                             <button class="btn mt-4" type="button" id="login-btn"
                                                     onclick="login_check()">提交
                                             </button>
@@ -159,6 +159,9 @@
     layui.use(['layer', 'form'], function () {
         var $ = layui.jquery,
             layer = layui.layer;
+        // 登录错误信息提示
+        if (({{ message | safe }}).length != 0)
+            layer.alert({{ message | safe }}, {icon: 2})
         // ajax加载动画
         var load
         $(document).on('ajaxStart', function () {
@@ -258,8 +261,10 @@
             $.ajax({
                 type: "GET",
                 url: "{% url 'account:emailCode' %}",
-                data: {email: email,
-                    action:"注册新用户"},
+                data: {
+                    email: email,
+                    action: "注册新用户"
+                },
                 success: function (result) {
                     if (result.code == 1) {
                         layer.msg(result.msg, {icon: 1});

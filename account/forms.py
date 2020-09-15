@@ -71,6 +71,25 @@ class ForgetForm(forms.ModelForm):
         }
 
 
+# 修改密码表单
+class ChangePasswordForm(forms.Form):
+    password_old = forms.CharField(
+        label='当前密码',
+        max_length=16,
+        error_messages={'required': '当前密码不能为空'},
+        widget=forms.PasswordInput(attrs={'class': 'layui-input'}))
+    password1 = forms.CharField(
+        label='新密码',
+        max_length=16,
+        error_messages={'required': '新密码不能为空'},
+        widget=forms.PasswordInput(attrs={'class': 'layui-input'}))
+    password2 = forms.CharField(
+        label='确认密码',
+        max_length=16,
+        error_messages={'required': '确认密码不能为空'},
+        widget=forms.PasswordInput(attrs={'class': 'layui-input'}))
+
+
 # 用户修改信息表单
 class UserInfoForm(forms.ModelForm):
     class Meta:

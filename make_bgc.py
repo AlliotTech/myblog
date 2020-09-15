@@ -6,7 +6,6 @@ import os.path
 import os.path
 import time
 import urllib.request
-import click
 import tinify
 import requests
 
