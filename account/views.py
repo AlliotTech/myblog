@@ -1,4 +1,3 @@
-import json
 import random
 
 from captcha.helpers import captcha_image_url
@@ -94,18 +93,20 @@ def loginRegister(request):
                     # 调用django默认的login方法，实现用户登录
                     return HttpResponseRedirect('/')
                 else:
-                    message = json.dumps('用户名或密码错误！')
+                    message = '用户名或密码错误！'
                     hashkey = CaptchaStore.generate_key()
                     image_url = captcha_image_url(hashkey)
                     login_form = LoginForm()
                     register_form = RegisterForm()
+                    print(message)
                     return render(request, "account/loginRegister.html", locals())
             else:
-                message = json.dumps('验证码错误！')
+                message = '验证码错误！'
                 hashkey = CaptchaStore.generate_key()
                 image_url = captcha_image_url(hashkey)
                 login_form = LoginForm()
                 register_form = RegisterForm()
+                print(message)
                 return render(request, "account/loginRegister.html", locals())
 
         if type == "注册":
@@ -204,7 +205,34 @@ def personalCenter(request):
     return render(request, 'account/personalCenter.html', locals())
 
 
+# 修改密码
+@login_required()
+def changePassword(request):
+    if request.method == "POST":
+        change_password_form = ChangePasswordForm(request.POST)
+        if change_password_form.is_valid():
+            change_password_data = change_password_form.cleaned_data
+            old_password = change_password_data['password_old']
+            new_password = change_password_data['password1']
+            user = authenticate(username=request.user.username, password=old_password)
+            # 验证账号密码是否正确，正确返回user对象，错误返回null
+            if user:
+                user.set_password(new_password)
+                user.save()
+                return HttpResponseRedirect('/account/logout/')
+            else:
+                message = "原始密码错误！"
+        else:
+            message = "表单数据异常！"
+        change_password_form = ChangePasswordForm()
+        return render(request, 'account/changePassword.html', locals())
+    else:
+        change_password_form = ChangePasswordForm()
+        return render(request, 'account/changePassword.html', locals())
+
+
 # 修改信息
+@login_required()
 def changeInformation(request):
     userinfo = UserInfo.objects.get(user_id=request.user.id)
     user = User.objects.get(username=request.user)
@@ -226,15 +254,6 @@ def changeInformation(request):
             return render(request, 'account/changeInformation.html', locals())
     else:
         return render(request, 'account/changeInformation.html', locals())
-
-
-# 修改密码
-def changePassword(request):
-    if request.method == "POST":
-        pass
-    else:
-        change_password_form = ChangePasswordForm()
-        return render(request, 'account/changePassword.html', locals())
 
 
 # 浏览记录

@@ -9,6 +9,7 @@
         <div class="cintent-card">
             <form class="layui-form" action="." method="post">
                 {% csrf_token %}
+                {
                 <div class="layui-form-item">
                     <label class="layui-form-label">用户名：</label>
                     <div class="layui-input-inline">
@@ -16,27 +17,8 @@
                     </div>
                     <div class="layui-form-mid layui-word-aux">用户名唯一，登录使用，不可修改！</div>
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">性别：</label>
-                    <div class="layui-input-block">
-                        <input type="radio" name="sex" value="1" title="男" id="sex-man">
-                        <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
-                            <div>男</div>
-                        </div>
-                        <input type="radio" name="sex" value="2" title="女" id="sex-woman">
-                        <div class="layui-unselect layui-form-radio layui-form-radioed"><i
-                                class="layui-anim layui-icon"></i>
-                            <div>女</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">头像：</label>
-                    <div class="layui-input-inline layui-btn-container photo-change img-zoom">
-                        <img src="/media/{{ userinfo.photo }}" id="photo-img">
-                        <button type="button" class="layui-btn layui-btn-normal" id="editimg">修改头像</button>
-                    </div>
-                </div>
+
+
                 <div class="layui-form-item">
                     <label class="layui-form-label">手机：</label>
                     <div class="layui-input-inline">
@@ -48,7 +30,8 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">邮箱：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="email" value="{{ user.email }}" readonly="" lay-verify="email" autocomplete="off"
+                        <input type="text" name="email" value="{{ user.email }}" readonly="" lay-verify="email"
+                               autocomplete="off"
                                class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">账号绑定邮箱，暂不支持修改！</div>
@@ -65,6 +48,27 @@
                     <div class="layui-input-block">
                         <textarea name="aboutme" placeholder="请输入内容"
                                   class="layui-textarea">{{ userinfo.aboutme }}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">头像：</label>
+                    <div class="layui-input-inline layui-btn-container photo-change img-zoom">
+                        <img src="/media/{{ userinfo.photo }}" id="photo-img">
+                        <button type="button" class="layui-btn layui-btn-normal" id="editimg">修改头像</button>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">性别：</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="sex" value="1" title="男" id="sex-man">
+                        <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
+                            <div>男</div>
+                        </div>
+                        <input type="radio" name="sex" value="2" title="女" id="sex-woman">
+                        <div class="layui-unselect layui-form-radio layui-form-radioed"><i
+                                class="layui-anim layui-icon"></i>
+                            <div>女</div>
+                        </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -136,7 +140,8 @@
     <script>
         // 性别显示
         $(window).ready(function () {
-            var sex = {{ userinfo.sex }}
+            var sex =
+            {{ userinfo.sex }}
             if (sex === 1) {
                 $("#sex-man").prop("checked", true)
             } else {

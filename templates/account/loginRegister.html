@@ -46,8 +46,9 @@
                                                     <img src="{{ image_url }}" alt="captcha" class="captcha"></a>
                                                 <i class="input-icon layui-icon layui-icon-vercode"></i>
                                             </div>
-
                                             <input type="submit" name="type" value="登录" class="btn mt-4" lay-submit="">
+                                            <a href="{% url 'account:forgetPassword' %}"
+                                               class="link forget">忘记密码?</a>
                                         </form>
                                         <div>
                                             <h6 class="mb-0 mt-4 text-center">社交账号免注册登录</h6>
@@ -71,33 +72,29 @@
                                             <div class="form-group" id="username">
                                                 {{ register_form.username }}
                                                 <i class="input-icon layui-icon layui-icon-username"></i>
-                                                <p class="point"></p>
                                             </div>
                                             <div class="form-group mt-2" id="email">
                                                 {{ register_form.email }}
                                                 <i class="input-icon layui-icon layui-icon-email"></i>
-                                                <button type="button" class="layui-btn layui-btn-primary" id="send_btn">
+                                                <button type="button" class="layui-btn layui-btn-primary"
+                                                        layui-submit="" id="send_btn">
                                                     获取验证码
                                                 </button>
-                                                <p class="point"></p>
                                             </div>
                                             <div class="form-group mt-2" id="email_code">
                                                 {{ register_form.email_code }}
                                                 <i class="input-icon layui-icon layui-icon-vercode"></i>
-                                                <p class="point"></p>
                                             </div>
                                             <div class="form-group mt-2" id="password1">
                                                 {{ register_form.password1 }}
                                                 <i class="input-icon layui-icon layui-icon-password"></i>
-                                                <p class="point"></p>
                                             </div>
                                             <div class="form-group mt-2" id="password2">
                                                 {{ register_form.password2 }}
                                                 <i class="input-icon layui-icon layui-icon-password"></i>
-                                                <p class="point"></p>
                                             </div>
-                                            <button id="register-btn" type="button" class="btn mt-4" lay-submit=""
-                                                    id="login-btn">注册
+                                            <button type="button" class="btn mt-4" lay-submit="" lay-filter="register">
+                                                注册
                                             </button>
                                         </form>
                                     </div>
@@ -114,14 +111,33 @@
 <script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
 <script src="{% static 'js/csrf.js' %}" charset="utf-8"></script>
 <script>
-    layui.use(['form', 'layedit', 'laydate'], function () {
+
+    layui.use(['form', 'layer'], function () {
         var form = layui.form
             , $ = layui.jquery
-            , layer = layui.layer
-            , layedit = layui.layedit
-            , laydate = layui.laydate;
+            , layer = layui.layer;
+        // 登录提示信息
+        var message = '{{ message }}';
+        if (message) {
+            layer.alert(message, {icon: 2})
+        }
+        // ajax加载动画
+        var load
+        $(document).on('ajaxStart', function () {
+            load = layer.load();
+        })
+        $(document).on('ajaxComplete', function () {
+            layer.close(load);
+        })
 
-        //自定义验证规则
+        // 刷新验证码
+        $('.captcha').click(function () {
+            $.getJSON("/captcha/refresh/", function (result) {
+                $('.captcha').attr('src', result['image_url']);
+                $('#id_captcha_0').val(result['key'])
+            });
+        });
+        // 自定义验证规则
         form.verify({
             username: function (value) { //value：表单的值、item：表单的DOM对象
                 if (value.length < 3 || value.length > 10) {
@@ -137,6 +153,16 @@
                     return '用户名首尾不能出现下划线\'_\'';
                 }
             },
+            check_username: function (value) {
+                if (username_repeat(value)) {
+                    return '用户名已注册！';
+                }
+            },
+            check_email: function (value) {
+                if (email_repeat(value)) {
+                    return '邮箱已注册！'
+                }
+            },
             password: [
                 /^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]{6,20}$/
                 , '密码必须6到20位，数字加字母组合！'
@@ -149,6 +175,47 @@
                 }
             }
         });
+
+        // ajax验证用户名存在
+        function username_repeat(value) {
+            var repeat = false;
+            $.ajax({
+                type: "GET",
+                url: "{% url 'account:registerCheck' %}",
+                async: false,
+                data: {username: value},
+                success: function (result) {
+                    if (result.code == 0) {
+                        repeat = true;
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
+            return repeat;
+        }
+
+        // ajax验证邮箱号存在
+        function email_repeat(value) {
+            var repeat = false;
+            $.ajax({
+                type: "GET",
+                url: "{% url 'account:registerCheck' %}",
+                async: false,
+                data: {email: value},
+                success: function (result) {
+                    if (result.code == 0) {
+                        repeat = true;
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
+            return repeat;
+        }
+
         // 发送邮件验证码
         $("#send_btn").click(function () {
             var email = $(this).siblings("input").val()
@@ -156,12 +223,17 @@
                 layer.msg("请输入邮箱号", {icon: 2})
                 return false;
             }
-            if ($(".point").eq(1).text().length != 0) {
+            var enoughRegex = new RegExp("[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?", "g");
+            if (enoughRegex.test(email) == false) {
                 layer.msg("请输入正确的邮箱号", {icon: 2})
                 return false;
             }
             if ($("#send_btn").hasClass("layui-btn-disabled")) {
                 layer.msg("验证码已发送，请稍后再试", {icon: 2})
+                return false;
+            }
+            if (email_repeat(email)) {
+                layer.msg("邮箱号已注册！", {icon: 2})
                 return false;
             }
             $.ajax({
@@ -195,6 +267,41 @@
                 }
             })
         });
+
+        // 注册表单提交
+        form.on('submit(register)', function () {
+            var username = $("input[ name='username' ]").val();
+            var email = $("input[ name='email' ]").val();
+            var email_code = $("input[ name='email_code' ]").val();
+            var password1 = $("input[ name='password1' ]").val();
+            var password2 = $("input[ name='password2' ]").val();
+            $.ajax({
+                type: "POST",
+                url: "{% url 'account:loginRegister' %}",
+                data: {
+                    username: username,
+                    email: email,
+                    email_code: email_code,
+                    password1: password1,
+                    password2: password2,
+                    type: "注册",
+                },
+                success: function (result) {
+                    if (result.code == 1) {
+                        layer.msg(result.msg, {icon: 6});
+                        setTimeout(function () {
+                            window.location.href = "/";
+                        }, 1000);
+                    } else {
+                        layer.alert(result.msg, {icon: 2});
+                        $("input[ name='email_code' ]").val("");
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
+        })
     });
 </script>
 </body>
