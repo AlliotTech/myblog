@@ -253,6 +253,14 @@ def changeInformation(request):
         else:
             return render(request, 'account/changeInformation.html', locals())
     else:
+        username = user.username
+        email = user.email
+        user_form = UserForm({'username': username, 'email': email})
+        sex = userinfo.sex
+        phone = userinfo.phone
+        web = userinfo.web
+        aboutme = userinfo.aboutme
+        userinfo_form = UserInfoForm({'sex': sex, 'phone': phone, 'web': web, 'aboutme': aboutme})
         return render(request, 'account/changeInformation.html', locals())
 
 

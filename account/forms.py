@@ -121,13 +121,16 @@ class ChangePasswordForm(forms.Form):
 
 # 用户修改信息表单
 class UserInfoForm(forms.ModelForm):
+    sex_choice = [('1', '男'), ('2', '女')]
+    sex = forms.ChoiceField(choices=sex_choice, widget=forms.RadioSelect)
+
     class Meta:
         model = UserInfo
         fields = ("phone", "sex", "web", "aboutme")
         widgets = {
             'phone': forms.TextInput(attrs={'class': 'layui-input'}),
             'web': forms.TextInput(attrs={'class': 'layui-input'}),
-            'aboutme': forms.Textarea(attrs={'class': 'layui-textarea'}),
+            'aboutme': forms.Textarea(attrs={'class': 'layui-textarea', 'rows': 5}),
         }
 
 
@@ -137,6 +140,6 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ("email", "username")
         widgets = {
-            'username': forms.TextInput(attrs={'readonly': 'readonly'}),
-            'email': forms.EmailInput(attrs={'readonly': 'readonly'})
+            'username': forms.TextInput(attrs={'readonly': 'readonly', 'class': 'layui-input'}),
+            'email': forms.EmailInput(attrs={'readonly': 'readonly', 'class': 'layui-input'})
         }

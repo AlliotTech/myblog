@@ -12,7 +12,15 @@
 .cintent-card .layui-form-item .photo-change button {
     margin-left: 15px;
 }
-
+/*修改个人信息*/
+.layui-form-item ul li {
+    display: inline-block;
+    padding-top: 5px;
+    margin-right: 60px;
+}
+.layui-form-item .layui-form-radio {
+    margin: 0;
+}
 /*移动设备适配*/
 @media screen and (max-width: 768px) {
     /*个人中心修改密码信息页*/
