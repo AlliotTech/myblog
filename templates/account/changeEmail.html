@@ -1,0 +1,64 @@
+{% extends 'base-account.html' %}
+
+{% block title %}修改密码{% endblock %}
+
+{% block content %}
+    <div class="manage-body page-main">
+        <div class="cintent-card">
+            <form class="layui-form" action="{% url 'account:changePassword' %}" method="post">
+                {% csrf_token %}
+                <div class="layui-card-body" pad15="">
+                    {% for change_password in change_password_form %}
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">{{ change_password.label_tag }}</label>
+                            <div class="layui-input-inline">
+                                {{ change_password }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="submit" class="layui-btn" lay-submit="">提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // 导航栏当前标签页
+        $('#nav1-3').addClass("layui-this")
+        $('#nav1-3').parents("li").addClass("layui-nav-itemed")
+    </script>
+    <script>
+        layui.use(['form'], function () {
+            var form = layui.form
+                , layer = layui.layer;
+            //自定义验证规则
+            form.verify({
+                password: [
+                    /^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]{6,20}$/
+                    , '密码必须6到20位，数字加字母组合！'
+                ],
+                password_same: function () {
+                    var password1 = $("input[ name='password1' ]").val()
+                    var password2 = $("input[ name='password2' ]").val()
+                    if (password1 != password2) {
+                        return '密码不一致！'
+                    }
+                }
+            });
+
+            // 提示信息
+            var message = '{{ message }}';
+            if (message) {
+                layer.alert(message, {icon: 2})
+            }
+
+        });
+    </script>
+{% endblock %}
