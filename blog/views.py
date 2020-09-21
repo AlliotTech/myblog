@@ -1,10 +1,13 @@
 from typing import List
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from blog.models import *
 from account.models import UserInfo
 from PIL import Image
+
+
 # 图片压缩处理
 # Create your views here.
 
@@ -33,7 +36,6 @@ def global_variable(request):
 
 # 图片压缩处理
 def compressImage(request):
-
     picture_list = Article.objects.all()
 
     for cp in picture_list:
@@ -72,8 +74,21 @@ def index(request):
 
 # 文章分类列表
 def category(request, category_id):
-    articles = Article.objects.filter(category_id=category_id)
-    categoryName = Category.objects.get(id=category_id)
+    articles_all = Article.objects.filter(category_id=category_id)
+    count = articles_all.count()
+    category_name = Category.objects.get(id=category_id)
+    page = request.GET.__hash__
+    print(page)
+    paginator = Paginator(articles_all, 10)
+    try:
+        articles_list = paginator.page(page)
+        # 获取当前页码的记录
+    except PageNotAnInteger:
+        articles_list = paginator.page(1)
+        # 如果用户输入的页码不是整数时,显示第1页的内容
+    except EmptyPage:
+        articles_list = paginator.page(paginator.num_pages)
+        # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
     return render(request, 'blog/list.html', locals())
 
 
@@ -130,7 +145,7 @@ def timeAxis(request):
         if (i, j) not in date_list:
             date_list.append((i, j))
 
-    return render(request, 'blog/timeAxis.html', {"date_list":date_list})
+    return render(request, 'blog/timeAxis.html', {"date_list": date_list})
 
 
 # 留言板
@@ -147,3 +162,24 @@ def about(request):
 def blogroll(request):
     return render(request, 'blog/blogroll.html', locals())
 
+
+# ajax 文章分类分页
+def categoryPage(request):
+    page = request.GET.get('page')
+    category_id = request.GET.get('category_id')
+    print(5,page,category_id)
+    articles_all = Article.objects.filter(category_id=category_id)
+    paginator = Paginator(articles_all, 10)
+    try:
+        articles_list = paginator.page(page)
+        # 获取当前页码的记录
+    except PageNotAnInteger:
+        articles_list = paginator.page(1)
+        # 如果用户输入的页码不是整数时,显示第1页的内容
+    except EmptyPage:
+        articles_list = paginator.page(paginator.num_pages)
+        # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
+
+    print(type(articles_list))
+
+    return JsonResponse(articles_list)

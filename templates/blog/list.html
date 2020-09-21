@@ -18,7 +18,7 @@
                     <blockquote class="layui-elem-quote location suspend">
                         <p>您的位置： <a href="/">首页</a>
                             <i class="layui-icon layui-icon-next"></i>
-                            <span>{{ categoryName }} {{ tagName }}</span>
+                            <span>{{ category_name }} {{ tagName }}</span>
                         </p>
                     </blockquote>
                     <!--            文章列表-->
@@ -28,7 +28,7 @@
                                 <span>📜 文章列表</span>
                             </strong>
                         </h4>
-                        {% for article in articles %}
+                        {% for article in articles_list %}
                             <div class="layui-row layui-col-space20 article-box">
                                 <div class="layui-col-xs12 layui-col-md4">
                                     <div class="img-cover img-zoom">
@@ -66,12 +66,12 @@
                                 </div>
                             </div>
                         {% endfor %}
-                    <div id="paging"></div>
+                        <div id="paging"></div>
+                    </div>
                 </div>
+                {% include 'blog/aside.html' %}
+                <!--            主体右侧部分-->
             </div>
-            {% include 'blog/aside.html' %}
-            <!--            主体右侧部分-->
-        </div>
         </div>
         </div>
     </main>
@@ -85,34 +85,25 @@
                 , layer = layui.layer;
             laypage.render({
                 elem: 'paging'
-                , count: 1000
-                , layout: ['prev', 'page', 'next', 'limit',]
-            });
-            //调用分页
-            laypage.render({
-                elem: 'demo20'
-                , count: data.length
-                , jump: function (obj) {
-                    //模拟渲染
-                    document.getElementById('biuuu_city_list').innerHTML = function () {
-                        var arr = []
-                            , thisData = data.concat().splice(obj.curr * obj.limit - obj.limit, obj.limit);
-                        layui.each(thisData, function (index, item) {
-                            arr.push('<li>' + item + '</li>');
-                        });
-                        return arr.join('');
-                    }();
+                , count: {{ count }} //数据总数
+                , curr: location.hash.replace('#!page=', '') //获取hash值为fenye的当前页
+                , hash: 'page' //自定义hash值
+                , jump: function (obj, first) {
+                    if (!first) {
+                        layer.msg('第 ' + obj.curr + ' 页');
+                        window.location.href="#!page=2"
+                    }
                 }
-            });
+            })
         });
     </script>
     <script>
         // 导航栏当前标签页
         $(".nav2").addClass("layui-this");
-        var category_id = "#category-" + {{ categoryName.id}}
-        $(category_id).addClass("layui-this")
-        var m_category_id = "#m-category-" + {{ categoryName.id}}
-        $(m_category_id).addClass("layui-this")
+        var category_id = "#category-" + {{ category_name.id}}
+            $(category_id).addClass("layui-this")
+        var m_category_id = "#m-category-" + {{ category_name.id}}
+            $(m_category_id).addClass("layui-this")
         $(m_category_id).parents("li").addClass("layui-nav-itemed")
     </script>
 {% endblock %}
