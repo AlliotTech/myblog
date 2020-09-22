@@ -20,4 +20,6 @@ urlpatterns = [
     # 关于
     path('blogroll/', views.blogroll, name='blogroll'),
     # 友情链接
+    path('categoryPage', views.categoryPage, name='categoryPage'),
+    # ajax文章分类分页
 ]

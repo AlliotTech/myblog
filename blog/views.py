@@ -1,10 +1,14 @@
 from typing import List
 
+from django.core import serializers
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from blog.models import *
 from account.models import UserInfo
 from PIL import Image
+
+
 # 图片压缩处理
 # Create your views here.
 
@@ -33,7 +37,6 @@ def global_variable(request):
 
 # 图片压缩处理
 def compressImage(request):
-
     picture_list = Article.objects.all()
 
     for cp in picture_list:
@@ -72,9 +75,59 @@ def index(request):
 
 # 文章分类列表
 def category(request, category_id):
-    articles = Article.objects.filter(category_id=category_id)
-    categoryName = Category.objects.get(id=category_id)
+    articles_all = Article.objects.filter(category_id=category_id)
+    count = articles_all.count()
+    category_name = Category.objects.get(id=category_id)
+    paginator = Paginator(articles_all, 5)
+    articles_list = paginator.page(1)
     return render(request, 'blog/list.html', locals())
+
+
+# ajax文章分类分页
+def categoryPage(request):
+    category_id = request.GET.get('category_id')
+    # 前台传来的页数
+    page_index = request.GET.get('page')
+    # 前台传来的一页显示多少条数据
+    page_limit = request.GET.get('limit')
+    articles_all = Article.objects.filter(category_id=category_id)
+    # 处理成LayUi官方文档的格式
+    lis = []
+    for article in articles_all:
+        data = dict()
+        data['id'] = article.id
+        data['title'] = article.title
+        data['excerpt'] = article.excerpt
+        data['category'] = article.category.name
+        data['category_id'] = article.category_id
+        tags = []
+        for tag in article.tags.all():
+            tags.append(tag.name)
+        data['tags'] = tags
+        data['img'] = article.img.name
+        data['view'] = article.view
+        data['like'] = article.like
+        data['collection'] = article.collection
+        # 格式化时间的格式
+        data_joined = article.created_time.strftime("%Y-%m-%d %H:%M")
+        data['created_time'] = data_joined
+        lis.append(data)
+    # 分页器进行分配
+    try:
+        paginator = Paginator(lis, page_limit)
+        # 前端传来页数的数据
+        data = paginator.page(page_index)
+        # 放在一个列表里
+        articles_info = [x for x in data]
+        result = {"code": 1,
+                  "msg": "分页正常",
+                  "count": articles_all.count(),
+                  "data": articles_info}
+    except:
+        result = {"code": 0,
+                  "msg": "分页调用异常！"
+                  }
+    return JsonResponse(result)
 
 
 # 文章标签列表
@@ -130,7 +183,7 @@ def timeAxis(request):
         if (i, j) not in date_list:
             date_list.append((i, j))
 
-    return render(request, 'blog/timeAxis.html', {"date_list":date_list})
+    return render(request, 'blog/timeAxis.html', {"date_list": date_list})
 
 
 # 留言板
@@ -146,4 +199,3 @@ def about(request):
 # 友情链接
 def blogroll(request):
     return render(request, 'blog/blogroll.html', locals())
-
