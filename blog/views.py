@@ -1,6 +1,9 @@
 from typing import List
 
+<<<<<<< HEAD
 from django.core import serializers
+=======
+>>>>>>> cf50a96be9e61e0db8f7d6fa591c49e0546d170e
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
@@ -78,8 +81,23 @@ def category(request, category_id):
     articles_all = Article.objects.filter(category_id=category_id)
     count = articles_all.count()
     category_name = Category.objects.get(id=category_id)
+<<<<<<< HEAD
     paginator = Paginator(articles_all, 5)
     articles_list = paginator.page(1)
+=======
+    page = request.GET.__hash__
+    print(page)
+    paginator = Paginator(articles_all, 10)
+    try:
+        articles_list = paginator.page(page)
+        # 获取当前页码的记录
+    except PageNotAnInteger:
+        articles_list = paginator.page(1)
+        # 如果用户输入的页码不是整数时,显示第1页的内容
+    except EmptyPage:
+        articles_list = paginator.page(paginator.num_pages)
+        # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
+>>>>>>> cf50a96be9e61e0db8f7d6fa591c49e0546d170e
     return render(request, 'blog/list.html', locals())
 
 
@@ -199,3 +217,28 @@ def about(request):
 # 友情链接
 def blogroll(request):
     return render(request, 'blog/blogroll.html', locals())
+<<<<<<< HEAD
+=======
+
+
+# ajax 文章分类分页
+def categoryPage(request):
+    page = request.GET.get('page')
+    category_id = request.GET.get('category_id')
+    print(5,page,category_id)
+    articles_all = Article.objects.filter(category_id=category_id)
+    paginator = Paginator(articles_all, 10)
+    try:
+        articles_list = paginator.page(page)
+        # 获取当前页码的记录
+    except PageNotAnInteger:
+        articles_list = paginator.page(1)
+        # 如果用户输入的页码不是整数时,显示第1页的内容
+    except EmptyPage:
+        articles_list = paginator.page(paginator.num_pages)
+        # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
+
+    print(type(articles_list))
+
+    return JsonResponse(articles_list)
+>>>>>>> cf50a96be9e61e0db8f7d6fa591c49e0546d170e

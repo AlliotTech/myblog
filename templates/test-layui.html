@@ -8,100 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="../static/images/favicon.ico"/>
     <link rel="stylesheet" href="../static/layui/css/layui.css">
-    <link rel="stylesheet" href="../static/css/login.css">
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-<div class="box">
-    <section class="inner">
-        <div class="form-edge">
-            <h4>重置密码</h4>
-            <div class="step">
-                <div class="step-list finish-list"></div>
-                <div class="step-list"></div>
-                <div class="step-list"></div>
-                <div class="text-box">
-                    <div class="step-text finish-text">
-                        <em>1</em>
-                        <br>
-                        <strong>身份验证</strong>
-                    </div>
-                    <div class="step-text">
-                        <em>2</em>
-                        <br>
-                        <strong>设置新密码</strong>
-                    </div>
-                    <div class="step-text">
-                        <em>3</em>
-                        <br>
-                        <strong>重置完成</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-body">
-            <form class="form-show">
-                <div class="form-group">
-                    {{ forget_form.email }}
-                    <i class="input-icon layui-icon layui-icon-email"></i>
-                </div>
-                <div class="form-group verification">
-                    <input type="password" name="logpass" class="form-style" placeholder="验证码" autocomplete="off"
-                           required="required">
-                    <i class="input-icon layui-icon layui-icon-vercode"></i>
-                    <button type="button" class="layui-btn layui-btn-primary" id="send_btn">获取验证码</button>
-                </div>
-            </form>
-            <form>
-                <div class="form-group">
-                    <input type="email" name="logemail" class="form-style" placeholder="密码" autocomplete="off"
-                           required="required">
-                    <i class="input-icon layui-icon layui-icon-email"></i>
-                </div>
-                <div class="form-group verification">
-                    <input type="password" name="logpass" class="form-style" placeholder="确认密码" autocomplete="off"
-                           required="required">
-                    <i class="input-icon layui-icon layui-icon-vercode"></i>
-                </div>
-            </form>
-            <form>
-                <h1>😀 密码重置成功，快去登录吧！</h1>
-            </form>
-        </div>
-        <div class="form-edge">
-            <div class="form-button button-show">
-                <button type="button" class="layui-btn layui-btn-normal">下一步</button>
-            </div>
-            <div class="form-button">
-                <button type="button" class="layui-btn layui-btn-warm">上一步</button>
-                <button type="button" class="layui-btn layui-btn-normal">下一步</button>
-            </div>
-            <div class="form-button">
-                <button type="button" class="layui-btn layui-btn-danger">登录</button>
-            </div>
-        </div>
-    </section>
-</div>
+<div id="demo1"></div>
 
 <script src="../static/layui/layui.all.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
-    layui.use(['layer', 'form'], function () {
-        var $ = layui.jquery,
-            layer = layui.layer;
+    layui.use(['laypage', 'layer'], function () {
+        var laypage = layui.laypage
+            , layer = layui.layer;
 
-        // 切换下一页
-        function next_show(btn) {
-            index = $(btn).parent().index()
-            $("form").eq(index + 1).siblings().hide()
-            $("form").eq(index + 1).show().addClass("layui-anim layui-anim-scale")
-            $(".form-button").eq(index + 1).siblings().hide()
-            $(".form-button").eq(index + 1).show().addClass("layui-anim layui-anim-up")
-            $(".step-text").eq(index + 1).addClass("finish-text")
-            $(".step-list").eq(index + 1).addClass("finish-list")
-        }
-        $(".layui-btn-normal").click(function () {
-            next_show($(this))
+        //总页数大于页码总数
+        laypage.render({
+            elem: 'demo1'
+            , count: 70 //数据总数
+            , curr: location.hash.replace('#!page=', '') //获取hash值为fenye的当前页
+            , hash: 'page' //自定义hash值
+            , jump: function (obj, first) {
+                if (!first) {
+                    layer.msg('第 ' + obj.curr + ' 页');
+                }
+            }
         })
     })
 </script>
