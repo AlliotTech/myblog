@@ -91,7 +91,6 @@
                 , jump: function (obj, first) {
                     if (!first) {
                         //换页执行
-                        console.log("不是首次")
                         $.ajax({
                             type: "GET",
                             url: "{% url 'blog:categoryPage' %}",

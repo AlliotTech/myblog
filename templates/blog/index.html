@@ -43,10 +43,12 @@
                                             <a href="/blog/show-{{ article.id }}">{{ article.excerpt }}</a>
                                         </p>
                                         <div class="list-article-info">
-                                            <a href="/blog/category-{{ article.category_id }}" class="label-tag tag-color-{{ article.category.id }}">{{ article.category }}</a>
+                                            <a href="/blog/category-{{ article.category_id }}"
+                                               class="label-tag tag-color-{{ article.category.id }}">{{ article.category }}</a>
                                             <span>
                                                 <i class="fas fa-clock">
-                                                    <span class="timeago" datetime="{{ article.created_time | date:"Y-m-d H:i:s" }}"></span>
+                                                    <span class="timeago"
+                                                          datetime="{{ article.created_time | date:"Y-m-d H:i:s" }}"></span>
                                                 </i>
                                             </span>
                                             <span>
@@ -83,9 +85,10 @@
                 img_height = 200
             }
         })
-        layui.use(['carousel', 'form'], function () {
+        layui.use(['carousel', 'form', 'flow'], function () {
             var carousel = layui.carousel
-                , form = layui.form;
+                , form = layui.form
+                , flow = layui.flow;
             //图片轮播
             carousel.render({
                 elem: '#test10'
@@ -121,7 +124,80 @@
                 options[this.name] = value;
                 ins3.reload(options);
             });
-        });
+            // 最新文章流加载
+            flow.load({
+                elem: '.index-new' //流加载容器
+                , done: function (page, next) { //执行下一页的回调
+
+                    //模拟数据插入
+                    setTimeout(function () {
+                        console.log(page)
+                        var lis = [];
+                        $.ajax({
+                            type: "GET",
+                            url: "{% url 'blog:categoryPage' %}",
+                            data: {
+                                category_id: 1,
+                                limit: 5,
+                                page: page
+                            },
+                            success: function (result) {
+                                if (result.code == 1) {
+                                    layui.each(result.data, function (index, item) {
+                                        var article = ("<div class=\"layui-row layui-col-space20 article-box\">\n" +
+                                                    "    <div class=\"layui-col-xs12 layui-col-md4\">\n" +
+                                                    "        <div class=\"img-cover img-zoom\">\n" +
+                                                    "            <a href=\"/blog/show-"+item.id+"\" title=\"django测试页1\">\n" +
+                                                    "                <img width=\"100%\" src=\"media/"+item.img+"\">\n" +
+                                                    "            </a>\n" +
+                                                    "        </div>\n" +
+                                                    "    </div>\n" +
+                                                    "    <div class=\"layui-col-xs12 layui-col-md8\">\n" +
+                                                    "        <h3>\n" +
+                                                    "            <a href=\"/blog/show-"+item.id+"\">"+item.title+"</a>\n" +
+                                                    "        </h3>\n" +
+                                                    "        <p class=\"txt-cont hidden-xs\">\n" +
+                                                    "            <a href=\"/blog/show-"+item.id+"\">"+item.excerpt+"</a>\n" +
+                                                    "        </p>\n" +
+                                                    "        <div class=\"list-article-info\">\n" +
+                                                    "            <a href=\"/blog/category-"+item.category_id+"\" class=\"label-tag tag-color-"+item.category_id+"\">"+item.category+"</a>\n" +
+                                                    "            <span>\n" +
+                                                    "                    <i class=\"fas fa-clock\">\n" +
+                                                    "                        <span>"+item.created_time+"</span>\n" +
+                                                    "                    </i>\n" +
+                                                    "                </span>\n" +
+                                                    "            <span>\n" +
+                                                    "                    <i class=\"fas fa-eye\">"+item.view+"</i>\n" +
+                                                    "                </span>\n" +
+                                                    "            <span>\n" +
+                                                    "                    <i class=\"fas fa-thumbs-up\">"+item.like+"</i>\n" +
+                                                    "                </span>\n" +
+                                                    "            <span>\n" +
+                                                    "                    <i class=\"fas fa-heart\">"+item.collection+"</i>\n" +
+                                                    "                </span>\n" +
+                                                    "        </div>\n" +
+                                                    "    </div>\n" +
+                                                    "</div>")
+                                        lis.push(article)
+                                    })
+                                } else {
+                                    layer.alert(result.msg, {icon: 2});
+                                }
+                            },
+                            error: function (xhr) {
+                                alert(xhr.text());
+                            }
+                        })
+                        console.log(lis)
+                        //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                        //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                        next(lis.join(''), page < 10); //假设总页数为 10
+                    }, 500);
+                }
+            })
+            ;
+        })
+        ;
     </script>
     <script>
         // 导航栏当前标签页
