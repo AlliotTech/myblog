@@ -84,7 +84,6 @@
                 , layer = layui.layer;
             laypage.render({
                 elem: 'paging'
-<<<<<<< HEAD
                 , count: {{ count }}
                 , limit: 5
                 , limits: [5, 10, 15, 20]
@@ -150,23 +149,9 @@
                                 alert(xhr.text());
                             }
                         })
-                    } else {
-                        // 首次执行
-                        console.log("首次")
                     }
-
-=======
-                , count: {{ count }} //数据总数
-                , curr: location.hash.replace('#!page=', '') //获取hash值为fenye的当前页
-                , hash: 'page' //自定义hash值
-                , jump: function (obj, first) {
-                    if (!first) {
-                        layer.msg('第 ' + obj.curr + ' 页');
-                        window.location.href="#!page=2"
-                    }
->>>>>>> cf50a96be9e61e0db8f7d6fa591c49e0546d170e
                 }
-            })
+            });
         });
     </script>
     <script>
