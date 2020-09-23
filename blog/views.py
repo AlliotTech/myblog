@@ -9,7 +9,6 @@ from account.models import UserInfo
 from PIL import Image
 
 
-# 图片压缩处理
 # Create your views here.
 
 
@@ -145,10 +144,6 @@ def categoryPage(request):
         data['excerpt'] = article.excerpt
         data['category'] = article.category.name
         data['category_id'] = article.category_id
-        tags = []
-        for tag in article.tags.all():
-            tags.append(tag.name)
-        data['tags'] = tags
         data['img'] = article.img.name
         data['view'] = article.view
         data['like'] = article.like
@@ -185,12 +180,59 @@ def tag(request, tag_id):
         article["category"] = category_name
         article_list.append(article)
     return render(request, 'blog/tagList.html',
-                  {"count": len(article_list), "article_list": article_list, "tag_name": tag_obj})
+                  {"count": len(article_list), "tag_name": tag_obj, "tag_id": tag_id})
 
 
 # 标签列表分页
 def tagPage(request):
-    return None
+    tag_id = request.GET.get('tag_id')
+    # 前台传来的页数
+    page_index = request.GET.get('page')
+    # 前台传来的一页显示多少条数据
+    page_limit = request.GET.get('limit')
+    article_list = []
+    tag_obj = Tag.objects.get(id=tag_id)
+    article_obj = tag_obj.article_set.all().values()
+    for article in article_obj:
+        category_name = Category.objects.get(id=article['category_id'])
+        article["category"] = category_name
+        article_list.append(article)
+    lis = []
+    for article in article_list:
+        data = dict()
+        data['id'] = article['id']
+        data['title'] = article['title']
+        data['excerpt'] = article['excerpt']
+        data['category_id'] = article['category_id']
+        # category = Article.objects.get(id='category_id')
+        # data['category'] = category.name
+        data['view'] = article['view']
+        data['like'] = article['like']
+        data['collection'] = article['collection']
+        # 格式化时间的格式
+        data_joined = article['created_time'].strftime("%Y-%m-%d %H:%M:%S")
+        data['created_time'] = data_joined
+        lis.append(data)
+    # 分页器进行分配
+    paginator = Paginator(lis, page_limit)
+    # 前端传来页数的数据
+    data = paginator.page(page_index)
+    try:
+        paginator = Paginator(lis, page_limit)
+        # 前端传来页数的数据
+        data = paginator.page(page_index)
+        # 放在一个列表里
+        articles_info = [x for x in data]
+        result = {"code": 1,
+                  "msg": "分页正常",
+                  "count": len(article_list),
+                  "data": articles_info}
+    except Exception as e:
+        print(e)
+        result = {"code": 0,
+                  "msg": "分页调用异常！"
+                  }
+    return JsonResponse(result)
 
 
 # 文章内容页

@@ -20,7 +20,7 @@
                             <i class="layui-icon layui-icon-next"></i>
                             <span>标签分类</span>
                             <i class="layui-icon layui-icon-next"></i>
-                            <span>{{ category_name }}</span>
+                            <span>{{ tag_name }}</span>
                         </p>
                     </blockquote>
                     <!--            文章列表-->
@@ -91,6 +91,7 @@
                             },
                             success: function (result) {
                                 if (result.code == 1) {
+                                    console.log(result.data)
                                     $(".article-box").remove();
                                     createEle(result);
                                 } else {
@@ -152,13 +153,5 @@
                 flow.lazyimg();
             });
         }
-
-        // 导航栏当前标签页
-        $(".nav2").addClass("layui-this");
-        var category_id = "#category-" + {{ category_name.id}}
-            $(category_id).addClass("layui-this")
-        var m_category_id = "#m-category-" + {{ category_name.id}}
-            $(m_category_id).addClass("layui-this")
-        $(m_category_id).parents("li").addClass("layui-nav-itemed")
     </script>
 {% endblock %}
