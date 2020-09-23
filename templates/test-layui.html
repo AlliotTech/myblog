@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="../static/images/favicon.ico"/>
     <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/css/public.css">
+    <link rel="stylesheet" href="../static/css/blog.css">
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
@@ -30,7 +32,41 @@
                 setTimeout(function () {
                     var lis = [];
                     for (var i = 0; i < 8; i++) {
-                        lis.push('<li>' + ((page - 1) * 8 + i + 1) + '</li>')
+                        var content = "<div class=\"layui-row layui-col-space20 article-box\">\n" +
+                        "    <div class=\"layui-col-xs12 layui-col-md4\">\n" +
+                        "        <div class=\"img-cover img-zoom\">\n" +
+                        "            <a href=\"/blog/show-18\" title=\"django测试页8\">\n" +
+                        "                <img width=\"100%\" src=\"../media/cover/286968.jpg\">\n" +
+                        "            </a>\n" +
+                        "        </div>\n" +
+                        "    </div>\n" +
+                        "    <div class=\"layui-col-xs12 layui-col-md8\">\n" +
+                        "        <h3>\n" +
+                        "            <a href=\"/blog/show-18\">django测试页8</a>\n" +
+                        "        </h3>\n" +
+                        "        <p class=\"txt-cont hidden-xs\">\n" +
+                        "            <a href=\"/blog/show-18\">这是django内容测试页</a>\n" +
+                        "        </p>\n" +
+                        "        <div class=\"list-article-info\">\n" +
+                        "            <a href=\"/blog/category-1\" class=\"label-tag tag-color-1\">Linux</a>\n" +
+                        "            <span>\n" +
+                        "                <i class=\"fas fa-clock\">\n" +
+                        "                    <span class=\"timeago\" datetime=\"2020-09-21 22:17:51\" data-tid=\"18\">1天前</span>\n" +
+                        "                </i>\n" +
+                        "            </span>\n" +
+                        "            <span>\n" +
+                        "                <i class=\"fas fa-eye\">0</i>\n" +
+                        "            </span>\n" +
+                        "            <span>\n" +
+                        "                <i class=\"fas fa-thumbs-up\">0</i>\n" +
+                        "            </span>\n" +
+                        "            <span>\n" +
+                        "                <i class=\"fas fa-heart\">0</i>\n" +
+                        "            </span>\n" +
+                        "        </div>\n" +
+                        "    </div>\n" +
+                        "</div>"
+                        lis.push(content)
                     }
                     console.log(page)
                     console.log(lis)

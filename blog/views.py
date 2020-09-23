@@ -69,8 +69,56 @@ def compressImage(request):
 
 # 首页
 def index(request):
-    articles = Article.objects.all().order_by('-created_time')[:10]
+    count = Article.objects.all().count()
+    page_count = (count // 5) + 1
+    print(page_count)
+    articles = Article.objects.all()[:1]
     return render(request, 'blog/index.html', locals())
+
+
+# 首页流加载
+def indexPage(request):
+    page_index = request.GET.get('page')
+    # 前台传来的一页显示多少条数据
+    page_limit = request.GET.get('limit')
+    articles_all = Article.objects.all()
+    # 处理成LayUi官方文档的格式
+    lis = []
+    for article in articles_all:
+        data = dict()
+        data['id'] = article.id
+        data['title'] = article.title
+        data['excerpt'] = article.excerpt
+        data['category'] = article.category.name
+        data['category_id'] = article.category_id
+        tags = []
+        for tag in article.tags.all():
+            tags.append(tag.name)
+        data['tags'] = tags
+        data['img'] = article.img.name
+        data['view'] = article.view
+        data['like'] = article.like
+        data['collection'] = article.collection
+        # 格式化时间的格式
+        data_joined = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
+        data['created_time'] = data_joined
+        lis.append(data)
+    # 分页器进行分配
+    try:
+        paginator = Paginator(lis, page_limit)
+        # 前端传来页数的数据
+        data = paginator.page(page_index)
+        # 放在一个列表里
+        articles_info = [x for x in data]
+        result = {"code": 1,
+                  "msg": "分页正常",
+                  "count": articles_all.count(),
+                  "data": articles_info}
+    except:
+        result = {"code": 0,
+                  "msg": "分页调用异常！"
+                  }
+    return JsonResponse(result)
 
 
 # 文章分类列表

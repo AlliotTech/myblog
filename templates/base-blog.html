@@ -18,6 +18,7 @@
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
     <script src="{% static 'layui/layui.js' %}" charset="utf-8"></script>
     <script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
+    <script src="{% static 'js/jquery.timeago.js' %}" charset="utf-8"></script>
     <script>
         //百度流量统计
         var _hmt = _hmt || [];
@@ -246,31 +247,15 @@
         t = 0;
         $(window).scroll(function () {
             p = $(this).scrollTop();
-            {#console.log(p)#}
             if (t < p) {
-                {#console.log("下翻");#}
                 $('.nav-fixed').stop().slideUp();
 
             } else {
-                {#console.log("上翻");#}
                 $('.nav-fixed').stop().slideDown();
             }
             t = p;
         })
     })
-</script>
-<script>
-    // 日期显示为几天前
-    layui.config({
-        version: true,
-        base: "{% static 'timeago/' %}"
-    }).extend({
-        timeago: 'timeago'
-    }).use(['timeago'], function () {
-        var $ = layui.jquery;
-        var timeago = layui.timeago;
-        timeago.render($('.timeago'));
-    });
 </script>
 <script>
     /*判断当在第一屏的时候，回到顶部按钮的时候隐藏*/

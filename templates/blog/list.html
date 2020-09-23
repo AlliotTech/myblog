@@ -101,7 +101,6 @@
                             },
                             success: function (result) {
                                 if (result.code == 1) {
-                                    console.log(result.data)
                                     $(".article-box").remove();
                                     layui.each(result.data, function (index, item) {
                                         var $article = $("<div class=\"layui-row layui-col-space20 article-box\">\n" +
