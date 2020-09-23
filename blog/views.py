@@ -178,14 +178,14 @@ def categoryPage(request):
 
 # 文章标签列表
 def tag(request, tag_id):
-    articles = []
+    article_list = []
     tag_obj = Tag.objects.get(id=tag_id)
-    tagName = tag_obj
+    tag_name = tag_obj
     article_obj = tag_obj.article_set.all().values()
     for article in article_obj:
         category_name = Category.objects.get(id=article['category_id'])
         article["category"] = category_name
-        articles.append(article)
+        article_list.append(article)
     return render(request, 'blog/list.html', locals())
 
 
