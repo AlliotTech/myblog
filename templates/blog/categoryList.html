@@ -18,7 +18,9 @@
                     <blockquote class="layui-elem-quote location suspend">
                         <p>您的位置： <a href="/">首页</a>
                             <i class="layui-icon layui-icon-next"></i>
-                            <span>{{ category_name }} {{ tag_name }}</span>
+                            <span>文章分类</span>
+                            <i class="layui-icon layui-icon-next"></i>
+                            <span>{{ category_name }}</span>
                         </p>
                     </blockquote>
                     <!--            文章列表-->
@@ -49,7 +51,8 @@
                                            class="label-tag tag-color-{{ article.category.id }}">{{ article.category }}</a>
                                         <span>
                                                 <i class="fas fa-clock">
-                                                    <span class="timeago" datetime="{{ article.created_time | date:"Y-m-d H:i" }}"></span>
+                                                    <span class="timeago"
+                                                          datetime="{{ article.created_time | date:"Y-m-d H:i" }}"></span>
                                                 </i>
                                             </span>
                                         <span>
@@ -78,10 +81,13 @@
 
 {% block js %}
     <script>
-        // 分页
-        layui.use(['laypage', 'layer'], function () {
+
+        layui.use(['laypage', 'layer','flow'], function () {
             var laypage = layui.laypage
-                , layer = layui.layer;
+                , layer = layui.layer
+                , flow = layui.flow;
+
+            // 分页
             laypage.render({
                 elem: 'paging'
                 , count: {{ count }}
@@ -89,7 +95,29 @@
                 , limits: [5, 10, 15, 20]
                 , layout: ['prev', 'page', 'next', 'limit', 'limits',]
                 , jump: function (obj, first) {
-                    if (!first) {
+                    if (first) {
+                        // 获取第一页内容
+                        $.ajax({
+                            type: "GET",
+                            url: "{% url 'blog:categoryPage' %}",
+                            data: {
+                                category_id: {{ category_id }},
+                                limit: obj.limit,
+                                page: 1
+                            },
+                            success: function (result) {
+                                if (result.code == 1) {
+                                    $(".article-box").remove();
+                                    createEle(result);
+                                } else {
+                                    layer.alert(result.msg, {icon: 2});
+                                }
+                            },
+                            error: function (xhr) {
+                                alert(xhr.text());
+                            }
+                        })
+                    } else {
                         //换页执行
                         $.ajax({
                             type: "GET",
@@ -102,45 +130,7 @@
                             success: function (result) {
                                 if (result.code == 1) {
                                     $(".article-box").remove();
-                                    layui.each(result.data, function (index, item) {
-                                        var $article = $("<div class=\"layui-row layui-col-space20 article-box\">\n" +
-                                                    "    <div class=\"layui-col-xs12 layui-col-md4\">\n" +
-                                                    "        <div class=\"img-cover img-zoom\">\n" +
-                                                    "            <a href=\"/blog/show-"+item.id+"\" title=\"django测试页1\">\n" +
-                                                    "                <img width=\"100%\" src=\"media/"+item.img+"\">\n" +
-                                                    "            </a>\n" +
-                                                    "        </div>\n" +
-                                                    "    </div>\n" +
-                                                    "    <div class=\"layui-col-xs12 layui-col-md8\">\n" +
-                                                    "        <h3>\n" +
-                                                    "            <a href=\"/blog/show-"+item.id+"\">"+item.title+"</a>\n" +
-                                                    "        </h3>\n" +
-                                                    "        <p class=\"txt-cont hidden-xs\">\n" +
-                                                    "            <a href=\"/blog/show-"+item.id+"\">"+item.excerpt+"</a>\n" +
-                                                    "        </p>\n" +
-                                                    "        <div class=\"list-article-info\">\n" +
-                                                    "            <a href=\"/blog/category-"+item.category_id+"\" class=\"label-tag tag-color-"+item.category_id+"\">"+item.category+"</a>\n" +
-                                                    "            <span>\n" +
-                                                    "                    <i class=\"fas fa-clock\">\n" +
-                                                    "                       <span class=\"timeago\" datetime=\""+item.created_time+"\"'></span>" +
-                                                    "                    </i>\n" +
-                                                    "                </span>\n" +
-                                                    "            <span>\n" +
-                                                    "                    <i class=\"fas fa-eye\">"+item.view+"</i>\n" +
-                                                    "                </span>\n" +
-                                                    "            <span>\n" +
-                                                    "                    <i class=\"fas fa-thumbs-up\">"+item.like+"</i>\n" +
-                                                    "                </span>\n" +
-                                                    "            <span>\n" +
-                                                    "                    <i class=\"fas fa-heart\">"+item.collection+"</i>\n" +
-                                                    "                </span>\n" +
-                                                    "        </div>\n" +
-                                                    "    </div>\n" +
-                                                    "</div>")
-                                        $("#list-title").after($article);
-                                        var timeago = layui.timeago;
-                                        timeago.render($('.timeago'));
-                                    });
+                                    createEle(result);
                                 } else {
                                     layer.alert(result.msg, {icon: 2});
                                 }
@@ -153,6 +143,54 @@
                 }
             });
         });
+
+        // 根据ajax返回分页结果创建内容
+        function createEle(result) {
+            layui.each(result.data, function (index, item) {
+                var $article = $("<div class=\"layui-row layui-col-space20 article-box\">\n" +
+                    "    <div class=\"layui-col-xs12 layui-col-md4\">\n" +
+                    "        <div class=\"img-cover img-zoom\">\n" +
+                    "            <a href=\"/blog/show-" + item.id + "\" title=\"django测试页1\">\n" +
+                    "                <img width=\"100%\" lay-src=\"media/" + item.img + "\">\n" +
+                    "            </a>\n" +
+                    "        </div>\n" +
+                    "    </div>\n" +
+                    "    <div class=\"layui-col-xs12 layui-col-md8\">\n" +
+                    "        <h3>\n" +
+                    "            <a href=\"/blog/show-" + item.id + "\">" + item.title + "</a>\n" +
+                    "        </h3>\n" +
+                    "        <p class=\"txt-cont hidden-xs\">\n" +
+                    "            <a href=\"/blog/show-" + item.id + "\">" + item.excerpt + "</a>\n" +
+                    "        </p>\n" +
+                    "        <div class=\"list-article-info\">\n" +
+                    "            <a href=\"/blog/category-" + item.category_id + "\" class=\"label-tag tag-color-" + item.category_id + "\">" + item.category + "</a>\n" +
+                    "            <span>\n" +
+                    "                    <i class=\"fas fa-clock\">\n" +
+                    "                       <span class=\"timeago\" datetime=\"" + item.created_time + "\"'></span>" +
+                    "                    </i>\n" +
+                    "                </span>\n" +
+                    "            <span>\n" +
+                    "                    <i class=\"fas fa-eye\">" + item.view + "</i>\n" +
+                    "                </span>\n" +
+                    "            <span>\n" +
+                    "                    <i class=\"fas fa-thumbs-up\">" + item.like + "</i>\n" +
+                    "                </span>\n" +
+                    "            <span>\n" +
+                    "                    <i class=\"fas fa-heart\">" + item.collection + "</i>\n" +
+                    "                </span>\n" +
+                    "        </div>\n" +
+                    "    </div>\n" +
+                    "</div>")
+                $("#list-title").after($article);
+                // 时间显示几天前
+                var timeago = layui.timeago;
+                timeago.render($('.timeago'));
+                // 图片懒加载
+                var flow = layui.flow;
+                flow.lazyimg();
+            });
+        }
+
         // 导航栏当前标签页
         $(".nav2").addClass("layui-this");
         var category_id = "#category-" + {{ category_name.id}}

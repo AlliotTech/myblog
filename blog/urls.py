@@ -22,6 +22,8 @@ urlpatterns = [
     # 友情链接
     path('categoryPage', views.categoryPage, name='categoryPage'),
     # ajax文章分类分页
+    path('tagPage', views.tagPage, name='tagPage'),
+    # ajax标签分类分页
     path('indexPage', views.indexPage, name='indexPage'),
     # ajax首页流加载
 ]

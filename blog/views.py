@@ -124,9 +124,8 @@ def category(request, category_id):
     articles_all = Article.objects.filter(category_id=category_id)
     count = articles_all.count()
     category_name = Category.objects.get(id=category_id)
-    paginator = Paginator(articles_all, 5)
-    articles_list = paginator.page(1)
-    return render(request, 'blog/list.html', locals())
+    return render(request, 'blog/categoryList.html',
+                  {"count": count, "category_name": category_name, "category_id": category_id})
 
 
 # ajax文章分类分页
@@ -180,13 +179,18 @@ def categoryPage(request):
 def tag(request, tag_id):
     article_list = []
     tag_obj = Tag.objects.get(id=tag_id)
-    tag_name = tag_obj
     article_obj = tag_obj.article_set.all().values()
     for article in article_obj:
         category_name = Category.objects.get(id=article['category_id'])
         article["category"] = category_name
         article_list.append(article)
-    return render(request, 'blog/list.html', locals())
+    return render(request, 'blog/tagList.html',
+                  {"count": len(article_list), "article_list": article_list, "tag_name": tag_obj})
+
+
+# 标签列表分页
+def tagPage(request):
+    return None
 
 
 # 文章内容页
