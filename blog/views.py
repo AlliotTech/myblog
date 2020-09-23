@@ -71,7 +71,6 @@ def compressImage(request):
 def index(request):
     count = Article.objects.all().count()
     page_count = (count // 5) + 1
-    print(page_count)
     articles = Article.objects.all()[:1]
     return render(request, 'blog/index.html', locals())
 
