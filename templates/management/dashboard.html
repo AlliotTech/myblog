@@ -176,8 +176,6 @@
         // 导航栏当前标签页
         $('#nav1-1').addClass("layui-this")
         $('#nav1-1').parents("li").addClass("layui-nav-itemed")
-    </script>
-    <script>
         // 流量分析折线图
         var myChart = echarts.init(document.getElementById('data-statistics'), 'wonderland');
         // 指定图表的配置项和数据
@@ -260,12 +258,8 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-    </script>
-    <script>
         // 访客浏览器折线图
-
         var myChart = echarts.init(document.getElementById('browser-source'), 'wonderland');
-
         // 指定图表的配置项和数据
         var option = {
             // title: {
@@ -304,7 +298,6 @@
                 }
             ]
         };
-
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
     </script>

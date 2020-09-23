@@ -71,7 +71,6 @@ def compressImage(request):
 def index(request):
     count = Article.objects.all().count()
     page_count = (count // 5) + 1
-    articles = Article.objects.all()[:1]
     return render(request, 'blog/index.html', locals())
 
 
@@ -156,7 +155,7 @@ def categoryPage(request):
         data['like'] = article.like
         data['collection'] = article.collection
         # 格式化时间的格式
-        data_joined = article.created_time.strftime("%Y-%m-%d %H:%M")
+        data_joined = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
         data['created_time'] = data_joined
         lis.append(data)
     # 分页器进行分配

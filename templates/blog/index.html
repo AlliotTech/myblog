@@ -1,4 +1,5 @@
 {% extends 'base-blog.html' %}
+{% load static %}
 {% block title %}崔亮的博客-专注devops自动化运维，传播优秀it运维技术文章{% endblock %}
 {% block content %}
     <main class="page-main">
@@ -36,10 +37,6 @@
 
 {% block js %}
     <script type="text/javascript">
-        // 显示多久前
-        jQuery(document).ready(function () {
-            jQuery("time.timeago").timeago();
-        });
         // 轮播图片
         $(document).ready(function () {
             w = $(window).width(); //浏览器当前窗口可视区域宽度
@@ -125,7 +122,7 @@
                                             "            <a href=\"/blog/category-" + item.category_id + "\" class=\"label-tag tag-color-" + item.category_id + "\">" + item.category + "</a>\n" +
                                             "            <span>\n" +
                                             "                    <i class=\"fas fa-clock\">\n" +
-                                            "                        <time class=\"timeago\" datetime=\"" + item.created_time + "\" ></time>" +
+                                            "                        <span class=\"timeago\" datetime=\"" + item.created_time + "\" ></span>" +
                                             "                    </i>\n" +
                                             "                </span>\n" +
                                             "            <span>\n" +
@@ -154,7 +151,8 @@
                         //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
                         //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
                         next(lis.join(''), page < {{page_count}});
-                        $("time.timeago").timeago();//假设总页数为 10
+                        var timeago = layui.timeago;
+                        timeago.render($('.timeago'));
                     }, 500);
                 }
             })

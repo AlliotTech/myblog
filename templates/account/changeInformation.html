@@ -28,17 +28,6 @@
                     <label class="layui-form-label">性别：</label>
                     <div class="layui-input-block">
                         {{ userinfo_form.sex }}
-                        <!--
-                        <input type="radio" name="sex" value="1" title="男" id="sex-man">
-                        <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
-                            <div>男</div>
-                        </div>
-                        <input type="radio" name="sex" value="2" title="女" id="sex-woman">
-                        <div class="layui-unselect layui-form-radio layui-form-radioed"><i
-                                class="layui-anim layui-icon"></i>
-                            <div>女</div>
-                        </div>
-                        -->
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -84,8 +73,6 @@
         // 导航栏当前标签页
         $('#nav1-2').addClass("layui-this")
         $('#nav1-2').parents("li").addClass("layui-nav-itemed")
-    </script>
-    <script>
         //文本提交
         layui.use(['form', 'layedit', 'laydate'], function () {
             var form = layui.form
@@ -100,8 +87,6 @@
                 return false;
             });
         });
-    </script>
-    <script type="text/javascript">
         // 设置裁剪图片
         $(function () {
             w = $(window).width(); //浏览器当前窗口可视区域宽度
@@ -133,17 +118,5 @@
                 }
             });
         });
-    </script>
-    <script>
-        // 性别显示
-        $(window).ready(function () {
-            var sex =
-            {{ userinfo.sex }}
-            if (sex === 1) {
-                $("#sex-man").prop("checked", true)
-            } else {
-                $("#sex-woman").prop("checked", true)
-            }
-        })
     </script>
 {% endblock %}

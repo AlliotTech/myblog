@@ -239,10 +239,8 @@ def changeInformation(request):
     if request.method == "POST":
         user_form = UserForm(request.POST)
         userinfo_form = UserInfoForm(request.POST)
-        if user_form.is_valid() and userinfo_form.is_valid():
-            user_data = user_form.cleaned_data
+        if userinfo_form.is_valid():
             userinfo_data = userinfo_form.cleaned_data
-            request.user.email = user_data['email']
             userinfo.sex = userinfo_data['sex']
             userinfo.phone = userinfo_data['phone']
             userinfo.web = userinfo_data['web']

@@ -14,10 +14,18 @@
 <div class="timeago" datetime="2016-06-30 09:20:00"></div>
 <div class="need_to_be_rendered" datetime="2017-08-01 21:55:28"></div>
 <div class="need_to_be_rendered" data-timeage="2017-08-01 21:55:28"></div>
-<script src="../static/js/timeago.min.js"></script>
+<script src="../static/layui/layui.all.js"></script>
 <script type="text/javascript">
-    var timeagoInstance = timeago();
-    timeagoInstance.render(document.querySelectorAll('.need_to_be_rendered'));
+    layui.config({
+        version: true,
+        base: "../static/timeago/"
+    }).extend({
+        timeago: 'timeago'
+    }).use(['timeago'], function () {
+        var $ = layui.jquery;
+        var timeago = layui.timeago;
+        timeago.render($('.timeago'));
+    });
 </script>
 
 </body>

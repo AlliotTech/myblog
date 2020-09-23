@@ -49,7 +49,7 @@
                                            class="label-tag tag-color-{{ article.category.id }}">{{ article.category }}</a>
                                         <span>
                                                 <i class="fas fa-clock">
-                                                    <span>{{ article.created_time | date:"Y-m-d H:i" }}</span>
+                                                    <span class="timeago" datetime="{{ article.created_time | date:"Y-m-d H:i" }}"></span>
                                                 </i>
                                             </span>
                                         <span>
@@ -122,7 +122,7 @@
                                                     "            <a href=\"/blog/category-"+item.category_id+"\" class=\"label-tag tag-color-"+item.category_id+"\">"+item.category+"</a>\n" +
                                                     "            <span>\n" +
                                                     "                    <i class=\"fas fa-clock\">\n" +
-                                                    "                        <span>"+item.created_time+"</span>\n" +
+                                                    "                       <span class=\"timeago\" datetime=\""+item.created_time+"\"'></span>" +
                                                     "                    </i>\n" +
                                                     "                </span>\n" +
                                                     "            <span>\n" +
@@ -138,6 +138,8 @@
                                                     "    </div>\n" +
                                                     "</div>")
                                         $("#list-title").after($article);
+                                        var timeago = layui.timeago;
+                                        timeago.render($('.timeago'));
                                     });
                                 } else {
                                     layer.alert(result.msg, {icon: 2});
@@ -151,8 +153,6 @@
                 }
             });
         });
-    </script>
-    <script>
         // 导航栏当前标签页
         $(".nav2").addClass("layui-this");
         var category_id = "#category-" + {{ category_name.id}}

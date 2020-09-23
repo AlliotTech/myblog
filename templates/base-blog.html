@@ -18,7 +18,6 @@
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
     <script src="{% static 'layui/layui.js' %}" charset="utf-8"></script>
     <script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
-    <script src="{% static 'js/jquery.timeago.js' %}" charset="utf-8"></script>
     <script>
         //百度流量统计
         var _hmt = _hmt || [];
@@ -73,7 +72,8 @@
         <li class="layui-nav-item nav-user-online layui-hide-xs nav7">
             {% if user.is_authenticated %}
                 {#                    用户已登录#}
-                <a href="javascript:;"><img lay-src="/media/{{ userinfo.photo }}" class="layui-nav-img">{{ user.username }}
+                <a href="javascript:;"><img lay-src="/media/{{ userinfo.photo }}"
+                                            class="layui-nav-img">{{ user.username }}
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="{% url 'account:personalCenter' %}">个人中心</a></dd>
@@ -213,18 +213,26 @@
 </footer>
 {#js部分#}
 <script>
+    // 日期显示为几天前
+    layui.config({
+        version: true,
+        base: "{% static 'timeago/' %}"
+    }).extend({
+        timeago: 'timeago'
+    }).use(['timeago'], function () {
+        var $ = layui.jquery;
+        var timeago = layui.timeago;
+        timeago.render($('.timeago'));
+    });
     //导航的hover效果、二级菜单等功能，需要依赖element模块
     layui.use('element', function () {
         var element = layui.element;
-
         //监听导航点击
         element.on('nav(demo)', function (elem) {
             //console.log(elem)
             layer.msg(elem.text());
         });
     });
-</script>
-<script>
     // 手机侧边栏
     $('.nav-show-btn').on("click", function () {
         $('.nav-show-btn').toggleClass('nav-close-btn');
@@ -232,15 +240,11 @@
         $('.page-main').toggleClass('page-main-side');
         $('.logo').toggleClass('logo-side');
     });
-</script>
-<script>
     // 下拉搜索框
     $('.nav-search').on("click", function () {
         $('.nav-search').toggleClass('nav-search-close');
         $('.search-box').toggleClass('search-box-show');
     });
-</script>
-<script>
     // 导航栏吸顶效果
     $(document).ready(function () {
         var p = 0;
@@ -256,8 +260,6 @@
             t = p;
         })
     })
-</script>
-<script>
     /*判断当在第一屏的时候，回到顶部按钮的时候隐藏*/
     $(window).scroll(function () {
         var scroll_len = $(window).scrollTop();
@@ -272,8 +274,6 @@
     $('#back-top').click(function (e) {
         $("body,html").animate({scrollTop: 0}, 1000);
     })
-</script>
-<script>
     //友情链接页面底部footer固定
     title = document.title
     if (title == '友情链接') {
@@ -285,8 +285,6 @@
             }
         })
     }
-</script>
-<script>
     // 图片懒加载
     layui.use('flow', function () {
         var flow = layui.flow;
