@@ -204,8 +204,8 @@ def tagPage(request):
         data['title'] = article['title']
         data['excerpt'] = article['excerpt']
         data['category_id'] = article['category_id']
-        # category = Article.objects.get(id='category_id')
-        # data['category'] = category.name
+        data['category'] = Category.objects.get(id=article['category_id']).name
+        data['img'] = Article.objects.get(id=article['id']).img.name
         data['view'] = article['view']
         data['like'] = article['like']
         data['collection'] = article['collection']
