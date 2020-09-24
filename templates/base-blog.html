@@ -102,11 +102,11 @@
 <!--滑动搜索框特效-->
 <div class="search-box">
     <div class="search-form">
-        <from>
-            <input type="text" placeholder="请输入搜索内容">
-            <button>搜索</button>
-        </from>
-        <a></a>
+        <form name="search" class="layui-form" method="get" action="{% url 'blog:search' %}">
+            {% csrf_token %}
+            {{ search_form.key }}
+            <input type="submit" name="submit" lay-submit="" value="提交" id="submit">
+        </form>
     </div>
 </div>
 <!--手机版侧边栏-->

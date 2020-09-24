@@ -2,8 +2,11 @@ from typing import List
 
 from django.core import serializers
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
+
+from blog.forms import searchForm
 from blog.models import *
 from account.models import UserInfo
 from PIL import Image
@@ -30,7 +33,8 @@ def global_variable(request):
     # 收藏排行
     collectionTop = Article.objects.all().order_by('-collection')[:9]
     # 评论排行
-
+    # 搜索表单
+    search_form = searchForm()
     return locals()
 
 
@@ -172,15 +176,10 @@ def categoryPage(request):
 
 # 文章标签列表
 def tag(request, tag_id):
-    article_list = []
     tag_obj = Tag.objects.get(id=tag_id)
-    article_obj = tag_obj.article_set.all().values()
-    for article in article_obj:
-        category_name = Category.objects.get(id=article['category_id'])
-        article["category"] = category_name
-        article_list.append(article)
+    count = tag_obj.article_set.all().count()
     return render(request, 'blog/tagList.html',
-                  {"count": len(article_list), "tag_name": tag_obj, "tag_id": tag_id})
+                  {"count": count, "tag_name": tag_obj, "tag_id": tag_id})
 
 
 # 标签列表分页
@@ -291,3 +290,17 @@ def about(request):
 # 友情链接
 def blogroll(request):
     return render(request, 'blog/blogroll.html', locals())
+
+
+# 搜索
+def search(request):
+    key = request.GET.get('key')
+    search_form = searchForm(request.GET)
+    if search_form.is_valid():
+        search_data = search_form.cleaned_data
+        articles = Article.objects.filter(Q(title__icontains=search_data['key']) | Q(body__icontains=search_data['key']))
+        if articles.count() == 0:
+            message = '未搜索到匹配内容，请重新输入关键字！'
+    else:
+        message = '输入内容不合法！'
+    return render(request, 'blog/search.html', locals())

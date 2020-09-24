@@ -26,4 +26,6 @@ urlpatterns = [
     # ajax标签分类分页
     path('indexPage', views.indexPage, name='indexPage'),
     # ajax首页流加载
+    path('search', views.search, name='search'),
+    # 搜索
 ]

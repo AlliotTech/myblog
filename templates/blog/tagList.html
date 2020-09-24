@@ -50,6 +50,7 @@
                 , flow = layui.flow;
 
             // 分页
+            console.log({{ count }})
             laypage.render({
                 elem: 'paging'
                 , count: {{ count }}
@@ -87,7 +88,7 @@
                             data: {
                                 tag_id: {{ tag_id }},
                                 limit: obj.limit,
-                                page: 1
+                                page: obj.curr
                             },
                             success: function (result) {
                                 if (result.code == 1) {

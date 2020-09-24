@@ -871,7 +871,7 @@ nav {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-.search-form input {
+.search-form input[type="text"] {
     width: 65%;
     height: 20px;
     padding: 10px 20px;
@@ -883,7 +883,7 @@ nav {
     vertical-align: middle;
 }
 
-.search-form button {
+.search-form input[type="submit"] {
     width: 20%;
     height: 40px;
     overflow: hidden;
