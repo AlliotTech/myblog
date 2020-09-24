@@ -105,7 +105,7 @@
         <form name="search" class="layui-form" method="get" action="{% url 'blog:search' %}">
             {% csrf_token %}
             {{ search_form.key }}
-            <input type="submit" name="submit" lay-submit="" value="提交" id="submit">
+            <input type="submit" name="submit" lay-submit="" value="搜索" id="submit">
         </form>
     </div>
 </div>
