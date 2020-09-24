@@ -1,7 +1,10 @@
 {% extends 'base-blog.html' %}
-
+{% load static %}
 {% block title %}文章正文{% endblock %}
-
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/markdown.css' %}">
+    <link rel="stylesheet" href="{% static 'css/highlight.css' %}">
+{% endblock %}
 {% block content %}
     <main class="page-main">
         <div class="layui-row">
@@ -59,7 +62,7 @@
                                 <i class="fas fa-heart">{{ article.collection }}</i>
                             </span>
                             </div>
-                            <div class="article-content" style="all:initial">
+                            <div class="article-content" id="markdown-body">
                                 <p>{{ article.body | safe }}</p>
                             </div>
                             <div class="article-action">
