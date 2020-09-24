@@ -961,7 +961,7 @@ nav {
         padding: 10px 10%;
     }
 
-    .search-box .search-form input {
+    .search-box .search-form input[type="text"] {
         width: 60%;
     }
 
