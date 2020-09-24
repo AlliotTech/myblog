@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
+import markdown
 
 from blog.forms import searchForm
 from blog.models import *
@@ -240,6 +241,11 @@ def show(request, article_id):
     # 阅读量+1
     article.view = article.view + 1
     article.save()
+    article.body = markdown.markdown(article.body, extensions=[
+        'markdown.extensions.extra',
+        'markdown.extensions.codehilite',
+        'markdown.extensions.toc',
+    ])
     # 下一篇，找出id大于当前文章id的文章,升序排序后取第一个，即为下一篇
     next_article = Article.objects.filter(id__gt=article_id).order_by("id")[:1]
     if len(next_article) == 0:
@@ -254,7 +260,8 @@ def show(request, article_id):
     else:
         for last in last_article:
             last_article = last
-    return render(request, 'blog/show.html', locals())
+    return render(request, 'blog/show.html',
+                  {"article": article, "next_article": next_article, "last_article": last_article})
 
 
 # 时间轴
@@ -298,7 +305,8 @@ def search(request):
     search_form = searchForm(request.GET)
     if search_form.is_valid():
         search_data = search_form.cleaned_data
-        articles = Article.objects.filter(Q(title__icontains=search_data['key']) | Q(body__icontains=search_data['key']))
+        articles = Article.objects.filter(
+            Q(title__icontains=search_data['key']) | Q(body__icontains=search_data['key']))
         if articles.count() == 0:
             message = '未搜索到匹配内容，请重新输入关键字！'
     else:

@@ -59,8 +59,8 @@
                                 <i class="fas fa-heart">{{ article.collection }}</i>
                             </span>
                             </div>
-                            <div class="article-content">
-                                <p>{{ article.body }}</p>
+                            <div class="article-content" style="display: initial">
+                                <p>{{ article.body | safe }}</p>
                             </div>
                             <div class="article-action">
                                 <p>码字不易，转载请注明本文链接，您的打赏是对我最大的支持!</p>
