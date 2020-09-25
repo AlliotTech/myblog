@@ -2,8 +2,6 @@
 {% load static %}
 {% block title %}文章正文{% endblock %}
 {% block link %}
-    <link rel="stylesheet" href="{% static 'css/markdown.css' %}">
-    <link rel="stylesheet" href="{% static 'css/highlight.css' %}">
 {% endblock %}
 {% block content %}
     <main class="page-main">
@@ -62,8 +60,10 @@
                                 <i class="fas fa-heart">{{ article.collection }}</i>
                             </span>
                             </div>
-                            <div class="article-content" id="markdown-body">
-                                <p>{{ article.body | safe }}</p>
+                            <div id='editormd-view'>
+                                <textarea id="append-test" style="display:none;">
+{{ article.body }}
+                                </textarea>
                             </div>
                             <div class="article-action">
                                 <p>码字不易，转载请注明本文链接，您的打赏是对我最大的支持!</p>
@@ -81,7 +81,7 @@
                                         <i class="layui-icon layui-icon-heart" id="collection-text">收藏</i>
                                         <div id="collection-box" class="layui-hide">
                                             <div class="collection-box-div">
-                                            您尚未登录，请先登录然后收藏文章
+                                                您尚未登录，请先登录然后收藏文章
                                             </div>
                                         </div>
                                     </a>
@@ -302,6 +302,14 @@
 {% endblock %}
 
 {% block js %}
+    <script src='{% static "editormd/lib/marked.min.js" %}'></script>
+    <script src='{% static "editormd/lib/prettify.min.js" %}'></script>
+    <script src='{% static "editormd/lib/raphael.min.js" %}'></script>
+    <script src='{% static "editormd/lib/underscore.min.js" %}'></script>
+    <script src='{% static "editormd/lib/sequence-diagram.min.js" %}'></script>
+    <script src='{% static "editormd/lib/flowchart.min.js" %}'></script>
+    <script src='{% static "editormd/lib/jquery.flowchart.min.js" %}'></script>
+    <script src='{% static "editormd/editormd.js" %}'></script>
     <script>
         // 富文本编辑器
         layui.use('layedit', function () {
@@ -315,6 +323,17 @@
             });
             layedit.build('comment', {
                 height: 100 //设置编辑器高度
+            });
+        });
+        // markdown 正文显示
+        $(function () {
+            editormd.markdownToHTML("editormd-view", {
+                htmlDecode: "style, script, iframe",
+                emoji: true,
+                taskList: true,
+                tex: true,
+                flowChart: true,
+                sequenceDiagram: true,
             });
         });
         // 点赞打赏
@@ -354,7 +373,11 @@
                     yes: function (index, layero) {
                         window.location.href = "{% url 'account:loginRegister' %}"
                         layer.close(index);
-                        $(".article-collection").css({'width': '45%', 'background': '#3498db', 'pointer-events': 'none'})
+                        $(".article-collection").css({
+                            'width': '45%',
+                            'background': '#3498db',
+                            'pointer-events': 'none'
+                        })
                         $(".article-collection").find('i').text("已收藏")
                         layer.msg('感谢评分！', {icon: 6});
                     }

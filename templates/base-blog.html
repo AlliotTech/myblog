@@ -76,13 +76,14 @@
                 <a href="javascript:;"><img lay-src="/media/{{ userinfo.photo }}"
                                             class="layui-nav-img">{{ user.username }}
                 </a>
+
                 <dl class="layui-nav-child">
                     <dd><a href="{% url 'account:personalCenter' %}">个人中心</a></dd>
-                    {% if user.username == admin %}
-                        <dd><a href="{% url 'management:dashboard' %}">网站管理</a></dd>
-                    {% else %}
-                        <dd><a href="{% url 'account:changePassword' %}">修改密码</a></dd>
-                    {% endif %}
+
+                    <dd><a href="{% url 'management:dashboard' %}">网站管理</a></dd>
+
+                    <dd><a href="{% url 'account:changePassword' %}">修改密码</a></dd>
+
                     <dd><a href="{% url 'account:logout' %}">退出登录</a></dd>
                 </dl>
             {% else %}

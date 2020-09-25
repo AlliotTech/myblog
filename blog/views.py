@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
+from django.template import loader
 
 from blog.forms import searchForm
 from blog.models import *
@@ -240,12 +241,6 @@ def show(request, article_id):
     # 阅读量+1
     article.view = article.view + 1
     article.save()
-    # article.body = markdown.markdown(article.body, extensions=[
-    #     'markdown.extensions.extra',
-    #     'markdown.extensions.toc',
-    #     'markdown.extensions.tables',
-    #     'markdown.extensions.codehilite',
-    # ])
     # 下一篇，找出id大于当前文章id的文章,升序排序后取第一个，即为下一篇
     next_article = Article.objects.filter(id__gt=article_id).order_by("id")[:1]
     if len(next_article) == 0:
@@ -260,8 +255,15 @@ def show(request, article_id):
     else:
         for last in last_article:
             last_article = last
-    return render(request, 'test.html',
+    return render(request, 'blog/show.html',
                   {"article": article, "next_article": next_article, "last_article": last_article})
+
+
+def markdownShow(article_id):
+    article = Article.objects.get(id=article_id)
+    template = loader.get_template("blog/markdownShow.html")
+    body = {"body": article.body}
+    return HttpResponse(template.render(body))
 
 
 # 时间轴
