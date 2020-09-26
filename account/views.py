@@ -1,5 +1,5 @@
 import random
-
+from django.contrib.auth.models import User
 from captcha.helpers import captcha_image_url
 from captcha.models import CaptchaStore
 from django.contrib.auth import authenticate, login
@@ -231,6 +231,48 @@ def changePassword(request):
         return render(request, 'account/changePassword.html', locals())
 
 
+# 修改邮箱
+@login_required()
+def changeEmail(request):
+    if request.method == "POST":
+        change_email_form = ChangeEmailForm(request.POST)
+        if change_email_form.is_valid():
+            change_email_data = change_email_form.cleaned_data
+            password = change_email_data['password']
+            email = change_email_data['email']
+            email_code = change_email_data['email_code']
+            user = authenticate(username=request.user.username, password=password)
+            # 验证账号密码是否正确，正确返回user对象，错误返回null
+            if user:
+                # 校验邮件验证码
+                try:
+                    session_code = request.session['email_code']
+                except KeyError:
+                    message = '验证码过期！'
+
+                if email_code != request.session['email_code']:
+                    message = '验证码错误！'
+                else:
+                    # 验证通过，修改邮箱号
+                    user = request.user
+                    user.email = email
+                    user.save()
+                    return HttpResponseRedirect('/account/personalCenter/')
+                change_email_form = ChangeEmailForm()
+                return render(request, 'account/changeEmail.html', locals())
+            else:
+                message = "密码错误！"
+            change_email_form = ChangeEmailForm()
+            return render(request, 'account/changeEmail.html', locals())
+        else:
+            message = change_email_form.errors
+        change_email_form = ChangeEmailForm()
+        return render(request, 'account/changeEmail.html', locals())
+    else:
+        change_email_form = ChangeEmailForm()
+        return render(request, 'account/changeEmail.html', locals())
+
+
 # 修改信息
 @login_required()
 def changeInformation(request):
@@ -328,16 +370,17 @@ def registerCheck(request):
 def emailCode(request):
     if request.method == "GET":
         email = request.GET["email"]
-        # 获取用户名
-        if User.objects.filter(email=email).exists():
-            username = str(User.objects.get(email=email))
-        else:
+        action = request.GET["action"]
+        if action == "注册新用户":
             username = "新用户"
+        elif action == "重置密码":
+            username = str(User.objects.get(email=email))
+        elif action == "更换邮箱":
+            username = str(request.GET["username"])
         email_code = ""
         for i in range(6):
             email_code = email_code + str(random.randint(0, 9))
         request.session['email_code'] = email_code
-
         # 过期时间 单位s
         request.session.set_expiry(180)
         action = request.GET["action"]

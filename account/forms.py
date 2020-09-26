@@ -119,6 +119,28 @@ class ChangePasswordForm(forms.Form):
                                           'autocomplete': 'off', 'lay-reqtext': '请输入确认密码！'}))
 
 
+# 修改邮箱表单
+class ChangeEmailForm(forms.Form):
+    password = forms.CharField(
+        label='当前密码:',
+        max_length=20,
+        error_messages={'required': '当前密码不能为空'},
+        widget=forms.PasswordInput(attrs={'class': 'layui-input', 'lay-verify': 'required',
+                                          'autocomplete': 'off', 'lay-reqtext': '请输入当前密码！'}))
+    email = forms.CharField(
+        label='新邮箱号:',
+        max_length=20,
+        error_messages={'required': '新邮箱号不能为空'},
+        widget=forms.EmailInput(attrs={'class': 'layui-input', 'lay-verify': 'email',
+                                       'autocomplete': 'off', 'lay-reqtext': '请输入新邮箱号！'}))
+    email_code = forms.CharField(
+        label='邮箱验证码:',
+        max_length=6,
+        error_messages={'required': '确认密码不能为空'},
+        widget=forms.TextInput(attrs={'class': 'layui-input', 'lay-verify': 'required',
+                                      'autocomplete': 'off', 'lay-reqtext': '请输入邮箱验证码！'}))
+
+
 # 用户修改信息表单
 class UserInfoForm(forms.ModelForm):
     sex_choice = [('1', '男'), ('2', '女')]

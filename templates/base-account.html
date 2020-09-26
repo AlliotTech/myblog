@@ -7,10 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}"  media="all">
-    <link rel="stylesheet" href="{% static 'css/public.css' %}" >
-    <link rel="stylesheet" href="{% static 'css/account.css' %}" >
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'css/public.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
     <script src="{% static 'layui/layui.js' %}" charset="utf-8"></script>
     <script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
     {% block link %}{% endblock %}
@@ -27,14 +27,14 @@
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item"><a href="/">首页</a></li>
-<!--            <li class="layui-nav-item">-->
-<!--                <a href="javascript:;">其它系统</a>-->
-<!--                <dl class="layui-nav-child">-->
-<!--                    <dd><a href="">邮件管理</a></dd>-->
-<!--                    <dd><a href="">消息管理</a></dd>-->
-<!--                    <dd><a href="">授权管理</a></dd>-->
-<!--                </dl>-->
-<!--            </li>-->
+            <!--            <li class="layui-nav-item">-->
+            <!--                <a href="javascript:;">其它系统</a>-->
+            <!--                <dl class="layui-nav-child">-->
+            <!--                    <dd><a href="">邮件管理</a></dd>-->
+            <!--                    <dd><a href="">消息管理</a></dd>-->
+            <!--                    <dd><a href="">授权管理</a></dd>-->
+            <!--                </dl>-->
+            <!--            </li>-->
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
@@ -47,7 +47,7 @@
                     <dd><a href="{% url 'account:logout' %}">退出登录</a></dd>
                 </dl>
             </li>
-<!--            <li class="layui-nav-item"><a href="">退了</a></li>-->
+            <!--            <li class="layui-nav-item"><a href="">退了</a></li>-->
         </ul>
     </div>
 
@@ -61,6 +61,7 @@
                         <dd id="nav1-1"><a href="{% url 'account:personalCenter' %}">我的主页</a></dd>
                         <dd id="nav1-2"><a href="{% url 'account:changeInformation' %}">修改信息</a></dd>
                         <dd id="nav1-3"><a href="{% url 'account:changePassword' %}">修改密码</a></dd>
+                        <dd id="nav1-4"><a href="{% url 'account:changeEmail' %}">修改邮箱</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -78,9 +79,9 @@
 
     <div class="layui-body ">
         <!-- 内容主体区域 -->
-    {% block content %}
+        {% block content %}
 
-    {% endblock %}
+        {% endblock %}
     </div>
 
     <div class="layui-footer layui-hide-xs">
@@ -98,6 +99,9 @@
     </div>
 </div>
 <script>
+    layui.use('element', function () {
+        var element = layui.element;
+    });
     // 手机侧边栏
     $('.nav-show-btn').on("click", function () {
         $('.nav-show-btn').toggleClass('nav-close-btn');

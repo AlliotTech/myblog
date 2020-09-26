@@ -17,6 +17,8 @@ urlpatterns = [
     # 修改信息
     path('changePassword/', views.changePassword, name='changePassword'),
     # 修改密码
+    path('changeEmail/', views.changeEmail, name='changeEmail'),
+    # 修改邮箱
     path('historyBrowse/', views.historyBrowse, name='historyBrowse'),
     # 浏览记录
     path('historyComment/', views.historyComment, name='historyComment'),

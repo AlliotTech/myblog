@@ -21,7 +21,10 @@
             <!--    页面主体部分-->
             <div class="layui-col-xs12 layui-col-md10 page-main-centre">
                 <div class="layui-row main-centre">
-                    <div class="layui-hide" id="content">
+                    <div class="layui-hide " id="content">
+                        <div class="content-div">
+                            {{ content | safe }}
+                        </div>
                     </div>
                     <!--            主体中间正文部分-->
                     <div class="layui-col-md7 main-left">
@@ -387,16 +390,14 @@
                     layer.ready(function () {
                         setTimeout(function () {
                             layer.open({
-                                id: 'catalogue'
-                                ,type: 1
+                                type: 1
                                 , title: ['📋目录', 'font-size:26px;color:#1e9fff']
                                 , area: '230px'
                                 , maxWidth: '500'
-                                , maxHeight: '650'
                                 , shade: 0
                                 , anim: 5
                                 , offset: ['80px', '15px']
-                                , content: $('.markdown-toc-list').html()
+                                , content: $('#content').html()
                                 , success: function (layero) {
                                     layer.setTop(layero); //重点2
                                 }

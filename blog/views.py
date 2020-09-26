@@ -1,5 +1,6 @@
 from typing import List
 
+import markdown
 from django.core import serializers
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
@@ -241,6 +242,12 @@ def show(request, article_id):
     # 阅读量+1
     article.view = article.view + 1
     article.save()
+    md = markdown.Markdown(
+        extensions=[
+            'markdown.extensions.toc',
+        ]
+    )
+    article.md = md.convert(article.body)
     # 下一篇，找出id大于当前文章id的文章,升序排序后取第一个，即为下一篇
     next_article = Article.objects.filter(id__gt=article_id).order_by("id")[:1]
     if len(next_article) == 0:
@@ -256,7 +263,7 @@ def show(request, article_id):
         for last in last_article:
             last_article = last
     return render(request, 'blog/show.html',
-                  {"article": article, "next_article": next_article, "last_article": last_article})
+                  {"article": article, "content": md.toc, "next_article": next_article, "last_article": last_article})
 
 
 def markdownShow(article_id):

@@ -23,7 +23,7 @@
 }
 
 /*首页各个栏目标题*/
-aside h4, .index-new h4 {
+aside > h4, .index-new > h4 {
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
     position: relative;
@@ -46,8 +46,9 @@ aside h4, .index-new h4 {
 
 
 #top-list a span:hover {
-    cursor:pointer
+    cursor: pointer
 }
+
 #top-list {
     width: 100%;
 }
@@ -58,7 +59,7 @@ aside h4, .index-new h4 {
 
 #top-list > ul > li {
     position: relative;
-    background-color:transparent;
+    background-color: transparent;
 }
 
 #top-list a {
@@ -69,9 +70,11 @@ aside h4, .index-new h4 {
     line-height: 30px;
     float: left;
 }
-#top-list ul li>a {
+
+#top-list ul li > a {
     width: 100%;
 }
+
 #top-list li ul {
     position: absolute;
     padding: 10px;
@@ -81,18 +84,22 @@ aside h4, .index-new h4 {
     box-shadow: 0 1px 4px rgba(0, 0, 0, .1);
     display: none;
 }
-#top-list .list-title{
+
+#top-list .list-title {
     width: 100%;
     display: inline-block;
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
     color: #1E9FFF;
     font-size: 25px;
+    font-weight: bold;
 }
+
 #top-list .list-title i {
     color: #1E9FFF;
     font-size: 25px;
 }
+
 #top-list .top-list-son {
     background-color: #ecf0f1;
 }
@@ -100,6 +107,7 @@ aside h4, .index-new h4 {
 #top-list .top-list-son a:hover {
     color: red;
 }
+
 /*#top-list .list-title:after {*/
 /*    font-family: layui-icon;*/
 /*    content: "\e625";*/
@@ -139,9 +147,11 @@ aside h4, .index-new h4 {
     margin-bottom: 0;
     display: none;
 }
+
 .post-right-item .hot-list-show {
     display: block;
 }
+
 /*.post-right-item #top-list ol:first-child {*/
 /*    display: ;*/
 /*}*/
@@ -184,9 +194,10 @@ aside h4, .index-new h4 {
 .post-right-item .hot-list li:nth-child(9) {
     color: #51b2ef;
 }
+
 .post-right-item .top-title-this {
-    pointer-events:none;
-    color: #3498db!important;
+    pointer-events: none;
+    color: #3498db !important;
 }
 
 /*热门文章标题名称列表*/
@@ -343,17 +354,20 @@ aside h4, .index-new h4 {
     width: 25px;
     vertical-align: -4px;
 }
-.about-logo #weixin,#qq {
+
+.about-logo #weixin, #qq {
     height: 185px;
     position: absolute;
     bottom: 33px;
     z-index: 500;
     display: none;
 }
-.about-logo #weixin img,#qq img {
+
+.about-logo #weixin img, #qq img {
     width: 100%;
     height: 100%;
 }
+
 /*.about-logo #qq {*/
 /*    height: 185px;*/
 /*    position: absolute;*/
@@ -436,6 +450,19 @@ aside h4, .index-new h4 {
     margin-top: 15px;
     margin-bottom: 20px;
     font-weight: bold;
+}
+
+/*markdown兼容*/
+#editormd-view ul li {
+    list-style-type: disc;
+}
+
+#editormd-view ol li {
+    list-style-type: decimal;
+}
+
+.index-new .editormd-html-preview {
+    padding: 0;
 }
 
 /*文章信息*/
@@ -565,20 +592,43 @@ aside h4, .index-new h4 {
 }
 
 /*评分弹窗内容*/
-.collection-box-div{
+.collection-box-div {
     padding: 15px 15px 0 15px;
     font-size: 20px;
     text-align: center;
 }
 
 /*目录弹窗*/
-.content-div {
-    padding: 15px;
+#catalogue {
+    padding: 10px 15px 10px 20px;
+    line-height: 25px;
+
+}
+#catalogue a {
+    color: #7f8c8d;;
+}
+/*目录一级标题*/
+#catalogue > li {
+    list-style-type: decimal;
+}
+#catalogue > li > a{
+    color: black;
+}
+#catalogue .toc-level-2 {
+    margin-left: 2em;
 }
 
-.content-div li {
-    line-height: 30px;
-    color: #7f8c8d;
+#catalogue .toc-level-3 {
+    margin-left: 3em;
+}
+#catalogue .toc-level-4 {
+    margin-left: 4em;
+}
+#catalogue .toc-level-5 {
+    margin-left: 5em;
+}
+#catalogue .toc-level-6 {
+    margin-left: 6em;
 }
 
 /*文章上下篇链接*/
@@ -682,10 +732,12 @@ aside h4, .index-new h4 {
     height: 50px;
     display: inline-block;
 }
+
 .layui-tab-content .list-body .box-body img {
     width: 20px;
     height: 20px;
 }
+
 .message-board .message-content .text-box {
     flex: 1;
     padding: 10px 15px;
@@ -949,11 +1001,8 @@ nav {
     display: inline;
     color: #95999c;
 }
-/*用户个人信息展示页面*/
-.user-photo img {
-    width: 150px;
-    height: 150px;
-}
+
+
 /*移动设备适配*/
 @media screen and (max-width: 768px) {
     /*搜索栏滑动下拉效果*/
@@ -969,6 +1018,7 @@ nav {
         width: 100px;
         margin-right: 10px;
     }
+
     .nav-rignt .nav-search {
         margin-right: 0;
     }

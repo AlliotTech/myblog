@@ -12,6 +12,9 @@
 .cintent-card .layui-form-item .photo-change button {
     margin-left: 15px;
 }
+#change-email {
+    padding: 0 !important;
+}
 /*修改个人信息*/
 .layui-form-item ul li {
     display: inline-block;

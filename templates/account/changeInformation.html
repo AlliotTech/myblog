@@ -21,7 +21,9 @@
                     <div class="layui-input-inline">
                         {{ user_form.email }}
                     </div>
-                    <div class="layui-form-mid layui-word-aux">账号绑定邮箱，暂不支持修改！</div>
+                    <div class="layui-form-mid layui-word-aux" id="change-email">
+                        <a href="{% url 'account:changeEmail' %}" class="layui-btn layui-btn-normal" >修改邮箱</a>
+                    </div>
                 </div>
 
                 <div class="layui-form-item">
@@ -79,6 +81,10 @@
                 , layer = layui.layer
                 , layedit = layui.layedit
                 , laydate = layui.laydate;
+            // 错误提示信息
+            if ('{{ message }}') {
+                layer.msg('{{ message }}', {icon: 2})
+            }
             //监听提交
             form.on('submit(demo1)', function (data) {
                 layer.alert(JSON.stringify(data.field), {
@@ -86,37 +92,37 @@
                 })
                 return false;
             });
-        });
-        // 设置裁剪图片
-        $(function () {
-            w = $(window).width(); //浏览器当前窗口可视区域宽度
-            if (w > 768) {
-                open_height = '70%'
-            } else {
-                open_height = '100%'
-            }
-        })
-        layui.config({
-            base: "{% static 'cropper/' %}" //layui自定义layui组件目录
-        }).use(['form', 'croppers'], function () {
-            var $ = layui.jquery
-                , form = layui.form
-                , croppers = layui.croppers
-                , layer = layui.layer;
-
-            //创建一个头像上传组件
-            croppers.render({
-                elem: '#editimg'
-                , saveW: 150     //保存宽度
-                , saveH: 150
-                , mark: 1 / 1    //选取比例
-                , area: open_height  //弹窗宽度
-                , url: "{% url "account:photoUpload" %}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
-                , done: function (src) { //上传完毕回调
-                    $("#photo-img").attr('src', src);
-                    $(".layui-nav-img").attr('src', src);
+            // 设置裁剪图片
+            $(function () {
+                w = $(window).width(); //浏览器当前窗口可视区域宽度
+                if (w > 768) {
+                    open_height = '70%'
+                } else {
+                    open_height = '100%'
                 }
-            });
-        });
+            })
+            layui.config({
+                base: "{% static 'cropper/' %}" //layui自定义layui组件目录
+            }).use(['form', 'croppers'], function () {
+                var $ = layui.jquery
+                    , form = layui.form
+                    , croppers = layui.croppers
+                    , layer = layui.layer;
+
+                //创建一个头像上传组件
+                croppers.render({
+                    elem: '#editimg'
+                    , saveW: 150     //保存宽度
+                    , saveH: 150
+                    , mark: 1 / 1    //选取比例
+                    , area: open_height  //弹窗宽度
+                    , url: "{% url "account:photoUpload" %}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+                    , done: function (src) { //上传完毕回调
+                        $("#photo-img").attr('src', src);
+                        $(".layui-nav-img").attr('src', src);
+                    }
+                });
+            })
+        })
     </script>
 {% endblock %}
