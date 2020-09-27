@@ -1,6 +1,5 @@
 from typing import List
 
-import markdown
 from django.core import serializers
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
@@ -10,7 +9,7 @@ from django.template import loader
 
 from blog.forms import searchForm
 from blog.models import *
-from account.models import UserInfo
+from account.models import UserInfo, ArticleViewHistory
 from PIL import Image
 
 
@@ -214,10 +213,6 @@ def tagPage(request):
         data_joined = article['created_time'].strftime("%Y-%m-%d %H:%M:%S")
         data['created_time'] = data_joined
         lis.append(data)
-    # 分页器进行分配
-    paginator = Paginator(lis, page_limit)
-    # 前端传来页数的数据
-    data = paginator.page(page_index)
     try:
         paginator = Paginator(lis, page_limit)
         # 前端传来页数的数据
@@ -242,12 +237,13 @@ def show(request, article_id):
     # 阅读量+1
     article.view = article.view + 1
     article.save()
-    md = markdown.Markdown(
-        extensions=[
-            'markdown.extensions.toc',
-        ]
-    )
-    article.md = md.convert(article.body)
+    print(request.user.id)
+    if request.user.id:
+        # 用户已登录
+        history = ArticleViewHistory()
+        history.article = article
+        history.user = request.user
+        history.save()
     # 下一篇，找出id大于当前文章id的文章,升序排序后取第一个，即为下一篇
     next_article = Article.objects.filter(id__gt=article_id).order_by("id")[:1]
     if len(next_article) == 0:
@@ -263,14 +259,7 @@ def show(request, article_id):
         for last in last_article:
             last_article = last
     return render(request, 'blog/show.html',
-                  {"article": article, "content": md.toc, "next_article": next_article, "last_article": last_article})
-
-
-def markdownShow(article_id):
-    article = Article.objects.get(id=article_id)
-    template = loader.get_template("blog/markdownShow.html")
-    body = {"body": article.body}
-    return HttpResponse(template.render(body))
+                  {"article": article, "next_article": next_article, "last_article": last_article})
 
 
 # 时间轴

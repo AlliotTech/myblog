@@ -1,13 +1,23 @@
 from django.contrib import admin
-from .models import UserInfo
+from .models import UserInfo, ArticleViewHistory
+
+
 # Register your models here.
 
 
 # 用户详细信息
 @admin.register(UserInfo)
-class ArticleAdmin(admin.ModelAdmin):
+class RegisterAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'phone', 'sex', 'aboutme', 'web', 'photo')
     # 文章列表里显示想要显示的字段
     list_display_links = ('id', 'sex', 'phone')
     # 设置哪些字段可以点击进入编辑界面
 
+
+# 用户浏览文章记录
+@admin.register(ArticleViewHistory)
+class ArticleViewHistoryAdmin(admin.ModelAdmin):
+    list_display = ('article', 'user', 'time', 'is_like')
+    # 文章列表里显示想要显示的字段
+    list_display_links = ('article', 'user', 'is_like')
+    # 设置哪些字段可以点击进入编辑界面
