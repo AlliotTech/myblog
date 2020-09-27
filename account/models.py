@@ -34,7 +34,7 @@ class ArticleViewHistory(models.Model):
 
     class Meta:
         ordering = ('-time',)
-        verbose_name = '用户浏览文章记录'
+        verbose_name = '用户浏览记录'
         verbose_name_plural = verbose_name
 
     def __str__(self):

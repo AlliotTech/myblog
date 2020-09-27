@@ -14,7 +14,7 @@ class RegisterAdmin(admin.ModelAdmin):
     # 设置哪些字段可以点击进入编辑界面
 
 
-# 用户浏览文章记录
+# 用户浏览记录
 @admin.register(ArticleViewHistory)
 class ArticleViewHistoryAdmin(admin.ModelAdmin):
     list_display = ('article', 'user', 'time', 'is_like')

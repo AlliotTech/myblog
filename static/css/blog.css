@@ -562,7 +562,7 @@ aside > h4, .index-new > h4 {
     float: right;
 }
 
-/*文章打赏评分*/
+/*文章打赏*/
 .main-centre .article-reward .reward-box-show {
     display: none;
     background: #f7f7fc;
@@ -591,29 +591,33 @@ aside > h4, .index-new > h4 {
     width: 100%;
 }
 
-/*评分弹窗内容*/
-.collection-box-div {
-    padding: 15px 15px 0 15px;
-    font-size: 20px;
-    text-align: center;
+/*已点赞*/
+.islike {
+    background: #3498db;
+    pointer-events: none
 }
 
+/*已收藏*/
 /*目录弹窗*/
 #catalogue {
     padding: 10px 15px 10px 20px;
     line-height: 25px;
 
 }
+
 #catalogue a {
     color: #7f8c8d;;
 }
+
 /*目录一级标题*/
 #catalogue > li {
     list-style-type: decimal;
 }
-#catalogue > li > a{
+
+#catalogue > li > a {
     color: black;
 }
+
 #catalogue .toc-level-2 {
     margin-left: 2em;
 }
@@ -621,12 +625,15 @@ aside > h4, .index-new > h4 {
 #catalogue .toc-level-3 {
     margin-left: 3em;
 }
+
 #catalogue .toc-level-4 {
     margin-left: 4em;
 }
+
 #catalogue .toc-level-5 {
     margin-left: 5em;
 }
+
 #catalogue .toc-level-6 {
     margin-left: 6em;
 }

@@ -237,13 +237,20 @@ def show(request, article_id):
     # 阅读量+1
     article.view = article.view + 1
     article.save()
-    print(request.user.id)
+    # 用户已登录
+    article_like = 0
     if request.user.id:
-        # 用户已登录
+        # 添加阅读记录
         history = ArticleViewHistory()
         history.article = article
         history.user = request.user
         history.save()
+        # 判断是否已收藏文章
+        user_list = ArticleViewHistory.objects.filter(article_id=article_id)
+        for i in user_list:
+            if request.user == i.user and i.is_like == 1:
+                article_like = 1
+                break
     # 下一篇，找出id大于当前文章id的文章,升序排序后取第一个，即为下一篇
     next_article = Article.objects.filter(id__gt=article_id).order_by("id")[:1]
     if len(next_article) == 0:
@@ -259,7 +266,8 @@ def show(request, article_id):
         for last in last_article:
             last_article = last
     return render(request, 'blog/show.html',
-                  {"article": article, "next_article": next_article, "last_article": last_article})
+                  {"article": article, "articke_like": article_like, "next_article": next_article,
+                   "last_article": last_article})
 
 
 # 时间轴
@@ -310,3 +318,35 @@ def search(request):
     else:
         message = '输入内容不合法！'
     return render(request, 'blog/search.html', locals())
+
+
+# ajax文章点赞
+def articleLike(request):
+    article_id = request.GET.get('id')
+    if article_id:
+        article = Article.objects.get(id=article_id)
+        article.like = article.like + 1
+        article.save()
+        result = {"code": 1, "msg": "感谢点赞!"}
+    else:
+        result = {"code": 0, "msg": "点赞失败!"}
+    return JsonResponse(result)
+
+
+# ajax文章收藏
+def articleCollection(request):
+    article_id = request.GET.get("article_id")
+    user_id = request.GET.get("user_id")
+    print(article_id, user_id)
+    if article_id and user_id:
+        article = Article.objects.get(id=article_id)
+        user = User.objects.get(id=user_id)
+        history = ArticleViewHistory()
+        history.article = article
+        history.user = user
+        history.is_like = 1
+        history.save()
+        result = {"code": 1, "msg": "感谢收藏!"}
+    else:
+        result = {"code": 0, "msg": "点赞失败!"}
+    return JsonResponse(result)

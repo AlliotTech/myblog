@@ -44,10 +44,10 @@
                                 <i class="fas fa-eye">{{ article.view }}</i>
                             </span>
                                 <span>
-                                <i class="fas fa-thumbs-up">{{ article.like }}</i>
+                                <i class="fas fa-thumbs-up" id="like_action">{{ article.like }}</i>
                             </span>
                                 <span>
-                                <i class="fas fa-heart">{{ article.collection }}</i>
+                                <i class="fas fa-heart" id="collection_action">{{ article.collection }}</i>
                             </span>
                             </div>
                             <div id='editormd-view' class="markdown-body">
@@ -68,12 +68,16 @@
                                         </div>
                                     </a>
                                     <a class="article-collection" href="javascript:">
-                                        <i class="layui-icon layui-icon-heart" id="collection-text">收藏</i>
-                                        <div id="collection-box" class="layui-hide">
-                                            <div class="collection-box-div">
-                                                您尚未登录，请先登录然后收藏文章
+                                        {% if articke_like == 0 %}
+                                            <i class="layui-icon layui-icon-heart" id="collection-text">收藏</i>
+                                            <div id="collection-box" class="layui-hide">
+                                                <div class="collection-box-div">
+                                                    您尚未登录，请先登录然后收藏文章
+                                                </div>
                                             </div>
-                                        </div>
+                                        {% else %}
+                                            <h1>收藏个锤子</h1>
+                                        {% endif %}
                                     </a>
                                 </div>
                             </div>
@@ -301,9 +305,11 @@
     <script src='{% static "editormd/lib/jquery.flowchart.min.js" %}'></script>
     <script src='{% static "editormd/editormd.js" %}'></script>
     <script>
-        // 富文本编辑器
-        layui.use('layedit', function () {
+        // 评论富文本编辑器
+        layui.use(['layedit', 'layer', 'rate'], function () {
             var layedit = layui.layedit;
+            var $ = layui.jquery;
+            var layer = layui.layer;
             layedit.set({
                 uploadImage: {  //上传图片的设置
                     url: '' //接口url
@@ -314,9 +320,7 @@
             layedit.build('comment', {
                 height: 100 //设置编辑器高度
             });
-        });
-        // markdown 正文显示
-        $(function () {
+            // markdown正文显示
             editormd.markdownToHTML("editormd-view", {
                 htmlDecode: "style, script, iframe",
                 emoji: true,
@@ -325,57 +329,83 @@
                 flowChart: true,
                 sequenceDiagram: true,
             });
-        });
-        // 点赞打赏
-        $(function () {
             // 点赞
             $("#article-action>a").eq(0).click(function () {
                 $(this).animate({
                     width: '45%'
                 }, 500, function () {
-                    $(this).css({'background': '#3498db', 'pointer-events': 'none'});
-                    $(this).find("i").text("已点赞")
-                    layer.msg('感谢点赞！', {icon: 6});
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'blog:articleLike' %}",
+                        data: {
+                            id: "{{ article.id }}"
+                        },
+                        success: function (result) {
+                            if (result.code == 1) {
+                                $("#article-action>a").eq(0).css({'background': '#3498db', 'pointer-events': 'none'});
+                                $("#article-action>a").eq(0).find("i").text("已点赞")
+                                var like_num = parseInt($("#like_action").text()) + 1
+                                $("#like_action").text(like_num)
+                                layer.msg(result.msg, {icon: 6});
+                            } else {
+                                layer.alert(result.msg, {icon: 2});
+                            }
+                        },
+                        error: function (xhr) {
+                            alert(xhr.text());
+                        }
+                    })
                 })
             })
             // 打赏
             $("#article-action>a").eq(1).hover(function () {
                 $("#reward-box").stop().stop().slideToggle(500)
             })
-        })
-        layui.use('element', function () {
-            var $ = layui.jquery
-                , element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
-        });
-        layui.use(['layer', 'rate'], function () {
-            var $ = layui.jquery;
-            var layer = layui.layer;
-            var rate = layui.rate;
-
+            // 添加收藏
             $('#article-action .article-collection').click(function () {
-                layer.open({
-                    type: 1,
-                    title: '添加收藏',
-                    shadeClose: true,
-                    content: $('#collection-box').html(),
-                    btn: ['登录'],
-                    btnAlign: 'c',
-                    yes: function (index, layero) {
-                        window.location.href = "{% url 'account:loginRegister' %}"
-                        layer.close(index);
-                        $(".article-collection").css({
-                            'width': '45%',
-                            'background': '#3498db',
-                            'pointer-events': 'none'
-                        })
-                        $(".article-collection").find('i').text("已收藏")
-                        layer.msg('感谢评分！', {icon: 6});
-                    }
-                })
-            })
-        });
-        // 目录
-        $(document).ready(function () {
+                if ('{{ user.username }}') {
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'blog:articleCollection' %}",
+                        data: {
+                            article_id: "{{ article.id }}",
+                            user_id:"{{ user.id }}"
+                        },
+                        success: function (result) {
+                            if (result.code == 1) {
+                                $(".article-collection").css({
+                                    'width': '45%',
+                                    'background': '#3498db',
+                                    'pointer-events': 'none'
+                                })
+                                $(".article-collection").find('i').text("已收藏")
+                                var like_num = parseInt($("#collection_action").text()) + 1
+                                $("#collection_action").text(like_num)
+                                layer.msg(result.msg, {icon: 6});
+                            } else {
+                                layer.alert(result.msg, {icon: 2});
+                            }
+                        },
+                        error: function (xhr) {
+                            alert(xhr.text());
+                        }
+                    })
+                } else {
+                    layer.open({
+                        type: 1,
+                        title: '添加收藏',
+                        shadeClose: true,
+                        content: $('#collection-box').html(),
+                        btn: ['登录'],
+                        btnAlign: 'c',
+                        yes: function (index) {
+                            window.location.href = "{% url 'account:loginRegister' %}"
+                            layer.close(index);
+                        }
+                    })
+                }
+            });
+            // 目录
             w = $(window).width(); //浏览器当前窗口可视区域宽度
             if (w > 768) {
                 openContent()
@@ -388,7 +418,7 @@
                         setTimeout(function () {
                             layer.open({
                                 id: 'catalogue'
-                                ,type: 1
+                                , type: 1
                                 , title: ['📋目录', 'font-size:26px;color:#1e9fff']
                                 , area: '230px'
                                 , maxWidth: '500'

@@ -20,12 +20,16 @@ urlpatterns = [
     # 关于
     path('blogroll/', views.blogroll, name='blogroll'),
     # 友情链接
+    path('search', views.search, name='search'),
+    # 搜索
     path('categoryPage', views.categoryPage, name='categoryPage'),
     # ajax文章分类分页
     path('tagPage', views.tagPage, name='tagPage'),
     # ajax标签分类分页
     path('indexPage', views.indexPage, name='indexPage'),
     # ajax首页流加载
-    path('search', views.search, name='search'),
-    # 搜索
+    path('articleLike', views.articleLike, name='articleLike'),
+    # ajax文章点赞
+    path('articleCollection', views.articleCollection, name='articleCollection'),
+    # ajax文章收藏
 ]
