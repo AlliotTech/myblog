@@ -202,6 +202,9 @@
                 </div>
             </div>
         </div>
+        <div class=" " id="reply-div">
+            <textarea id="reply" style="display: none;"></textarea>
+        </div>
     </main>
 {% endblock %}
 
@@ -226,16 +229,18 @@
                         type: 'post' //默认post
                     }
                 });
-                // 设置编辑器
+                // 设置发表留言编辑器
                 var index = layedit.build('leave', {
                     height: 150 //设置编辑器高度
                     , tool: ['face', 'image', '|', 'link', 'unlink']
-                }); //建立编辑器
+                });
+                // 建立发表留言编辑器
                 form.verify({ // 这里就是把富文本数据同步到<textarea>中
                     content: function (value) {
                         return layedit.sync(index);
                     }
                 });
+
                 // 发表留言按钮事件
                 $(".message-body button").click(function () {
                     var $content = layedit.getContent(index)
@@ -257,6 +262,36 @@
                 $("body").delegate(".action-delete", "click", function () {
                     $(this).parents(".list-body").remove();
                 })
+                // 留言回复
+                $("body").delegate(".action-reply", "click", function () {
+                    layer.open({
+                        type: 1
+                        , title: '回复留言'
+                        , area: ['400px', '300px']
+                        , offset: 'auto'
+                        , content: $('#reply-div').html()
+                        , btn: ['发表回复', '取消回复']
+                        , btnAlign: 'c'
+                        , yes: function () {
+                        }
+                        , btn2: function () {
+                            layer.closeAll();
+                        },
+                        success: function (layero, index) {
+                            // 设置发表留言编辑器
+                            var index = layedit.build($(layero).find('#reply'), {
+                                height: 150 //设置编辑器高度
+                                , tool: ['face', 'image', '|', 'link', 'unlink']
+                            });
+                            // 把富文本数据同步到<textarea>中
+                            form.verify({
+                                content: function (value) {
+                                    return layedit.sync(index);
+                                }
+                            });
+                        }
+                    });
+                })
 
                 // 根据内容创建节点
                 function createEle(content) {
@@ -270,7 +305,7 @@
                         '                                                        <a href="#">尼古拉斯凯奇</a>\n' +
                         '                                                        <span class="timeago" datetime="2020-06-30 09:20:00" data-tid="11">2月前</span>\n' +
                         '                                                    </div>\n' +
-                        '                                                    <div class="box-body">\n' +content+
+                        '                                                    <div class="box-body">\n' + content +
                         '                                                    </div>\n' +
                         '                                                    <div class="box-action">\n' +
                         '                                                        <a href="javascript:;" class="action-like"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>\n' +
