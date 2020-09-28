@@ -25,8 +25,7 @@
                                 <div class="center-wrap">
                                     <div class="section text-center">
                                         <h4 class="mb-4 pb-3">登&nbsp;录</h4>
-                                        <form id="login" class="layui-form" action="{% url 'account:loginRegister' %}"
-                                              method="post">
+                                        <form id="login" class="layui-form"  method="post">
                                             {% csrf_token %}
                                             <div class="form-group">
                                                 {{ login_form.user }}

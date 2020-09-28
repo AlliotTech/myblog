@@ -32,4 +32,6 @@ urlpatterns = [
     # ajax文章点赞
     path('articleCollection', views.articleCollection, name='articleCollection'),
     # ajax文章收藏
+    path('timeArticle', views.timeArticle, name='timeArticle'),
+    # ajax时间轴文章列表
 ]

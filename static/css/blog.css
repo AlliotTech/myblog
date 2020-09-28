@@ -591,8 +591,9 @@ aside > h4, .index-new > h4 {
     width: 100%;
 }
 
-/*已点赞*/
-.islike {
+/*已收藏*/
+#article-action .iscollection {
+    width: 45%;
     background: #3498db;
     pointer-events: none
 }

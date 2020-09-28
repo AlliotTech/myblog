@@ -67,18 +67,20 @@
                                             <img lay-src="../../static/images/pay.png">
                                         </div>
                                     </a>
+                                    {% if articke_like == 0 %}
                                     <a class="article-collection" href="javascript:">
-                                        {% if articke_like == 0 %}
-                                            <i class="layui-icon layui-icon-heart" id="collection-text">收藏</i>
-                                            <div id="collection-box" class="layui-hide">
-                                                <div class="collection-box-div">
-                                                    您尚未登录，请先登录然后收藏文章
-                                                </div>
+                                        <i class="layui-icon layui-icon-heart" id="collection-text">收藏</i>
+                                        <div id="collection-box" class="layui-hide">
+                                            <div class="collection-box-div">
+                                                您尚未登录，请先登录然后收藏文章
                                             </div>
-                                        {% else %}
-                                            <h1>收藏个锤子</h1>
-                                        {% endif %}
+                                        </div>
                                     </a>
+                                    {% else %}
+                                        <a class="article-collection iscollection" href="javascript:">
+                                            <i class="layui-icon layui-icon-heart" id="collection-text">已收藏</i>
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="article-relevance">
@@ -399,7 +401,7 @@
                         btn: ['登录'],
                         btnAlign: 'c',
                         yes: function (index) {
-                            window.location.href = "{% url 'account:loginRegister' %}"
+                            window.location.href = "{% url 'account:loginRegister' %}?next="+window.location.pathname
                             layer.close(index);
                         }
                     })

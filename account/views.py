@@ -89,9 +89,15 @@ def loginRegister(request):
                 user = authenticate(username=login_data['user'], password=login_data['password'])
                 # 验证账号密码是否正确，正确返回user对象，错误返回null
                 if user:
-                    login(request, user)
                     # 调用django默认的login方法，实现用户登录
-                    return HttpResponseRedirect('/')
+                    login(request, user)
+                    # 登录后跳转的页面
+                    next_url = request.GET.get("next")
+                    if next_url:
+                        print(next_url)
+                        return HttpResponseRedirect(next_url)
+                    else:
+                        return HttpResponseRedirect('/')
                 else:
                     message = '用户名或密码错误！'
                     hashkey = CaptchaStore.generate_key()

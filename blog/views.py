@@ -1,5 +1,6 @@
 from typing import List
 
+from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
@@ -18,13 +19,20 @@ from PIL import Image
 
 # 全局调用函数,
 def global_variable(request):
-    # 登录用户信息
+    # 登录用户信息头像
     if request.user.id is not None:
         userinfo = UserInfo.objects.get(user_id=request.user.id)
-    # 所有标签
-    tags = Tag.objects.all()
     # 所有分类
     categorys = Category.objects.all()
+    # 搜索表单
+    search_form = searchForm()
+    return locals()
+
+
+# 侧边栏内容
+def aside():
+    # 所有标签
+    tags = Tag.objects.all()
     # 推荐阅读
     recommend = Article.objects.all().filter(recommend=True).order_by('-created_time')[:6]
     # 阅读排行
@@ -34,8 +42,6 @@ def global_variable(request):
     # 收藏排行
     collectionTop = Article.objects.all().order_by('-collection')[:9]
     # 评论排行
-    # 搜索表单
-    search_form = searchForm()
     return locals()
 
 
@@ -73,6 +79,7 @@ def compressImage(request):
 
 # 首页
 def index(request):
+    aside_dict = aside()
     count = Article.objects.all().count()
     page_count = (count // 5) + 1
     return render(request, 'blog/index.html', locals())
@@ -129,7 +136,7 @@ def category(request, category_id):
     count = articles_all.count()
     category_name = Category.objects.get(id=category_id)
     return render(request, 'blog/categoryList.html',
-                  {"count": count, "category_name": category_name, "category_id": category_id})
+                  {"count": count, "category_name": category_name, "category_id": category_id, "aside_dict": aside()})
 
 
 # ajax文章分类分页
@@ -177,6 +184,7 @@ def categoryPage(request):
 
 # 文章标签列表
 def tag(request, tag_id):
+    aside_dict = aside()
     tag_obj = Tag.objects.get(id=tag_id)
     count = tag_obj.article_set.all().count()
     return render(request, 'blog/tagList.html',
@@ -267,7 +275,7 @@ def show(request, article_id):
             last_article = last
     return render(request, 'blog/show.html',
                   {"article": article, "articke_like": article_like, "next_article": next_article,
-                   "last_article": last_article})
+                   "last_article": last_article, "aside_dict": aside()})
 
 
 # 时间轴
@@ -287,16 +295,18 @@ def timeAxis(request):
         if (i, j) not in date_list:
             date_list.append((i, j))
 
-    return render(request, 'blog/timeAxis.html', {"date_list": date_list})
+    return render(request, 'blog/timeAxis.html', {"date_list": date_list, "aside_dict": aside()})
 
 
 # 留言板
 def messageBoard(request):
+    aside_dict = aside()
     return render(request, 'blog/messageBoard.html', locals())
 
 
 # 关于
 def about(request):
+    aside_dict = aside()
     return render(request, 'blog/about.html', locals())
 
 
@@ -337,16 +347,41 @@ def articleLike(request):
 def articleCollection(request):
     article_id = request.GET.get("article_id")
     user_id = request.GET.get("user_id")
-    print(article_id, user_id)
     if article_id and user_id:
         article = Article.objects.get(id=article_id)
         user = User.objects.get(id=user_id)
+        # 更新浏览记录表
         history = ArticleViewHistory()
         history.article = article
         history.user = user
         history.is_like = 1
         history.save()
+        # 更新文章信息表
+        article.collection = article.collection + 1
+        article.save()
         result = {"code": 1, "msg": "感谢收藏!"}
     else:
         result = {"code": 0, "msg": "点赞失败!"}
+    return JsonResponse(result)
+
+
+# ajax时间轴文章列表
+def timeArticle(request):
+    year = request.GET.get("year")
+    month = request.GET.get("month")
+    if year and month:
+        article_list = Article.objects.filter(created_time__year=year).filter(created_time__month=month).order_by(
+            '-created_time')
+        lis = []
+        for article in article_list:
+            data = dict()
+            data['id'] = article.id
+            data['title'] = article.title
+            data_joined = article.created_time.strftime("%Y-%m-%d %H:%M")
+            data['created_time'] = data_joined
+            lis.append(data)
+        result = {"code": 1, "data": lis}
+
+    else:
+        result = {"code": 0, "msg": "查询失败!"}
     return JsonResponse(result)

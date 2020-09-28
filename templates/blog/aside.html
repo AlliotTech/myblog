@@ -8,7 +8,7 @@
             </strong>
         </h4>
         <div class="layui-row recommend-list">
-            {% for tui in recommend %}
+            {% for tui in aside_dict.recommend %}
                 <div class="layui-col-xs12 layui-col-md6 this-recommend">
                     <div>
                         <a href="/blog/show-{{ tui.id }}" class="img-zoom"><img src="media/{{ tui.img }}"></a>
@@ -51,7 +51,7 @@
         <div id="top-list-content">
             <ol class="hot-list hot-list-show">
                 {#                阅读排行#}
-                {% for article in viewTop %}
+                {% for article in aside_dict.viewTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
                            title="{{ article.title }}">{{ article.title }}</a>
@@ -60,7 +60,7 @@
             </ol>
             <ol class="hot-list">
                 {#                点赞排行#}
-                {% for article in likeTop %}
+                {% for article in aside_dict.likeTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
                            title="{{ article.title }}">{{ article.title }}</a>
@@ -69,7 +69,7 @@
             </ol>
             <ol class="hot-list">
                 {#                收藏排行#}
-                {% for article in collectionTop %}
+                {% for article in aside_dict.collectionTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
                            title="{{ article.title }}">{{ article.title }}</a>
@@ -78,7 +78,7 @@
             </ol>
             <ol class="hot-list">
                 {#                评论排行#}
-                {% for article in scoreTop %}
+                {% for article in aside_dict.scoreTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
                            title="{{ article.title }}">{{ article.title }}</a>
@@ -95,10 +95,10 @@
             </strong>
         </h4>
         <div id="tagscloud">
-            {% for tag in tags %}
+            {% for tag in aside_dict.tags %}
                 <a href="/blog/tag-{{ tag.id }}" class="tag-color-{{ tag.id }}">{{ tag.name }}</a>
             {% endfor %}
-            {% for tag in tags %}
+            {% for tag in aside_dict.tags %}
                 <a href="/blog/tag-{{ tag.id }}" class="tag-color-{{ tag.id }}">{{ tag.name }}</a>
             {% endfor %}
         </div>
