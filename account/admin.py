@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserInfo, ArticleViewHistory
+from .models import UserInfo, ArticleViewHistory, LeaveMessage
 
 
 # Register your models here.
@@ -21,3 +21,10 @@ class ArticleViewHistoryAdmin(admin.ModelAdmin):
     # 文章列表里显示想要显示的字段
     list_display_links = ('article', 'user', 'is_like')
     # 设置哪些字段可以点击进入编辑界面
+
+
+# 用户留言记录
+@admin.register(LeaveMessage)
+class LeaveMessageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'content', 'user', 'time', 'level', 'father')
+    list_display_links = ('content', 'user')

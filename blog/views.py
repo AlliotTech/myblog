@@ -1,16 +1,17 @@
 from typing import List
-
+import collections
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
+from django.forms import model_to_dict
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 
 from blog.forms import searchForm
 from blog.models import *
-from account.models import UserInfo, ArticleViewHistory
+from account.models import UserInfo, ArticleViewHistory, LeaveMessage
 from PIL import Image
 
 
@@ -94,23 +95,12 @@ def indexPage(request):
     # 处理成LayUi官方文档的格式
     lis = []
     for article in articles_all:
-        data = dict()
-        data['id'] = article.id
-        data['title'] = article.title
-        data['excerpt'] = article.excerpt
+        data = model_to_dict(article)
         data['category'] = article.category.name
-        data['category_id'] = article.category_id
-        tags = []
-        for tag in article.tags.all():
-            tags.append(tag.name)
-        data['tags'] = tags
         data['img'] = article.img.name
-        data['view'] = article.view
-        data['like'] = article.like
-        data['collection'] = article.collection
-        # 格式化时间的格式
-        data_joined = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
-        data['created_time'] = data_joined
+        data['created_time'] = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
+        data.pop('tags')
+        data['category_id'] = article.category_id
         lis.append(data)
     # 分页器进行分配
     try:
@@ -150,19 +140,12 @@ def categoryPage(request):
     # 处理成LayUi官方文档的格式
     lis = []
     for article in articles_all:
-        data = dict()
-        data['id'] = article.id
-        data['title'] = article.title
-        data['excerpt'] = article.excerpt
+        data = model_to_dict(article)
         data['category'] = article.category.name
-        data['category_id'] = article.category_id
         data['img'] = article.img.name
-        data['view'] = article.view
-        data['like'] = article.like
-        data['collection'] = article.collection
-        # 格式化时间的格式
-        data_joined = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
-        data['created_time'] = data_joined
+        data['created_time'] = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
+        data.pop('tags')
+        data['category_id'] = article.category_id
         lis.append(data)
     # 分页器进行分配
     try:
@@ -184,11 +167,10 @@ def categoryPage(request):
 
 # 文章标签列表
 def tag(request, tag_id):
-    aside_dict = aside()
     tag_obj = Tag.objects.get(id=tag_id)
     count = tag_obj.article_set.all().count()
     return render(request, 'blog/tagList.html',
-                  {"count": count, "tag_name": tag_obj, "tag_id": tag_id})
+                  {"count": count, "tag_name": tag_obj, "tag_id": tag_id, "aside_dict": aside()})
 
 
 # 标签列表分页
@@ -207,20 +189,10 @@ def tagPage(request):
         article_list.append(article)
     lis = []
     for article in article_list:
-        data = dict()
-        data['id'] = article['id']
-        data['title'] = article['title']
-        data['excerpt'] = article['excerpt']
-        data['category_id'] = article['category_id']
-        data['category'] = Category.objects.get(id=article['category_id']).name
-        data['img'] = Article.objects.get(id=article['id']).img.name
-        data['view'] = article['view']
-        data['like'] = article['like']
-        data['collection'] = article['collection']
-        # 格式化时间的格式
-        data_joined = article['created_time'].strftime("%Y-%m-%d %H:%M:%S")
-        data['created_time'] = data_joined
-        lis.append(data)
+        article['category'] = Category.objects.get(id=article['category_id']).name
+        article['img'] = Article.objects.get(id=article['id']).img.name
+        article['created_time'] = article['created_time'].strftime("%Y-%m-%d %H:%M:%S")
+        lis.append(article)
     try:
         paginator = Paginator(lis, page_limit)
         # 前端传来页数的数据
@@ -298,9 +270,52 @@ def timeAxis(request):
     return render(request, 'blog/timeAxis.html', {"date_list": date_list, "aside_dict": aside()})
 
 
+# def tree_search(d_dic, comment_obj):
+#     # 在comment_dic中一个一个的寻找其回复的评论
+#     # 检查当前评论的 reply_id 和 comment_dic中已有评论的nid是否相同，
+#     # 如果相同，表示就是回复的此信息
+#     #   如果不同，则需要去 comment_dic 的所有子元素中寻找，一直找，如果一系列中未找，则继续向下找
+#     for k, v_dic in d_dic.items():
+#         # 找回复的评论，将自己添加到其对应的字典中，例如： {评论一： {回复一：{},回复二：{}}}
+#         if k[0] == comment_obj[2]:
+#             d_dic[k][comment_obj] = collections.OrderedDict()
+#             return
+#         else:
+#             # 在当前第一个跟元素中递归的去寻找父亲
+#             tree_search(d_dic[k], comment_obj)
+#
+#
+# def build_tree(comment_list):
+#     comment_dic = collections.OrderedDict()
+#
+#     for comment_obj in comment_list:
+#         if comment_obj[2] is None:
+#             # 如果是根评论，添加到comment_dic[评论对象] ＝ {}
+#             comment_dic[comment_obj] = collections.OrderedDict()
+#         else:
+#             # 如果是回复的评论，则需要在 comment_dic 中找到其回复的评论
+#             tree_search(comment_dic, comment_obj)
+#     return comment_dic
+
+
 # 留言板
 def messageBoard(request):
     aside_dict = aside()
+    info_dict = {}
+    message = LeaveMessage.objects.all()
+    result = []
+    for info in message:
+        # 根评论
+        if info.father is None:
+            info_dict = model_to_dict(info)
+            info_dict['user'] = info.user.username
+            print(info_dict)
+        # 查找父评论
+        else:
+            pass
+    # info_dict = model_to_dict(info)
+    # print(info_dict)
+
     return render(request, 'blog/messageBoard.html', locals())
 
 

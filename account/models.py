@@ -25,7 +25,6 @@ class UserInfo(models.Model):
         return "user:{}".format(self.user.username)
 
 
-# 用户浏览文章记录表
 class ArticleViewHistory(models.Model):
     article = models.ForeignKey(Article, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='文章名')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='用户名')
@@ -39,3 +38,18 @@ class ArticleViewHistory(models.Model):
 
     def __str__(self):
         return "article:{0},username:{1}".format(self.article, self.user.username)
+
+
+class LeaveMessage(models.Model):
+    content = models.TextField(verbose_name='留言内容', blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='用户名')
+    time = models.DateTimeField(auto_now_add=True, verbose_name='留言时间')
+    level = models.IntegerField(verbose_name='留言等级', default=0)
+    father = models.IntegerField(verbose_name='父留言', blank=True, null=True, default=None)
+
+    class Meta:
+        verbose_name = '留言记录表'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return "content:{0},username:{1}".format(self.content, self.user.username)
