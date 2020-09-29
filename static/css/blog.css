@@ -598,7 +598,10 @@ aside > h4, .index-new > h4 {
     pointer-events: none
 }
 
-/*已收藏*/
+/*提示弹窗*/
+.collection-box-div {
+    padding: 20px;
+}
 /*目录弹窗*/
 #catalogue {
     padding: 10px 15px 10px 20px;
@@ -797,7 +800,7 @@ aside > h4, .index-new > h4 {
     font-size: 13px;
     padding-right: 4em;
 }
-.message-board .text-box .delete-no {
+.click-no {
     pointer-events: none;
     opacity: 0.5;
 }

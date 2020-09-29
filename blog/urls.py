@@ -34,4 +34,8 @@ urlpatterns = [
     # ajax文章收藏
     path('timeArticle', views.timeArticle, name='timeArticle'),
     # ajax时间轴文章列表
+    path('postMessage', views.postMessage, name='postMessage'),
+    # ajax发布留言
+    path('likeMessage', views.likeMessage, name='likeMessage'),
+    # ajax点赞留言
 ]

@@ -403,3 +403,33 @@ def timeArticle(request):
     else:
         result = {"code": 0, "msg": "查询失败!"}
     return JsonResponse(result)
+
+
+# ajax发布留言
+def postMessage(request):
+    content = request.GET.get("content")
+    username = request.GET.get("username")
+    print(content, username)
+    if content and username:
+        message = LeaveMessage()
+        message.content = content
+        message.user = User.objects.get(username=username)
+        message.save()
+        result = {"code": 1, "msg": "留言成功!"}
+    else:
+        result = {"code": 0, "msg": "留言失败!"}
+    return JsonResponse(result)
+
+
+# ajax点赞留言
+def likeMessage(request):
+    message_id = request.GET.get("id")
+    if message_id:
+        print(message_id)
+        message = LeaveMessage.objects.get(id=message_id)
+        message.like = message.like + 1
+        message.save()
+        result = {"code": 1, "msg": "点赞成功!"}
+    else:
+        result = {"code": 0, "msg": "点赞失败!"}
+    return JsonResponse(result)

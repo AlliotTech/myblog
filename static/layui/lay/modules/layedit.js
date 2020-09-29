@@ -49,6 +49,9 @@
             var i = m(e[0].document);
             return document.selection ? i.text : i.toString()
         }
+    }, c.prototype.clearContent = function (t) {
+        var e = u(t);
+        e[0].document.body.innerHTML = ""
     };
     var s = function (t, i, a) {
         var l = this, n = t.find("iframe");
@@ -141,8 +144,9 @@
                             0 == e.code ? (e.data = e.data || {}, v.call(t, "img", {
                                 src: e.data.src,
                                 alt: e.data.title,
-                                style:'display:inline-block;max-width:50%;height:auto',
-                                class:'upload-img'
+                                // 自定义上传图片样式
+                                style: 'display:inline-block;max-width:50%;height:auto',
+                                class: 'upload-img'
                             }, a)) : i.msg(e.msg || "上传失败")
                         }
                     })

@@ -472,13 +472,6 @@ def commentUpload(request):
         # 图片资源写入服务器
         code = imgSave(file, filepath)
         if (code == 1):
-            # 图片路径写入数据库
-            url = dir + filename
-            # print(url)
-            # userinfo = UserInfo.objects.get(user_id=request.user.id)
-            # print(userinfo.photo)
-            # userinfo.photo = url
-            # userinfo.save()
             result = {
                 "code": "0",
                 "msg": "上传成功!",
@@ -486,7 +479,6 @@ def commentUpload(request):
                     "src": filepath,
                 }
             }
-            print(filepath)
             return JsonResponse(result)
         else:
             result = {

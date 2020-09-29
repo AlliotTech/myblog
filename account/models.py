@@ -42,7 +42,6 @@ class ArticleViewHistory(models.Model):
 
 class LeaveMessage(models.Model):
     content = models.TextField(verbose_name='留言内容', blank=True, null=True)
-    comment_img = models.ImageField(upload_to='comment/', verbose_name='头像', blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='用户名')
     time = models.DateTimeField(auto_now_add=True, verbose_name='留言时间')
     level = models.IntegerField(verbose_name='留言等级', default=0)

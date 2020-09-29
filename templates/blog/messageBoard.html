@@ -50,7 +50,7 @@
                                         {% for ol in all_message %}
                                             <ol class="list-body">
                                                 {% for li in ol %}
-                                                    <li class="reply-{{ li.level }} message-content">
+                                                    <li class="reply-{{ li.level }} message-content" id="all-{{ li.id }}">
                                                         <a href="#">
                                                             <img lay-src="../media/{{ li.photo }}"
                                                                  class="layui-nav-img">
@@ -67,7 +67,7 @@
                                                                 <span class="timeago" datetime="{{ li.time }}"></span>
                                                             </div>
                                                             <div class="box-body">
-                                                                {{ li.content }}
+                                                                {{ li.content | safe }}
                                                             </div>
                                                             <div class="box-action">
                                                                 <a href="javascript:;" class="action-like"><i
@@ -79,7 +79,7 @@
                                                                             class="fas fa-trash-alt"></i>删除</a>
                                                                 {% else %}
                                                                     <a href="javascript:;"
-                                                                       class="action-delete delete-no"><i
+                                                                       class="action-delete click-no"><i
                                                                             class="fas fa-trash-alt"></i>删除</a>
                                                                 {% endif %}
                                                             </div>
@@ -93,7 +93,7 @@
                                     <div class="layui-tab-item">
                                         <ol class="list-body">
                                             {% for i in hot_message %}
-                                                <li class="message-content">
+                                                <li class="message-content" id="hot-{{ i.id }}">
                                                     <a href="#">
                                                         <img src="/media/{{ i.user.userinfo.photo }}"
                                                              class="layui-nav-img">
@@ -105,7 +105,7 @@
                                                                   datetime="{{ i.time|date:"Y-m-d H:i:s" }}"></span>
                                                         </div>
                                                         <div class="box-body">
-                                                            {{ i.content }}
+                                                            {{ i.content | safe }}
                                                         </div>
                                                         <div class="box-action">
                                                             <a href="javascript:;" class="action-like"><i
@@ -117,7 +117,7 @@
                                                                         class="fas fa-trash-alt"></i>删除</a>
                                                             {% else %}
                                                                 <a href="javascript:;"
-                                                                   class="action-delete delete-no"><i
+                                                                   class="action-delete click-no"><i
                                                                         class="fas fa-trash-alt"></i>删除</a>
                                                             {% endif %}
                                                         </div>
@@ -131,7 +131,7 @@
                                         {% if my_message %}
                                             <ol class="list-body">
                                                 {% for i in my_message %}
-                                                    <li class="message-content">
+                                                    <li class="message-content" id="my-{{ i.id }}">
                                                         <a href="#">
                                                             <img src="/media/{{ i.user.userinfo.photo }}"
                                                                  class="layui-nav-img">
@@ -143,7 +143,7 @@
                                                                       datetime="{{ i.time|date:"Y-m-d H:i:s" }}"></span>
                                                             </div>
                                                             <div class="box-body">
-                                                                {{ i.content }}
+                                                                {{ i.content |safe }}
                                                             </div>
                                                             <div class="box-action">
                                                                 <a href="javascript:;" class="action-like"><i
@@ -156,7 +156,7 @@
                                                                             class="fas fa-trash-alt"></i>删除</a>
                                                                 {% else %}
                                                                     <a href="javascript:;"
-                                                                       class="action-delete delete-no"><i
+                                                                       class="action-delete click-no"><i
                                                                             class="fas fa-trash-alt"></i>删除</a>
                                                                 {% endif %}
                                                             </div>
@@ -177,8 +177,13 @@
                 </div>
             </div>
         </div>
-        <div class=" " id="reply-div">
+        <div id="reply-div">
             <textarea id="reply" style="display: none;"></textarea>
+        </div>
+        <div id="collection-box" class="layui-hide">
+            <div class="collection-box-div">
+                您尚未登录，请先登录然后发表留言
+            </div>
         </div>
     </main>
 {% endblock %}
@@ -214,21 +219,76 @@
             // 发表留言按钮事件
             $(".message-body button").click(function () {
                 var $content = layedit.getContent(index)
-                if ($content.length == 0) {
-                    layer.msg('亲~请先发表留言，然后再提交哦！', {icon: 5})
-                } else {
-                    // 文本域内容非空，创建节点
-                    var $record = createEle($content);
-                    $(".layui-tab-item").prepend($record);
-                    var timeago = layui.timeago;
-                    timeago.render($('.timeago'));
-                    layer.msg('感谢留言！', {icon: 6})
+                if ('{{ user.id }}' == 'None') {
+                    layer.open({
+                        type: 1,
+                        title: '发布留言',
+                        shadeClose: true,
+                        content: $('#collection-box').html(),
+                        btn: ['登录'],
+                        btnAlign: 'c',
+                        yes: function (index) {
+                            window.location.href = "{% url 'account:loginRegister' %}?next=" + window.location.pathname
+                            layer.close(index);
+                        }
+                    })
+                    return false;
                 }
+                if ($content.length == 0) {
+                    layer.msg('亲~请先输入内容，然后再提交哦！', {icon: 5});
+                    return false;
+                }
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'blog:postMessage' %}",
+                    data: {
+                        content: layedit.getContent(index),
+                        username: "{{ user.username }}"
+                    },
+                    success: function (result) {
+                        if (result.code == 1) {
+                            // 文本域内容非空，创建节点
+                            var $record = createEle($content);
+                            $(".layui-tab-item").prepend($record);
+                            var timeago = layui.timeago;
+                            timeago.render($('.timeago'));
+                            layer.msg(result.msg, {icon: 6});
+                            layui.layedit.clearContent(index);
+                        } else {
+                            layer.alert(result.msg, {icon: 2});
+                        }
+                    },
+                    error: function (xhr) {
+                        alert(xhr.text());
+                    }
+                })
             })
             // 留言点赞
             $("body").delegate(".action-like", "click", function () {
                 var num = $(this).find("em").text();
-                $(this).find("em").html(parseInt(num) + 1);
+                var like_clike = $(this);
+                var id = like_clike.parents(".message-content").attr("id").replace(/[^\d]/g,'')
+                console.log(id)
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'blog:likeMessage' %}",
+                    data: {
+                        id: id,
+                    },
+                    success: function (result) {
+                        if (result.code == 1) {
+                            like_clike.find("em").html(parseInt(num) + 1);
+                            like_clike.addClass("click-no");
+                            layer.msg(result.msg, {icon: 6});
+                        } else {
+                            layer.alert(result.msg, {icon: 2});
+                        }
+                    },
+                    error: function (xhr) {
+                        alert(xhr.text());
+                    }
+                })
+
             })
             // 留言删除
             $("body").delegate(".action-delete", "click", function () {
