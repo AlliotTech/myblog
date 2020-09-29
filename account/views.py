@@ -10,7 +10,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
-
+from PIL import Image
 from account.forms import *
 from account.models import UserInfo
 
@@ -439,7 +439,7 @@ def photoUpload(request):
         filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
         filepath = 'media/' + dir + filename
         # 图片资源写入服务器
-        code = upload(file, filepath)
+        code = imgSave(file, filepath)
         if (code == 1):
             # 图片路径写入数据库
             url = dir + filename
@@ -462,13 +462,74 @@ def photoUpload(request):
         return JsonResponse(data)
 
 
+# ajax 评论图片上传
+def commentUpload(request):
+    if request.method == "POST":
+        dir = 'comment/'
+        file = request.FILES.get('file')
+        filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
+        filepath = 'media/' + dir + filename
+        # 图片资源写入服务器
+        code = imgSave(file, filepath)
+        if (code == 1):
+            # 图片路径写入数据库
+            url = dir + filename
+            # print(url)
+            # userinfo = UserInfo.objects.get(user_id=request.user.id)
+            # print(userinfo.photo)
+            # userinfo.photo = url
+            # userinfo.save()
+            result = {
+                "code": "0",
+                "msg": "上传成功!",
+                "data": {
+                    "src": filepath,
+                }
+            }
+            print(filepath)
+            return JsonResponse(result)
+        else:
+            result = {
+                "code": "1",
+                "msg": "上传失败!",
+                "data": {
+                    "src": None,
+                }
+            }
+        return JsonResponse(result)
+
+
 # 图片保存
-def upload(file, filepath):
+def imgSave(file, filepath):
     try:
+        # 保存图片
         with open(filepath, 'wb+') as f:
             for chrunk in file.chunks():
                 f.write(chrunk)
         f.close()
+        image = Image.open(filepath)
+        width = image.width
+        height = image.height
+        # 图片格式
+        format = image.format
+        # 根据图像大小设置压缩率
+        if width >= 2000 or height >= 2000:
+            rate = 0.3
+        elif width >= 1000 or height >= 1000:
+            rate = 0.5
+        elif width >= 500 or height >= 500:
+            rate = 0.9
+        else:
+            rate = 1
+        width = int(width * rate)
+        # 新的宽
+        height = int(height * rate)
+        # 新的高
+        image.thumbnail((width, height), Image.ANTIALIAS)
+        # 生成缩略图
+        image.save(filepath, format)
+        # 保存到原路径
         return 1
-    except:
+    except Exception as e:
+        print(e)
         return 0

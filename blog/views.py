@@ -3,12 +3,12 @@ import collections
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Q
+from django.db.models import Q, Max
 from django.forms import model_to_dict
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
-
+from django.contrib.auth.models import User
 from blog.forms import searchForm
 from blog.models import *
 from account.models import UserInfo, ArticleViewHistory, LeaveMessage
@@ -100,6 +100,7 @@ def indexPage(request):
         data['img'] = article.img.name
         data['created_time'] = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
         data.pop('tags')
+        data.pop('body')
         data['category_id'] = article.category_id
         lis.append(data)
     # 分页器进行分配
@@ -145,6 +146,7 @@ def categoryPage(request):
         data['img'] = article.img.name
         data['created_time'] = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
         data.pop('tags')
+        data.pop('body')
         data['category_id'] = article.category_id
         lis.append(data)
     # 分页器进行分配
@@ -192,6 +194,7 @@ def tagPage(request):
         article['category'] = Category.objects.get(id=article['category_id']).name
         article['img'] = Article.objects.get(id=article['id']).img.name
         article['created_time'] = article['created_time'].strftime("%Y-%m-%d %H:%M:%S")
+        article.pop('body')
         lis.append(article)
     try:
         paginator = Paginator(lis, page_limit)
@@ -270,56 +273,56 @@ def timeAxis(request):
     return render(request, 'blog/timeAxis.html', {"date_list": date_list, "aside_dict": aside()})
 
 
-# def tree_search(d_dic, comment_obj):
-#     # 在comment_dic中一个一个的寻找其回复的评论
-#     # 检查当前评论的 reply_id 和 comment_dic中已有评论的nid是否相同，
-#     # 如果相同，表示就是回复的此信息
-#     #   如果不同，则需要去 comment_dic 的所有子元素中寻找，一直找，如果一系列中未找，则继续向下找
-#     for k, v_dic in d_dic.items():
-#         # 找回复的评论，将自己添加到其对应的字典中，例如： {评论一： {回复一：{},回复二：{}}}
-#         if k[0] == comment_obj[2]:
-#             d_dic[k][comment_obj] = collections.OrderedDict()
-#             return
-#         else:
-#             # 在当前第一个跟元素中递归的去寻找父亲
-#             tree_search(d_dic[k], comment_obj)
-#
-#
-# def build_tree(comment_list):
-#     comment_dic = collections.OrderedDict()
-#
-#     for comment_obj in comment_list:
-#         if comment_obj[2] is None:
-#             # 如果是根评论，添加到comment_dic[评论对象] ＝ {}
-#             comment_dic[comment_obj] = collections.OrderedDict()
-#         else:
-#             # 如果是回复的评论，则需要在 comment_dic 中找到其回复的评论
-#             tree_search(comment_dic, comment_obj)
-#     return comment_dic
+# 查找与根评论的所有子评论
+def build_record(root_id, record):
+    for comment in LeaveMessage.objects.filter(root_id=root_id):
+        comment_dict = model_to_dict(comment)
+        comment_dict['photo'] = LeaveMessage.objects.get(id=comment.id).user.userinfo.photo.name
+        comment_dict['username'] = LeaveMessage.objects.get(id=comment.id).user.username
+        comment_dict['time'] = LeaveMessage.objects.get(id=comment.id).time.strftime("%Y-%m-%d %H:%M:%S")
+        reply_id = LeaveMessage.objects.get(id=comment.id).reply_id
+        comment_dict['reply_name'] = LeaveMessage.objects.get(id=reply_id).user.username
+        record.append(comment_dict)
+    return record
 
 
 # 留言板
 def messageBoard(request):
-    aside_dict = aside()
-    info_dict = {}
-    message = LeaveMessage.objects.all()
-    result = []
-    for info in message:
-        # 根评论
-        if info.father is None:
+    # 全部留言
+    all_message = []
+    for info in LeaveMessage.objects.all():
+        # 根留言
+        if info.reply_id is None:
+            # 单条记录
+            record = []
             info_dict = model_to_dict(info)
-            info_dict['user'] = info.user.username
-            print(info_dict)
-        # 查找父评论
-        else:
-            pass
-    # info_dict = model_to_dict(info)
-    # print(info_dict)
+            info_dict['username'] = LeaveMessage.objects.get(id=info.id).user.username
+            info_dict['reply_id'] = 'None'
+            info_dict['root_id'] = 'None'
+            info_dict['reply_name'] = 'None'
+            info_dict['photo'] = LeaveMessage.objects.get(id=info.id).user.userinfo.photo.name
+            info_dict['time'] = LeaveMessage.objects.get(id=info.id).time.strftime("%Y-%m-%d %H:%M:%S")
+            record.append(info_dict)
+            # 根据根留言查找子回复
+            record = build_record(info.id, record)
+            all_message.append(record)
+    # 热门留言
+    hot_message = LeaveMessage.objects.filter(level=0).order_by('-like')
+    # 我的留言
+    user_id = request.user.id
+    if user_id:
+        my_message = LeaveMessage.objects.filter(level=0).filter(user_id=user_id)
+    else:
+        my_message = None
+    # 留言统计
+    count = LeaveMessage.objects.all().count()
+    return render(request, 'blog/messageBoard.html',
+                  {"all_message": all_message, "hot_message": hot_message, "my_message": my_message,
+                   "count": count, "aside_dict": aside()})
 
-    return render(request, 'blog/messageBoard.html', locals())
+    # 关于
 
 
-# 关于
 def about(request):
     aside_dict = aside()
     return render(request, 'blog/about.html', locals())
@@ -327,7 +330,7 @@ def about(request):
 
 # 友情链接
 def blogroll(request):
-    return render(request, 'blog/blogroll.html', locals())
+    return render(request, 'blog/blogRoll.html', locals())
 
 
 # 搜索

@@ -745,7 +745,10 @@ aside > h4, .index-new > h4 {
     width: 20px;
     height: 20px;
 }
-
+.layui-tab-content .list-body .box-body .upload-img {
+    width: 300px!important;
+    height: auto!important;
+}
 .message-board .message-content .text-box {
     flex: 1;
     padding: 10px 15px;
@@ -794,7 +797,10 @@ aside > h4, .index-new > h4 {
     font-size: 13px;
     padding-right: 4em;
 }
-
+.message-board .text-box .delete-no {
+    pointer-events: none;
+    opacity: 0.5;
+}
 .message-board .text-box .box-action a:hover {
     color: #bdc3c7;
 }
@@ -804,6 +810,9 @@ aside > h4, .index-new > h4 {
 }
 
 /*各个不同等级的留言回复*/
+.message-board .list-body .reply-0 .text-box{
+    background-color: #f1f1f1;
+}
 .message-board .list-body .reply-1 {
     margin-left: 3em;
 }
@@ -819,7 +828,9 @@ aside > h4, .index-new > h4 {
 .message-board .list-body .reply-4 {
     margin-left: 12em;
 }
-
+.message-board .list-body .reply-5 {
+    margin-left: 15em;
+}
 /*标签云*/
 .main-right .post-right-tag {
     padding: 0;

@@ -1,7 +1,9 @@
 {% extends 'base-blog.html' %}
-
+{% load static %}
 {% block title %}留言板{% endblock %}
-
+{% block link %}
+    <script src="{% static 'js/csrf.js' %}" charset="utf-8"></script>
+{% endblock %}
 {% block content %}
     <!--中间主体部分-->
     <main class="page-main">
@@ -15,13 +17,17 @@
                             <div class="message-editor">
                                 <div class="message-title clearfix">
                                     <div><h1>我要留言</h1></div>
-                                    <div><em>80条留言</em></div>
+                                    <div><em>{{ count }}条留言</em></div>
                                 </div>
                                 <hr class="layui-bg-gray">
                                 <div class="layui-row message-body">
                                     <div class="layui-hide-xs layui-col-md1">
-                                        <a href="#">
-                                            <img lay-src="../media/photo/photo.jpg" class="layui-nav-img">
+                                        <a>
+                                            {% if userinfo.photo %}
+                                                <img lay-src="/media/{{ userinfo.photo }}" class="layui-nav-img">
+                                            {% else %}
+                                                <img lay-src="/media/photo/default.png" class="layui-nav-img">
+                                            {% endif %}
                                         </a>
                                     </div>
                                     <div class="layui-col-xs12 layui-col-md10">
@@ -34,164 +40,133 @@
                             </div>
                             <div class="layui-tab">
                                 <ul class="layui-tab-title">
-                                    <li class="layui-this">最新留言</li>
+                                    <li class="layui-this">全部留言</li>
                                     <li>热门留言</li>
                                     <li>我的留言</li>
                                 </ul>
                                 <div class="layui-tab-content">
-                                    {#                                         最新留言#}
+                                    {#                                    最新留言#}
                                     <div class="layui-tab-item layui-show">
-                                        <ol class="list-body">
-                                            <li class="message-content">
-                                                <a href="#">
-                                                    <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
-                                                </a>
-                                                <div class="text-box">
-                                                    <div class="box-info">
-                                                        <a href="#">张三</a>
-                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
-                                                    </div>
-                                                    <div class="box-body">
-                                                        好好学习天天向上，好好学习天天向上
-                                                    </div>
-                                                    <div class="box-action">
-                                                        <a href="javascript:;" class="action-like"><i
-                                                                class="fas fa-thumbs-up"></i>赞<em>10</em></a>
-                                                        <a href="javascript:;" class="action-reply"><i
-                                                                class="fas fa-comment-alt"></i>回复</a>
-                                                        <a href="javascript:;" class="action-delete"><i
-                                                                class="fas fa-trash-alt"></i>删除</a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ol>
-                                        <ol class="list-body">
-                                            <li class="message-content">
-                                                <a href="#">
-                                                    <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
-                                                </a>
-                                                <div class="text-box">
-                                                    <div class="box-info">
-                                                        <a href="#">尼古拉斯凯奇</a>
-                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
-                                                    </div>
-                                                    <div class="box-body">
-                                                        滚管厂家爱上大法官哈十多个
-                                                    </div>
-                                                    <div class="box-action">
-                                                        <a href="javascript:;" class="action-like"><i
-                                                                class="fas fa-thumbs-up"></i>赞<em>10</em></a>
-                                                        <a href="javascript:;" class="action-reply"><i
-                                                                class="fas fa-comment-alt"></i>回复</a>
-                                                        <a href="javascript:;" class="action-delete"><i
-                                                                class="fas fa-trash-alt"></i>删除</a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ol>
-                                        <ol class="list-body">
-                                            <li class="message-content">
-                                                <a href="#">
-                                                    <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
-                                                </a>
-                                                <div class="text-box">
-                                                    <div class="box-info">
-                                                        <a href="#">李四</a>
-                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
-                                                    </div>
-                                                    <div class="box-body">
-                                                        好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向上,好好学习天天向上，好好学习天天向
-                                                    </div>
-                                                    <div class="box-action">
-                                                        <a href="javascript:;" class="action-like"><i
-                                                                class="fas fa-thumbs-up"></i>赞<em>10</em></a>
-                                                        <a href="javascript:;" class="action-reply"><i
-                                                                class="fas fa-comment-alt"></i>回复</a>
-                                                        <a href="javascript:;" class="action-delete"><i
-                                                                class="fas fa-trash-alt"></i>删除</a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <div class="reply-1 message-content">
-                                                <a href="#">
-                                                    <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
-                                                </a>
-                                                <div class="text-box">
-                                                    <div class="box-info">
-                                                        <a href="#">王五</a>
-                                                        <em>回复</em>
-                                                        <a href="#">赵四</a>
-                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
-                                                    </div>
-                                                    <div class="box-body">
-                                                        你说的对
-                                                    </div>
-                                                    <div class="box-action">
-                                                        <a href="javascript:;" class="action-like"><i
-                                                                class="fas fa-thumbs-up"></i>赞<em>10</em></a>
-                                                        <a href="javascript:;" class="action-reply"><i
-                                                                class="fas fa-comment-alt"></i>回复</a>
-                                                        <a href="javascript:;" class="action-delete"><i
-                                                                class="fas fa-trash-alt"></i>删除</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="reply-2 message-content">
-                                                <a href="#">
-                                                    <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
-                                                </a>
-                                                <div class="text-box">
-                                                    <div class="box-info">
-                                                        <a href="#">我的名字随便起</a>
-                                                        <em>回复</em>
-                                                        <a href="#">王五</a>
-                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
-                                                    </div>
-                                                    <div class="box-body">
-                                                        我也觉得你说的对
-                                                    </div>
-                                                    <div class="box-action">
-                                                        <a href="javascript:;" class="action-like"><i
-                                                                class="fas fa-thumbs-up"></i>赞<em>10</em></a>
-                                                        <a href="javascript:;" class="action-reply"><i
-                                                                class="fas fa-comment-alt"></i>回复</a>
-                                                        <a href="javascript:;" class="action-delete"><i
-                                                                class="fas fa-trash-alt"></i>删除</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </ol>
+                                        {% for ol in all_message %}
+                                            <ol class="list-body">
+                                                {% for li in ol %}
+                                                    <li class="reply-{{ li.level }} message-content">
+                                                        <a href="#">
+                                                            <img lay-src="../media/{{ li.photo }}"
+                                                                 class="layui-nav-img">
+                                                        </a>
+                                                        <div class="text-box">
+                                                            <div class="box-info">
+                                                                {% if li.reply_name == 'None' %}
+                                                                    <a href="#">{{ li.username }}</a>
+                                                                {% else %}
+                                                                    <a href="#">{{ li.username }}</a>
+                                                                    <em>回复</em>
+                                                                    <a href="#">{{ li.reply_name }}</a>
+                                                                {% endif %}
+                                                                <span class="timeago" datetime="{{ li.time }}"></span>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                {{ li.content }}
+                                                            </div>
+                                                            <div class="box-action">
+                                                                <a href="javascript:;" class="action-like"><i
+                                                                        class="fas fa-thumbs-up"></i>赞<em>{{ li.like }}</em></a>
+                                                                <a href="javascript:;" class="action-reply"><i
+                                                                        class="fas fa-comment-alt"></i>回复</a>
+                                                                {% if li.username == user.username %}
+                                                                    <a href="javascript:;" class="action-delete"><i
+                                                                            class="fas fa-trash-alt"></i>删除</a>
+                                                                {% else %}
+                                                                    <a href="javascript:;"
+                                                                       class="action-delete delete-no"><i
+                                                                            class="fas fa-trash-alt"></i>删除</a>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                            </ol>
+                                        {% endfor %}
                                     </div>
-                                    {#                                        热门留言#}
+                                    {#热门留言#}
                                     <div class="layui-tab-item">
                                         <ol class="list-body">
-                                            <li class="message-content">
-                                                <a href="#">
-                                                    <img lay-src="../media/photo/nologin.png" class="layui-nav-img">
-                                                </a>
-                                                <div class="text-box">
-                                                    <div class="box-info">
-                                                        <a href="#">尼古拉斯凯奇</a>
-                                                        <span class="timeago" datetime="2020-06-30 09:20:00"></span>
+                                            {% for i in hot_message %}
+                                                <li class="message-content">
+                                                    <a href="#">
+                                                        <img src="/media/{{ i.user.userinfo.photo }}"
+                                                             class="layui-nav-img">
+                                                    </a>
+                                                    <div class="text-box">
+                                                        <div class="box-info">
+                                                            <a href="#">{{ i.user.username }}</a>
+                                                            <span class="timeago"
+                                                                  datetime="{{ i.time|date:"Y-m-d H:i:s" }}"></span>
+                                                        </div>
+                                                        <div class="box-body">
+                                                            {{ i.content }}
+                                                        </div>
+                                                        <div class="box-action">
+                                                            <a href="javascript:;" class="action-like"><i
+                                                                    class="fas fa-thumbs-up"></i>赞<em>{{ i.like }}</em></a>
+                                                            <a href="javascript:;" class="action-reply"><i
+                                                                    class="fas fa-comment-alt"></i>回复</a>
+                                                            {% if i.user.username == user.username %}
+                                                                <a href="javascript:;" class="action-delete"><i
+                                                                        class="fas fa-trash-alt"></i>删除</a>
+                                                            {% else %}
+                                                                <a href="javascript:;"
+                                                                   class="action-delete delete-no"><i
+                                                                        class="fas fa-trash-alt"></i>删除</a>
+                                                            {% endif %}
+                                                        </div>
                                                     </div>
-                                                    <div class="box-body">
-                                                        滚管厂家爱上大法官哈十多个
-                                                    </div>
-                                                    <div class="box-action">
-                                                        <a href="javascript:;" class="action-like"><i
-                                                                class="fas fa-thumbs-up"></i>赞<em>10</em></a>
-                                                        <a href="javascript:;" class="action-reply"><i
-                                                                class="fas fa-comment-alt"></i>回复</a>
-                                                        <a href="javascript:;" class="action-delete"><i
-                                                                class="fas fa-trash-alt"></i>删除</a>
-                                                    </div>
-                                                </div>
-                                            </li>
+                                                </li>
+                                            {% endfor %}
                                         </ol>
                                     </div>
                                     {#                                        我的留言#}
                                     <div class="layui-tab-item">
-                                        <h3>🥺您还没有留言，快来留言吧！</h3>
+                                        {% if my_message %}
+                                            <ol class="list-body">
+                                                {% for i in my_message %}
+                                                    <li class="message-content">
+                                                        <a href="#">
+                                                            <img src="/media/{{ i.user.userinfo.photo }}"
+                                                                 class="layui-nav-img">
+                                                        </a>
+                                                        <div class="text-box">
+                                                            <div class="box-info">
+                                                                <a href="#">{{ i.user.username }}</a>
+                                                                <span class="timeago"
+                                                                      datetime="{{ i.time|date:"Y-m-d H:i:s" }}"></span>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                {{ i.content }}
+                                                            </div>
+                                                            <div class="box-action">
+                                                                <a href="javascript:;" class="action-like"><i
+                                                                        class="fas fa-thumbs-up"></i>赞<em>{{ i.like }}</em></a>
+                                                                <a href="javascript:;" class="action-reply"><i
+                                                                        class="fas fa-comment-alt"></i>回复</a>
+                                                                {% if i.user.username == user.username %}
+                                                                    <a href="javascript:;"
+                                                                       class="action-delete"><i
+                                                                            class="fas fa-trash-alt"></i>删除</a>
+                                                                {% else %}
+                                                                    <a href="javascript:;"
+                                                                       class="action-delete delete-no"><i
+                                                                            class="fas fa-trash-alt"></i>删除</a>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                                {% else %}
+                                                <h3>🥺您还没有留言，快来留言吧！</h3>
+                                            </ol>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -212,112 +187,108 @@
     <script>
         // 导航栏当前标签页
         $(".nav5").addClass("layui-this");
-        // 富文本编辑器
         layui.use(['form', 'layedit'], function () {
             var form = layui.form;
-            form.render(); //更新全部
-
             var $ = layui.jquery;
-
-            layui.use(['layedit', 'form'], function () {
-                var form = layui.form;
-                var layedit = layui.layedit;
-                // 图片接口放到建立编辑器前面，否则无效
-                layedit.set({
-                    uploadImage: {
-                        url: '/index.php/admin/base/layuifwb', //接口url
-                        type: 'post' //默认post
-                    }
-                });
-                // 设置发表留言编辑器
-                var index = layedit.build('leave', {
-                    height: 150 //设置编辑器高度
-                    , tool: ['face', 'image', '|', 'link', 'unlink']
-                });
-                // 建立发表留言编辑器
-                form.verify({ // 这里就是把富文本数据同步到<textarea>中
-                    content: function (value) {
-                        return layedit.sync(index);
-                    }
-                });
-
-                // 发表留言按钮事件
-                $(".message-body button").click(function () {
-                    var $content = layedit.getContent(index)
-                    if ($content.length == 0) {
-                        layer.msg('亲~请先发表留言，然后再提交哦！', {icon: 5})
-                    } else {
-                        // 文本域内容非空，创建节点
-                        var $record = createEle($content);
-                        $(".layui-tab-item").prepend($record);
-                        layer.msg('感谢留言！', {icon: 6})
-                    }
-                })
-                // 留言点赞
-                $("body").delegate(".action-like", "click", function () {
-                    var num = $(this).find("em").text();
-                    $(this).find("em").html(parseInt(num) + 1);
-                })
-                // 留言删除
-                $("body").delegate(".action-delete", "click", function () {
-                    $(this).parents(".list-body").remove();
-                })
-                // 留言回复
-                $("body").delegate(".action-reply", "click", function () {
-                    layer.open({
-                        type: 1
-                        , title: '回复留言'
-                        , area: ['400px', '300px']
-                        , offset: 'auto'
-                        , content: $('#reply-div').html()
-                        , btn: ['发表回复', '取消回复']
-                        , btnAlign: 'c'
-                        , yes: function () {
-                        }
-                        , btn2: function () {
-                            layer.closeAll();
-                        },
-                        success: function (layero, index) {
-                            // 设置发表留言编辑器
-                            var index = layedit.build($(layero).find('#reply'), {
-                                height: 150 //设置编辑器高度
-                                , tool: ['face', 'image', '|', 'link', 'unlink']
-                            });
-                            // 把富文本数据同步到<textarea>中
-                            form.verify({
-                                content: function (value) {
-                                    return layedit.sync(index);
-                                }
-                            });
-                        }
-                    });
-                })
-
-                // 根据内容创建节点
-                function createEle(content) {
-                    var $record = $('<ol class="list-body">\n' +
-                        '                                            <li class="message-content">\n' +
-                        '                                                <a href="#">\n' +
-                        '                                                    <img lay-src="../media/photo/nologin.png" class="layui-nav-img">\n' +
-                        '                                                </a>\n' +
-                        '                                                <div class="text-box">\n' +
-                        '                                                    <div class="box-info">\n' +
-                        '                                                        <a href="#">尼古拉斯凯奇</a>\n' +
-                        '                                                        <span class="timeago" datetime="2020-06-30 09:20:00" data-tid="11">2月前</span>\n' +
-                        '                                                    </div>\n' +
-                        '                                                    <div class="box-body">\n' + content +
-                        '                                                    </div>\n' +
-                        '                                                    <div class="box-action">\n' +
-                        '                                                        <a href="javascript:;" class="action-like"><i class="fas fa-thumbs-up"></i>赞<em>10</em></a>\n' +
-                        '                                                        <a href="javascript:;" class="action-reply"><i class="fas fa-comment-alt"></i>回复</a>\n' +
-                        '                                                        <a href="javascript:;" class="action-delete"><i class="fas fa-trash-alt"></i>删除</a>\n' +
-                        '                                                    </div>\n' +
-                        '                                                </div>\n' +
-                        '                                            </li>\n' +
-                        '                                        </ol>')
-                    return $record;
+            var layedit = layui.layedit;
+            // 富文本编辑器
+            form.render(); //更新全部
+            // 图片接口放到建立编辑器前面，否则无效
+            layedit.set({
+                uploadImage: {
+                    url: '{% url "account:commentUpload" %}', //接口url
+                    type: 'post', //默认post
                 }
             });
+            // 设置发表留言编辑器
+            var index = layedit.build('leave', {
+                height: 150 //设置编辑器高度
+                , tool: ['face', 'image', '|', 'link', 'unlink']
+            });
+            // 建立发表留言编辑器
+            form.verify({ // 这里就是把富文本数据同步到<textarea>中
+                content: function (value) {
+                    return layedit.sync(index);
+                }
+            });
+            // 发表留言按钮事件
+            $(".message-body button").click(function () {
+                var $content = layedit.getContent(index)
+                if ($content.length == 0) {
+                    layer.msg('亲~请先发表留言，然后再提交哦！', {icon: 5})
+                } else {
+                    // 文本域内容非空，创建节点
+                    var $record = createEle($content);
+                    $(".layui-tab-item").prepend($record);
+                    var timeago = layui.timeago;
+                    timeago.render($('.timeago'));
+                    layer.msg('感谢留言！', {icon: 6})
+                }
+            })
+            // 留言点赞
+            $("body").delegate(".action-like", "click", function () {
+                var num = $(this).find("em").text();
+                $(this).find("em").html(parseInt(num) + 1);
+            })
+            // 留言删除
+            $("body").delegate(".action-delete", "click", function () {
+                $(this).parents(".list-body").remove();
+            })
+            // 留言回复
+            $("body").delegate(".action-reply", "click", function () {
+                layer.open({
+                    type: 1
+                    , title: '回复留言'
+                    , area: ['400px', '300px']
+                    , offset: 'auto'
+                    , content: $('#reply-div').html()
+                    , btn: ['发表回复', '取消回复']
+                    , btnAlign: 'c'
+                    , yes: function () {
+                    }
+                    , btn2: function () {
+                        layer.closeAll();
+                    },
+                    success: function (layero, index) {
+                        // 设置发表留言编辑器
+                        var index = layedit.build($(layero).find('#reply'), {
+                            height: 150 //设置编辑器高度
+                            , tool: ['face', 'image', '|', 'link', 'unlink']
+                        });
+                        // 把富文本数据同步到<textarea>中
+                        form.verify({
+                            content: function (value) {
+                                return layedit.sync(index);
+                            }
+                        });
+                    }
+                });
+            })
+
+            // 根据内容创建节点
+            function createEle(content) {
+                var $record = $('<ol class="list-body">\n' +
+                    '            <li class="message-content">\n' +
+                    '                <a href="#">\n' +
+                    '                    <img src="/media/{{ userinfo.photo }}" class="layui-nav-img">\n' +
+                    '                </a>\n' +
+                    '                <div class="text-box">\n' +
+                    '                    <div class="box-info">\n' +
+                    '                        <a href="#">{{ user.username }}</a>\n' +
+                    '                        <span class="timeago" datetime="{% now "Y-m-d H:i:s" %}"></span>\n' +
+                    '                    </div>\n' +
+                    '                    <div class="box-body">\n' + content +
+                    '                    </div>\n' +
+                    '                    <div class="box-action">\n' +
+                    '                        <a href="javascript:;" class="action-like"><i class="fas fa-thumbs-up"></i>赞<em>0</em></a>\n' +
+                    '                        <a href="javascript:;" class="action-reply"><i class="fas fa-comment-alt"></i>回复</a>\n' +
+                    '                        <a href="javascript:;" class="action-delete"><i class="fas fa-trash-alt"></i>删除</a>\n' +
+                    '                    </div>\n' +
+                    '                </div>\n' +
+                    '            </li>\n' +
+                    '        </ol>')
+                return $record;
+            }
         })
     </script>
 {% endblock %}

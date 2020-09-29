@@ -42,12 +42,16 @@ class ArticleViewHistory(models.Model):
 
 class LeaveMessage(models.Model):
     content = models.TextField(verbose_name='留言内容', blank=True, null=True)
+    comment_img = models.ImageField(upload_to='comment/', verbose_name='头像', blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='用户名')
     time = models.DateTimeField(auto_now_add=True, verbose_name='留言时间')
     level = models.IntegerField(verbose_name='留言等级', default=0)
-    father = models.IntegerField(verbose_name='父留言', blank=True, null=True, default=None)
+    like = models.IntegerField(verbose_name='留言点赞数', default=0)
+    reply_id = models.IntegerField(verbose_name='回复留言ID', blank=True, null=True, default=None)
+    root_id = models.IntegerField(verbose_name='根留言ID', blank=True, null=True, default=None)
 
     class Meta:
+        ordering = ('root_id', 'level', '-time')
         verbose_name = '留言记录表'
         verbose_name_plural = verbose_name
 
