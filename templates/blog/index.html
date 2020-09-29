@@ -37,19 +37,20 @@
 
 {% block js %}
     <script type="text/javascript">
+        $(document).ready(function () {
+            w = $(window).width(); //浏览器当前窗口可视区域宽度
+            if (w > 768) {
+                img_height = 400
+            } else {
+                img_height = 200
+            }
+        })
         layui.use(['carousel', 'form', 'flow'], function () {
             var carousel = layui.carousel
                 , form = layui.form
-                , flow = layui.flow;
+                , flow = layui.flow
+                , $ = layui.jquery;
             //图片轮播
-            $(document).ready(function () {
-                w = $(window).width(); //浏览器当前窗口可视区域宽度
-                if (w > 768) {
-                    img_height = 400
-                } else {
-                    img_height = 200
-                }
-            })
             carousel.render({
                 elem: '#test10'
                 , width: '100%'
