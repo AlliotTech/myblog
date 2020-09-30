@@ -11,7 +11,7 @@ from django.template import loader
 from django.contrib.auth.models import User
 from blog.forms import searchForm
 from blog.models import *
-from account.models import UserInfo, ArticleViewHistory, LeaveMessage
+from account.models import UserInfo, ArticleViewHistory, LeaveMessage, CommentMessage
 from PIL import Image
 
 
@@ -43,6 +43,7 @@ def aside():
     # 收藏排行
     collectionTop = Article.objects.all().order_by('-collection')[:9]
     # 评论排行
+    commentTop = Article.objects.all().order_by('-comment')[:9]
     return locals()
 
 
@@ -214,11 +215,26 @@ def tagPage(request):
     return JsonResponse(result)
 
 
+# 查找根评论的所有子回复
+def comment_record(article, root_id, record):
+    for comment in CommentMessage.objects.filter(root_id=root_id):
+        comment_dict = model_to_dict(comment)
+        comment_dict['photo'] = CommentMessage.objects.get(id=comment.id).user.userinfo.photo.name
+        comment_dict['username'] = CommentMessage.objects.get(id=comment.id).user.username
+        comment_dict['time'] = CommentMessage.objects.get(id=comment.id).time.strftime("%Y-%m-%d %H:%M:%S")
+        reply_id = CommentMessage.objects.get(id=comment.id).reply_id
+        comment_dict['reply_name'] = CommentMessage.objects.get(id=reply_id).user.username
+        record.append(comment_dict)
+    return record
+
+
 # 文章内容页
 def show(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     # 阅读量+1
     article.view = article.view + 1
+    # 更新评论数
+    article.comment = CommentMessage.objects.filter(article=article).count()
     article.save()
     # 用户已登录
     article_like = 0
@@ -248,9 +264,39 @@ def show(request, article_id):
     else:
         for last in last_article:
             last_article = last
+    # 评论列表
+    # 全部评论
+    all_comment = []
+    for info in CommentMessage.objects.filter(article=article):
+        # 根评论
+        if info.reply_id is None:
+            # 单条记录
+            record = []
+            info_dict = model_to_dict(info)
+            info_dict['username'] = CommentMessage.objects.get(id=info.id).user.username
+            info_dict['reply_id'] = 'None'
+            info_dict['root_id'] = 'None'
+            info_dict['reply_name'] = 'None'
+            info_dict['photo'] = CommentMessage.objects.get(id=info.id).user.userinfo.photo.name
+            info_dict['time'] = CommentMessage.objects.get(id=info.id).time.strftime("%Y-%m-%d %H:%M:%S")
+            record.append(info_dict)
+            # 根据根留言查找子回复
+            record = comment_record(article, info.id, record)
+            all_comment.append(record)
+    # 热门留言
+    hot_comment = CommentMessage.objects.filter(article=article).filter(level=0).order_by('-like')
+    # 我的留言
+    user_id = request.user.id
+    if user_id:
+        my_comment = CommentMessage.objects.filter(article=article).filter(level=0).filter(user_id=user_id)
+    else:
+        my_comment = None
+    # 留言统计
+    count = CommentMessage.objects.filter(article=article).count()
     return render(request, 'blog/show.html',
                   {"article": article, "articke_like": article_like, "next_article": next_article,
-                   "last_article": last_article, "aside_dict": aside()})
+                   "last_article": last_article, "all_comment": all_comment, "hot_comment": hot_comment,
+                   "my_comment": my_comment, "count": count, "aside_dict": aside()})
 
 
 # 时间轴
@@ -273,7 +319,7 @@ def timeAxis(request):
     return render(request, 'blog/timeAxis.html', {"date_list": date_list, "aside_dict": aside()})
 
 
-# 查找与根评论的所有子评论
+# 查找根留言的所有子回复
 def build_record(root_id, record):
     for comment in LeaveMessage.objects.filter(root_id=root_id):
         comment_dict = model_to_dict(comment)
@@ -320,9 +366,60 @@ def messageBoard(request):
                   {"all_message": all_message, "hot_message": hot_message, "my_message": my_message,
                    "count": count, "aside_dict": aside()})
 
-    # 关于
+
+# ajax发布留言
+def postMessage(request):
+    content = request.GET.get("content")
+    username = request.GET.get("username")
+    level = request.GET.get("level")
+    if content and username:
+        reply_id = request.GET.get("reply_id")
+        root_id = request.GET.get("root_id")
+        message = LeaveMessage()
+        message.content = content
+        message.user = User.objects.get(username=username)
+        message.level = level
+        message.reply_id = reply_id
+        message.root_id = root_id
+        message.save()
+        result = {"code": 1, "msg": "留言成功!"}
+    else:
+        result = {"code": 0, "msg": "留言失败!"}
+    return JsonResponse(result)
 
 
+# ajax点赞留言
+def likeMessage(request):
+    message_id = request.GET.get("like_id")
+    if message_id:
+        message = LeaveMessage.objects.get(id=message_id)
+        message.like = message.like + 1
+        message.save()
+        result = {"code": 1, "msg": "点赞成功!"}
+    else:
+        result = {"code": 0, "msg": "点赞失败!"}
+    return JsonResponse(result)
+
+
+# ajax删除留言
+def delMessage(request):
+    message_id = request.GET.get("del_id")
+    if message_id:
+        message = LeaveMessage.objects.get(id=message_id)
+        reply = LeaveMessage.objects.filter(reply_id=message_id)
+        # 根留言且没有回复，可以删除
+        if message.level == 0 and len(reply) == 0:
+            LeaveMessage.objects.get(id=message_id).delete()
+        else:
+            message.content = "该内容已被用户删除"
+            message.save()
+        result = {"code": 1, "msg": "删除成功!"}
+    else:
+        result = {"code": 0, "msg": "删除失败!"}
+    return JsonResponse(result)
+
+
+# 关于
 def about(request):
     aside_dict = aside()
     return render(request, 'blog/about.html', locals())
@@ -405,15 +502,22 @@ def timeArticle(request):
     return JsonResponse(result)
 
 
-# ajax发布留言
-def postMessage(request):
+# ajax发表评论
+def postComment(request):
+    article_id = request.GET.get("article_id")
     content = request.GET.get("content")
     username = request.GET.get("username")
-    print(content, username)
+    level = request.GET.get("level")
     if content and username:
-        message = LeaveMessage()
+        reply_id = request.GET.get("reply_id")
+        root_id = request.GET.get("root_id")
+        message = CommentMessage()
+        message.article = Article.objects.get(id=article_id)
         message.content = content
         message.user = User.objects.get(username=username)
+        message.level = level
+        message.reply_id = reply_id
+        message.root_id = root_id
         message.save()
         result = {"code": 1, "msg": "留言成功!"}
     else:
@@ -421,15 +525,32 @@ def postMessage(request):
     return JsonResponse(result)
 
 
-# ajax点赞留言
-def likeMessage(request):
-    message_id = request.GET.get("id")
+# ajax点赞评论
+def likeComment(request):
+    message_id = request.GET.get("like_id")
     if message_id:
-        print(message_id)
-        message = LeaveMessage.objects.get(id=message_id)
+        message = CommentMessage.objects.get(id=message_id)
         message.like = message.like + 1
         message.save()
         result = {"code": 1, "msg": "点赞成功!"}
     else:
         result = {"code": 0, "msg": "点赞失败!"}
+    return JsonResponse(result)
+
+
+# ajax删除评论
+def delComment(request):
+    message_id = request.GET.get("del_id")
+    if message_id:
+        message = CommentMessage.objects.get(id=message_id)
+        reply = CommentMessage.objects.filter(reply_id=message_id)
+        # 根留言且没有回复，可以删除
+        if message.level == 0 and len(reply) == 0:
+            CommentMessage.objects.get(id=message_id).delete()
+        else:
+            message.content = "该内容已被用户删除"
+            message.save()
+        result = {"code": 1, "msg": "删除成功!"}
+    else:
+        result = {"code": 0, "msg": "删除失败!"}
     return JsonResponse(result)

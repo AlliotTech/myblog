@@ -9,24 +9,65 @@
     <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
 </head>
 <body>
-<time class="timeago" datetime="2020-09-23 09:24:17"></time>
-<time class="timeago" datetime="2008-07-17 09:24:17"></time>
-<div class="timeago" datetime="2016-06-30 09:20:00"></div>
-<div class="need_to_be_rendered" datetime="2017-08-01 21:55:28"></div>
-<div class="need_to_be_rendered" data-timeage="2017-08-01 21:55:28"></div>
+<button type="button" class="layui-btn layui-btn-normal">百搭按钮</button>
+<textarea id="reply" lay-verify="content" name="content" style="display: none;"></textarea>
 <script src="../static/layui/layui.all.js"></script>
 <script type="text/javascript">
-    layui.config({
-        version: true,
-        base: "../static/timeago/"
-    }).extend({
-        timeago: 'timeago'
-    }).use(['timeago'], function () {
+    layui.use(['form', 'layedit'], function () {
+        var form = layui.form;
         var $ = layui.jquery;
-        var timeago = layui.timeago;
-        timeago.render($('.timeago'));
-    });
+        var layedit = layui.layedit;
+        // 富文本编辑器
+        form.render(); //更新全部
+        // 图片接口放到建立编辑器前面，否则无效
+        layedit.set({
+            uploadImage: {
+                url: '{% url "account:commentUpload" %}', //接口url
+                type: 'post', //默认post
+            }
+        });
+        // 设置发表留言编辑器
+        var reply = layedit.build('reply', {
+            height: 150 //设置编辑器高度
+            , tool: ['face', 'image', '|', 'link', 'unlink']
+        });
+        // 建立发表留言编辑器
+        form.verify({ // 这里就是把富文本数据同步到<textarea>中
+            content: function (value) {
+                return layedit.sync(reply);
+            }
+        });
+        $content = layedit.getContent(reply)
+        console.log($content)
+        $("button").click(function () {
+            var $content = layedit.getContent(reply)
+            console.log($content)
+        })
+    })
 </script>
-
+$.ajax({
+                            type: "GET",
+                            url: "{% url 'blog:postMessage' %}",
+                            data: {
+                                content: layedit.getContent(reply_textarea),
+                                username: "{{ user.username }}"
+                            },
+                            success: function (result) {
+                                if (result.code == 1) {
+                                    // 文本域内容非空，创建节点
+                                    var $record = createEle($content);
+                                    $(".layui-tab-item").prepend($record);
+                                    var timeago = layui.timeago;
+                                    timeago.render($('.timeago'));
+                                    layer.msg(result.msg, {icon: 6});
+                                    layui.layedit.clearContent(index);
+                                } else {
+                                    layer.alert(result.msg, {icon: 2});
+                                }
+                            },
+                            error: function (xhr) {
+                                alert(xhr.text());
+                            }
+                        })
 </body>
 </html>

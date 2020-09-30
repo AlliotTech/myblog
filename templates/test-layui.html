@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>layui测试</title>
+    <title>重置密码</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -22,9 +22,47 @@
         var layedit = layui.layedit;
         var form = layui.form;
         var $ = layui.jquery;
-        // 建立发表留言编辑器
+        var reply_textarea;
+        // 图片接口放到建立编辑器前面，否则无效
+        layedit.set({
+            uploadImage: {
+                url: '/index.php/admin/base/layuifwb', //接口url
+                type: 'post' //默认post
+            }
+        });
+        $("body").delegate(".layui-btn-primary", "click", function () {
+            layer.open({
+                type: 1
+                , title: '回复留言'
+                , area: ['400px', '300px']
+                , offset: 'auto'
+                , content: $('#reply-div').html()
+                , btn: ['发表回复', '取消回复']
+                , btnAlign: 'c'
+                , yes: function (index, layero) {
+                    var $content = layedit.getContent(reply_textarea)
+                    console.log($content)
+                }
+                , btn2: function () {
+                    layer.closeAll();
+                }
+                , success: function (layero, index) {
 
+                    // 设置编辑器
+                    reply_textarea = layedit.build($(layero).find('#reply'), {
+                        height: 150 //设置编辑器高度
+                        , tool: ['face', 'image', '|', 'link', 'unlink']
+                    });
 
+                    // 建立发表留言编辑器
+                    form.verify({ // 这里就是把富文本数据同步到<textarea>中
+                        content: function (value) {
+                            return layedit.sync(reply_textarea);
+                        }
+                    });
+                },
+            });
+        })
     });
 </script>
 

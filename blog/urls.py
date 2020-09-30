@@ -38,4 +38,12 @@ urlpatterns = [
     # ajax发布留言
     path('likeMessage', views.likeMessage, name='likeMessage'),
     # ajax点赞留言
+    path('delMessage', views.delMessage, name='delMessage'),
+    # ajax删除留言
+    path('postComment', views.postComment, name='postComment'),
+    # ajax发布留言
+    path('likeComment', views.likeComment, name='likeComment'),
+    # ajax点赞留言
+    path('delComment', views.delComment, name='delComment'),
+    # ajax删除留言
 ]

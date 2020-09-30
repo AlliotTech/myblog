@@ -50,7 +50,8 @@
                                         {% for ol in all_message %}
                                             <ol class="list-body">
                                                 {% for li in ol %}
-                                                    <li class="reply-{{ li.level }} message-content" id="all-{{ li.id }}">
+                                                    <li class="reply-{{ li.level }} message-content"
+                                                        id="all-{{ li.id }}">
                                                         <a href="#">
                                                             <img lay-src="../media/{{ li.photo }}"
                                                                  class="layui-nav-img">
@@ -72,8 +73,13 @@
                                                             <div class="box-action">
                                                                 <a href="javascript:;" class="action-like"><i
                                                                         class="fas fa-thumbs-up"></i>赞<em>{{ li.like }}</em></a>
-                                                                <a href="javascript:;" class="action-reply"><i
+                                                                {% if li.username == user.username %}
+                                                                    <a href="javascript:;" class="action-reply click-no"><i
                                                                         class="fas fa-comment-alt"></i>回复</a>
+                                                                {% else %}
+                                                                    <a href="javascript:;" class="action-reply"><i
+                                                                        class="fas fa-comment-alt"></i>回复</a>
+                                                                {% endif %}
                                                                 {% if li.username == user.username %}
                                                                     <a href="javascript:;" class="action-delete"><i
                                                                             class="fas fa-trash-alt"></i>删除</a>
@@ -110,7 +116,7 @@
                                                         <div class="box-action">
                                                             <a href="javascript:;" class="action-like"><i
                                                                     class="fas fa-thumbs-up"></i>赞<em>{{ i.like }}</em></a>
-                                                            <a href="javascript:;" class="action-reply"><i
+                                                            <a href="javascript:;" class="action-reply click-no"><i
                                                                     class="fas fa-comment-alt"></i>回复</a>
                                                             {% if i.user.username == user.username %}
                                                                 <a href="javascript:;" class="action-delete"><i
@@ -148,7 +154,7 @@
                                                             <div class="box-action">
                                                                 <a href="javascript:;" class="action-like"><i
                                                                         class="fas fa-thumbs-up"></i>赞<em>{{ i.like }}</em></a>
-                                                                <a href="javascript:;" class="action-reply"><i
+                                                                <a href="javascript:;" class="action-reply click-no"><i
                                                                         class="fas fa-comment-alt"></i>回复</a>
                                                                 {% if i.user.username == user.username %}
                                                                     <a href="javascript:;"
@@ -177,9 +183,11 @@
                 </div>
             </div>
         </div>
+        {#        回复留言弹窗#}
         <div id="reply-div">
             <textarea id="reply" style="display: none;"></textarea>
         </div>
+        {#        发表留言弹窗#}
         <div id="collection-box" class="layui-hide">
             <div class="collection-box-div">
                 您尚未登录，请先登录然后发表留言
@@ -196,6 +204,7 @@
             var form = layui.form;
             var $ = layui.jquery;
             var layedit = layui.layedit;
+            var reply_textarea;
             // 富文本编辑器
             form.render(); //更新全部
             // 图片接口放到建立编辑器前面，否则无效
@@ -240,10 +249,11 @@
                 }
                 $.ajax({
                     type: "GET",
-                    url: "{% url 'blog:postMessage' %}",
+                    url: "{% url 'blog:postComment' %}",
                     data: {
                         content: layedit.getContent(index),
-                        username: "{{ user.username }}"
+                        username: "{{ user.username }}",
+                        level: 0
                     },
                     success: function (result) {
                         if (result.code == 1) {
@@ -266,19 +276,18 @@
             // 留言点赞
             $("body").delegate(".action-like", "click", function () {
                 var num = $(this).find("em").text();
-                var like_clike = $(this);
-                var id = like_clike.parents(".message-content").attr("id").replace(/[^\d]/g,'')
-                console.log(id)
+                var $like_click = $(this);
+                var like_id = $like_click.parents(".message-content").attr("id").replace(/[^\d]/g, '')
                 $.ajax({
                     type: "GET",
                     url: "{% url 'blog:likeMessage' %}",
                     data: {
-                        id: id,
+                        like_id: like_id,
                     },
                     success: function (result) {
                         if (result.code == 1) {
-                            like_clike.find("em").html(parseInt(num) + 1);
-                            like_clike.addClass("click-no");
+                            $like_click.find("em").html(parseInt(num) + 1);
+                            $like_click.addClass("click-no");
                             layer.msg(result.msg, {icon: 6});
                         } else {
                             layer.alert(result.msg, {icon: 2});
@@ -288,14 +297,47 @@
                         alert(xhr.text());
                     }
                 })
-
             })
             // 留言删除
             $("body").delegate(".action-delete", "click", function () {
-                $(this).parents(".list-body").remove();
+                var $del_click = $(this)
+                var del_id = $del_click.parents(".message-content").attr("id").replace(/[^\d]/g, '')
+                var del_level = $del_click.parents(".message-content").attr("class").replace(/[^\d]/g, '')
+                var reply_count = $del_click.parents(".list-body").find("li").length
+                layer.msg('确定要删除这条留言内容吗？', {
+                    time: 10000, //10s后自动关闭
+                    btnAlign: 'c',
+                    btn: ['确定', '取消'],
+                    yes: function (index) {
+                        layer.close(index);
+                        $.ajax({
+                            type: "GET",
+                            url: "{% url 'blog:delMessage' %}",
+                            data: {
+                                del_id: del_id,
+                            },
+                            success: function (result) {
+                                if (result.code == 1) {
+                                    if (del_level == 0 && reply_count == 1) {
+                                        $del_click.parents(".message-content").remove();
+                                    } else {
+                                        $del_click.parents(".text-box").find(".box-body").html("该内容已被用户删除");
+                                    }
+                                    layer.msg(result.msg, {icon: 6});
+                                } else {
+                                    layer.alert(result.msg, {icon: 2});
+                                }
+                            },
+                            error: function (xhr) {
+                                alert(xhr.text());
+                            }
+                        })
+                    },
+                });
             })
             // 留言回复
             $("body").delegate(".action-reply", "click", function () {
+                $reply_click = $(this);
                 layer.open({
                     type: 1
                     , title: '回复留言'
@@ -305,27 +347,64 @@
                     , btn: ['发表回复', '取消回复']
                     , btnAlign: 'c'
                     , yes: function () {
+                        $content = layedit.getContent(reply_textarea);
+                        if ($content.length == 0) {
+                            layer.msg('亲~请先输入内容，然后再提交哦！', {icon: 5});
+                            return false;
+                        }
+                        var reply_level = parseInt($reply_click.parents(".message-content").attr("class").replace(/[^\d]/g, '')) + 1
+                        var reply_id = $reply_click.parents(".message-content").attr("id").replace(/[^\d]/g, '')
+                        var root_id = $reply_click.parents(".list-body").find("li").eq(0).attr("id").replace(/[^\d]/g, '')
+                        $.ajax({
+                            type: "GET",
+                            url: "{% url 'blog:postMessage' %}",
+                            data: {
+                                content: layedit.getContent(reply_textarea),
+                                username: "{{ user.username }}",
+                                level: reply_level,
+                                reply_id: reply_id,
+                                root_id: root_id
+                            },
+                            success: function (result) {
+                                if (result.code == 1) {
+                                    // 文本域内容非空，创建节点
+                                    var $record = createReplyEle($content,reply_id,reply_level);
+                                    var insert_id = "#all-"+reply_id
+                                    $(insert_id).after($record);
+                                    var timeago = layui.timeago;
+                                    timeago.render($('.timeago'));
+                                    layer.msg(result.msg, {icon: 6});
+                                    layui.layedit.clearContent(index);
+                                    layer.closeAll();
+                                } else {
+                                    layer.alert(result.msg, {icon: 2});
+                                }
+                            },
+                            error: function (xhr) {
+                                alert(xhr.text());
+                            }
+                        })
                     }
                     , btn2: function () {
                         layer.closeAll();
                     },
                     success: function (layero, index) {
                         // 设置发表留言编辑器
-                        var index = layedit.build($(layero).find('#reply'), {
+                        reply_textarea = layedit.build($(layero).find('#reply'), {
                             height: 150 //设置编辑器高度
                             , tool: ['face', 'image', '|', 'link', 'unlink']
                         });
                         // 把富文本数据同步到<textarea>中
                         form.verify({
                             content: function (value) {
-                                return layedit.sync(index);
+                                return layedit.sync(reply_textarea);
                             }
                         });
-                    }
+                    },
                 });
             })
 
-            // 根据内容创建节点
+            // 根据内容创建留言节点
             function createEle(content) {
                 var $record = $('<ol class="list-body">\n' +
                     '            <li class="message-content">\n' +
@@ -342,6 +421,30 @@
                     '                    <div class="box-action">\n' +
                     '                        <a href="javascript:;" class="action-like"><i class="fas fa-thumbs-up"></i>赞<em>0</em></a>\n' +
                     '                        <a href="javascript:;" class="action-reply"><i class="fas fa-comment-alt"></i>回复</a>\n' +
+                    '                        <a href="javascript:;" class="action-delete"><i class="fas fa-trash-alt"></i>删除</a>\n' +
+                    '                    </div>\n' +
+                    '                </div>\n' +
+                    '            </li>\n' +
+                    '        </ol>')
+                return $record;
+            }
+            // 根据内容创建留言回复节点
+            function createReplyEle(content,reply_id,reply_level) {
+                var $record = $('<ol class="list-body">\n' +
+                    '            <li class="reply-'+reply_level+' message-content" id="all-'+reply_id+'">\n' +
+                    '                <a href="#">\n' +
+                    '                    <img src="/media/{{ userinfo.photo }}" class="layui-nav-img">\n' +
+                    '                </a>\n' +
+                    '                <div class="text-box">\n' +
+                    '                    <div class="box-info">\n' +
+                    '                        <a href="#">{{ user.username }}</a>\n' +
+                    '                        <span class="timeago" datetime="{% now "Y-m-d H:i:s" %}"></span>\n' +
+                    '                    </div>\n' +
+                    '                    <div class="box-body">\n' + content +
+                    '                    </div>\n' +
+                    '                    <div class="box-action">\n' +
+                    '                        <a href="javascript:;" class="action-like"><i class="fas fa-thumbs-up"></i>赞<em>0</em></a>\n' +
+                    '                        <a href="javascript:;" class="action-reply click-no"><i class="fas fa-comment-alt"></i>回复</a>\n' +
                     '                        <a href="javascript:;" class="action-delete"><i class="fas fa-trash-alt"></i>删除</a>\n' +
                     '                    </div>\n' +
                     '                </div>\n' +

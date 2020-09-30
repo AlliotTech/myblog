@@ -51,7 +51,26 @@ class LeaveMessage(models.Model):
 
     class Meta:
         ordering = ('root_id', 'level', '-time')
-        verbose_name = '留言记录表'
+        verbose_name = '留言回复记录'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return "content:{0},username:{1}".format(self.content, self.user.username)
+
+
+class CommentMessage(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='文章')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='用户名')
+    content = models.TextField(verbose_name='评论内容', blank=True, null=True)
+    time = models.DateTimeField(auto_now_add=True, verbose_name='评论时间')
+    level = models.IntegerField(verbose_name='评论等级', default=0)
+    like = models.IntegerField(verbose_name='评论点赞数', default=0)
+    reply_id = models.IntegerField(verbose_name='回复评论ID', blank=True, null=True, default=None)
+    root_id = models.IntegerField(verbose_name='回复根ID', blank=True, null=True, default=None)
+
+    class Meta:
+        ordering = ('root_id', 'level', '-time')
+        verbose_name = '评论回复记录'
         verbose_name_plural = verbose_name
 
     def __str__(self):

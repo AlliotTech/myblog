@@ -49,6 +49,7 @@ class Article(models.Model):
     view = models.PositiveIntegerField('阅读量', default=0)
     like = models.PositiveIntegerField('点赞数', default=0)
     collection = models.PositiveIntegerField('收藏数', default=0)
+    comment = models.PositiveIntegerField('评论数', default=0)
     created_time = models.DateTimeField('发布时间', auto_now_add=True)
     modified_time = models.DateTimeField('修改时间', auto_now=True)
     recommend = models.BooleanField('推荐显示', default=False)

@@ -78,7 +78,7 @@
             </ol>
             <ol class="hot-list">
                 {#                评论排行#}
-                {% for article in aside_dict.scoreTop %}
+                {% for article in aside_dict.commentTop %}
                     <li>
                         <a href="/blog/show-{{ article.id }}"
                            title="{{ article.title }}">{{ article.title }}</a>

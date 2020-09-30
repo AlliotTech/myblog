@@ -44,7 +44,7 @@
 {% block js %}
     <script>
 
-        layui.use(['laypage', 'layer','flow'], function () {
+        layui.use(['laypage', 'layer', 'flow'], function () {
             var laypage = layui.laypage
                 , layer = layui.layer
                 , flow = layui.flow;
@@ -139,6 +139,9 @@
                     "                </span>\n" +
                     "            <span>\n" +
                     "                    <i class=\"fas fa-heart\">" + item.collection + "</i>\n" +
+                    "                </span>\n" +
+                    "            <span>\n" +
+                    "                    <i class=\"fas fa-comment-dots\">" + item.comment + "</i>\n" +
                     "                </span>\n" +
                     "        </div>\n" +
                     "    </div>\n" +

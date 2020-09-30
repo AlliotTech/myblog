@@ -221,11 +221,20 @@
         base: "{% static 'timeago/' %}"
     }).extend({
         timeago: 'timeago'
-    }).use(['timeago'], function () {
+    }).use(['timeago','layer'], function () {
         var $ = layui.jquery;
         var timeago = layui.timeago;
+        var layer = layui.layer;
         timeago.render($('.timeago'));
     });
+    // ajax加载动画
+        var load
+        $(document).on('ajaxStart', function () {
+            load = layer.load();
+        })
+        $(document).on('ajaxComplete', function () {
+            layer.close(load);
+        })
     //导航的hover效果、二级菜单等功能，需要依赖element模块
     layui.use('element', function () {
         var element = layui.element;

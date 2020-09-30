@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserInfo, ArticleViewHistory, LeaveMessage
+from .models import UserInfo, ArticleViewHistory, LeaveMessage, CommentMessage
 
 
 # Register your models here.
@@ -27,4 +27,11 @@ class ArticleViewHistoryAdmin(admin.ModelAdmin):
 @admin.register(LeaveMessage)
 class LeaveMessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'content', 'user', 'time', 'level', 'like', 'reply_id', 'root_id')
+    list_display_links = ('content', 'user')
+
+
+# 用户评论记录
+@admin.register(CommentMessage)
+class CommentMessageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'article', 'content', 'user', 'time', 'level', 'like', 'reply_id', 'root_id')
     list_display_links = ('content', 'user')
