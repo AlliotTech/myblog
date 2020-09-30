@@ -249,7 +249,7 @@
                 }
                 $.ajax({
                     type: "GET",
-                    url: "{% url 'blog:postComment' %}",
+                    url: "{% url 'blog:postMessage' %}",
                     data: {
                         content: layedit.getContent(index),
                         username: "{{ user.username }}",

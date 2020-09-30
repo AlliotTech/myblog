@@ -233,8 +233,6 @@ def show(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     # 阅读量+1
     article.view = article.view + 1
-    # 更新评论数
-    article.comment = CommentMessage.objects.filter(article=article).count()
     article.save()
     # 用户已登录
     article_like = 0
@@ -519,6 +517,10 @@ def postComment(request):
         message.reply_id = reply_id
         message.root_id = root_id
         message.save()
+        # 更新评论数
+        article = Article.objects.get(id=article_id)
+        article.comment = CommentMessage.objects.filter(article=article).count()
+        article.save()
         result = {"code": 1, "msg": "留言成功!"}
     else:
         result = {"code": 0, "msg": "留言失败!"}
