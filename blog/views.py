@@ -19,6 +19,9 @@ from PIL import Image
 
 
 # 全局调用函数,
+from management.models import About
+
+
 def global_variable(request):
     # 登录用户信息头像
     if request.user.id is not None:
@@ -420,6 +423,7 @@ def delMessage(request):
 # 关于
 def about(request):
     aside_dict = aside()
+    about_content = About.objects.get(id=1)
     return render(request, 'blog/about.html', locals())
 
 
