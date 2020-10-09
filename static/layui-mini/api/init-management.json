@@ -23,7 +23,7 @@
           "child": [
             {
               "title": "文章发布",
-              "href": "page/button.html",
+              "href": "/management/articleAdd",
               "icon": "fa fa-calendar-plus",
               "target": "_self"
             },

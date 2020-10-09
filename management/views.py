@@ -20,8 +20,10 @@ def dashboard(request):
 
 
 # 新增文章
+@xframe_options_exempt
+@login_required()
 def articleAdd(request):
-    return render(request, 'management/articleAdd.html', locals())
+    return render(request, 'layui-mini/management/articleAdd.html', locals())
 
 
 # 文章列表

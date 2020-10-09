@@ -19,7 +19,24 @@
 .layui-form .layui-form-item .photo-change {
     width: 300px;!important;
 }
+.photo-change img {
+    border-radius: 15px;
+}
 .photo-change button {
     float: right;
     margin-top: 60px;
+}
+/*图片放大效果*/
+.img-zoom img {
+    transition: all 2s;
+}
+
+.img-zoom img:hover {
+    transform: scale(1.05);
+}
+/*网站管理*/
+.article-photo-change img{
+    border-radius: 15px;
+    width: 200px;
+    height: 100%;
 }

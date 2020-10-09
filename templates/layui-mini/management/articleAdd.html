@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文章发布</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'css/layui-mini.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'layui-mini/lib/layui-v2.5.5/css/layui.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'layui-mini/css/layuimini.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'layui-mini/css/themes/default.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'fontawesome-free-5.11.2-web/css/all.min.css' %}" media='all'/>
+    <link rel="stylesheet" href="{% static 'editormd/css/editormd.css' %}">
+    <link rel="stylesheet" href="{% static 'css/public.css' %}">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style id="layuimini-bg-color">
+    </style>
+</head>
+<body>
+<div class="cintent-card">
+    <form class="layui-form">
+        <input type="hidden" name="id" value="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">文章标题：</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" lay-verify="require" autocomplete="off" placeholder="请输入标题"
+                       class="layui-input" value="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文章分类：</label>
+            <div class="layui-input-block">
+                <select id="which_category" name="category_id">
+
+                    <option value="1">Django</option>
+
+                    <option value="2">Python</option>
+
+                    <option value="3">Linux</option>
+
+                    <option value="4">Mysql</option>
+
+                    <option value="5">运维知识</option>
+
+                </select>
+                <div class="layui-unselect layui-form-select">
+                    <div class="layui-select-title"><input type="text" placeholder="请选择" value="Django"
+                                                           readonly="" class="layui-input layui-unselect"><i
+                            class="layui-edge"></i></div>
+                    <dl class="layui-anim layui-anim-upbit">
+                        <dd lay-value="1" class="layui-this">Django</dd>
+                        <dd lay-value="2" class="">Python</dd>
+                        <dd lay-value="3" class="">Linux</dd>
+                        <dd lay-value="4" class="">Mysql</dd>
+                        <dd lay-value="5" class="">运维知识</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文章摘要：</label>
+            <div class="layui-input-block">
+                <input type="text" name="excerpt" lay-verify="require" autocomplete="off" placeholder="请输入摘要"
+                       class="layui-input" value="">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">文章标签：</label>
+            <div class="layui-input-block">
+
+                <input type="checkbox" id="1" lay-verify="require" name="article_tag" value="1" title="入门教程">
+                <div class="layui-unselect layui-form-checkbox"><span>入门教程</span><i
+                        class="layui-icon layui-icon-ok"></i></div>
+
+                <input type="checkbox" id="2" lay-verify="require" name="article_tag" value="2" title="常见问题">
+                <div class="layui-unselect layui-form-checkbox"><span>常见问题</span><i
+                        class="layui-icon layui-icon-ok"></i></div>
+
+                <input type="checkbox" id="3" lay-verify="require" name="article_tag" value="3" title="数据库管理">
+                <div class="layui-unselect layui-form-checkbox"><span>数据库管理</span><i
+                        class="layui-icon layui-icon-ok"></i></div>
+
+                <input type="checkbox" id="4" lay-verify="require" name="article_tag" value="4" title="操作系统管理">
+                <div class="layui-unselect layui-form-checkbox"><span>操作系统管理</span><i
+                        class="layui-icon layui-icon-ok"></i></div>
+
+                <input type="checkbox" id="5" lay-verify="require" name="article_tag" value="5" title="前端开发">
+                <div class="layui-unselect layui-form-checkbox"><span>前端开发</span><i
+                        class="layui-icon layui-icon-ok"></i></div>
+
+                <input type="checkbox" id="6" lay-verify="require" name="article_tag" value="6" title="计算机网络">
+                <div class="layui-unselect layui-form-checkbox"><span>计算机网络</span><i
+                        class="layui-icon layui-icon-ok"></i></div>
+
+                <input type="checkbox" id="7" lay-verify="require" name="article_tag" value="7" title="程序开发">
+                <div class="layui-unselect layui-form-checkbox"><span>程序开发</span><i
+                        class="layui-icon layui-icon-ok"></i></div>
+
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">封面图片：</label>
+            <div class="layui-input-block article-photo-change img-zoom">
+                <img src="../media/cover/1.jpg">
+                <button type="button" class="layui-btn layui-btn-normal" id="editimg">修改封面</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文章内容：</label>
+            <div class="layui-input-block" id="input-textarea">
+                <div id="test-editor">
+                    <textarea style="display:none;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn submitBtn">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
+<script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
+<script src="{% static 'layui-mini/js/lay-config.js' %}" charset="utf-8"></script>
+<script src="{% static 'editormd/editormd.js' %}" charset="utf-8"></script>
+<script>
+    // markdown编辑器
+    $(function () {
+        var editor = editormd("test-editor", {
+            width: "100%",
+            height: "800px",
+            path: "{% static 'editormd/lib/' %}",
+            emoji: true, // 开启表情的功能！ 图片的本地配置！
+            tex: true,                   // 开启科学公式TeX语言支持，默认关闭
+            flowChart: true,             // 开启流程图支持，默认关闭
+            sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭,
+        });
+    });
+</script>
+<script>
+    // 设置裁剪图片
+    $(document).ready(function () {
+        w = $(window).width(); //浏览器当前窗口可视区域宽度
+        if (w > 768) {
+            open_height = '50%'
+        } else {
+            open_height = '100%'
+        }
+    })
+    layui.config({
+        base: "{% static 'cropper/' %}" //layui自定义layui组件目录
+    }).use(['form', 'croppers'], function () {
+        var $ = layui.jquery
+            , form = layui.form
+            , croppers = layui.croppers
+            , layer = layui.layer;
+
+        //创建一个头像上传组件
+        croppers.render({
+            elem: '#editimg'
+            , saveW: 150     //保存宽度
+            , saveH: 150
+            , mark: 1 / 1    //选取比例
+            , area: open_height  //弹窗宽度
+            , url: "upload/uploadImg"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+            , done: function (url) { //上传完毕回调
+                $("#inputimgurl").val(url);
+                $("#srcimgurl").attr('src', url);
+            }
+        });
+    });
+</script>
+</body>
+</html>
