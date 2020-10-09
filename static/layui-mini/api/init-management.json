@@ -1,0 +1,97 @@
+{
+  "homeInfo": {
+    "title": "流量统计",
+    "href": "/management/dashboard"
+  },
+  "logoInfo": {
+    "title": "崔亮的博客",
+    "image": "/static/images/favicon-gray.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "网站管理",
+      "icon": "",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "文章管理",
+          "href": "",
+          "icon": "fa fa-solar-panel",
+          "target": "",
+          "child": [
+            {
+              "title": "文章发布",
+              "href": "page/button.html",
+              "icon": "fa fa-calendar-plus",
+              "target": "_self"
+            },
+            {
+              "title": "文章列表",
+              "href": "page/layer.html",
+              "icon": "fa fa-clipboard-list",
+              "target": "_self"
+            },
+            {
+              "title": "文章分类",
+              "href": "page/test.html",
+              "icon": "fa fa-calendar-alt",
+              "target": "_self"
+            },
+            {
+              "title": "文章标签",
+              "href": "page/button.html",
+              "icon": "fa fa-tags",
+              "target": "_self"
+            },
+            {
+              "title": "文章评论",
+              "href": "page/layer.html",
+              "icon": "fa fa-comment-alt",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "网站管理",
+          "href": "",
+          "icon": "fa fa-cogs",
+          "target": "_self",
+          "child": [
+            {
+              "title": "留言管理",
+              "href": "page/welcome-1.html",
+              "icon": "fa fa-comment-dots",
+              "target": "_self"
+            },
+            {
+              "title": "轮播管理",
+              "href": "page/welcome-2.html",
+              "icon": "fa fa-laptop-code",
+              "target": "_self"
+            },
+            {
+              "title": "友链管理",
+              "href": "page/welcome-3.html",
+              "icon": "fa fa-link",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "用户管理",
+          "href": "page/area.html",
+          "icon": "fa fa-user-cog",
+          "target": "_self"
+        }
+      ]
+    },
+    {
+      "title": "<a href=\"/\">博客首页<a>",
+      "icon": "",
+      "href": "",
+      "target": "_blank"
+    }
+  ]
+}

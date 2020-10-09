@@ -142,7 +142,9 @@ nav .layui-nav {
 
 /*文章标签*/
 .label-tag {
-    padding: 2px;
+    margin: 0 5px;
+    font-size: 12px;
+    padding: 4px 10px;
     border-radius: 5px;
     transition: all 0.8s;
 }
@@ -177,7 +179,7 @@ nav .layui-nav {
 }
 .tag-color-5, .tag-color-5 a {
     color: white;!important;
-    background: aqua;!important;
+    background: burlywood;!important;
 }
 
 .tag-color-6, .tag-color-6 a {

@@ -31,7 +31,9 @@ urlpatterns = [
     path('articleLike', views.articleLike, name='articleLike'),
     # ajax文章点赞
     path('articleCollection', views.articleCollection, name='articleCollection'),
-    # ajax文章收藏
+    # ajax文章添加收藏
+    path('deleteCollection', views.deleteCollection, name='deleteCollection'),
+    # ajax文章取消收藏
     path('timeArticle', views.timeArticle, name='timeArticle'),
     # ajax时间轴文章列表
     path('postMessage', views.postMessage, name='postMessage'),

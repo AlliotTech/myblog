@@ -9,11 +9,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.contrib.auth.models import User
+from django.utils import timezone
 from blog.forms import searchForm
 from blog.models import *
 from account.models import UserInfo, ArticleViewHistory, LeaveMessage, CommentMessage
 from PIL import Image
-
 
 # Create your views here.
 
@@ -240,11 +240,17 @@ def show(request, article_id):
     # 用户已登录
     article_like = 0
     if request.user.id:
-        # 添加阅读记录
-        history = ArticleViewHistory()
-        history.article = article
-        history.user = request.user
-        history.save()
+        # 添加阅读记录(第一次：添加，已有记录：更新时间)
+        history = ArticleViewHistory.objects.filter(article_id=article_id).filter(user_id=request.user)
+        if history:
+            change_history = history[0]
+            change_history.time = timezone.now()
+            change_history.save()
+        else:
+            new_history = ArticleViewHistory()
+            new_history.article = article
+            new_history.user = request.user
+            new_history.save()
         # 判断是否已收藏文章
         user_list = ArticleViewHistory.objects.filter(article_id=article_id)
         for i in user_list:
@@ -465,20 +471,39 @@ def articleCollection(request):
     article_id = request.GET.get("article_id")
     user_id = request.GET.get("user_id")
     if article_id and user_id:
-        article = Article.objects.get(id=article_id)
-        user = User.objects.get(id=user_id)
         # 更新浏览记录表
-        history = ArticleViewHistory()
-        history.article = article
-        history.user = user
-        history.is_like = 1
-        history.save()
+        history = ArticleViewHistory.objects.filter(article_id=article_id).filter(user_id=request.user)
+        change_history = history[0]
+        change_history.time = timezone.now()
+        change_history.is_like = 1
+        change_history.save()
         # 更新文章信息表
+        article = Article.objects.get(id=article_id)
         article.collection = article.collection + 1
         article.save()
         result = {"code": 1, "msg": "感谢收藏!"}
     else:
         result = {"code": 0, "msg": "点赞失败!"}
+    return JsonResponse(result)
+
+
+# ajax取消收藏
+def deleteCollection(request):
+    article_id = request.GET.get("article_id")
+    user_id = request.GET.get("user_id")
+    print(article_id, user_id)
+    if article_id and user_id:
+        article = Article.objects.get(id=article_id)
+        user = User.objects.get(id=user_id)
+        # 更新浏览记录表
+        history = ArticleViewHistory.objects.filter(article_id=article_id).filter(user_id=request.user)
+        change_history = history[0]
+        change_history.time = timezone.now()
+        change_history.is_like = 0
+        change_history.save()
+        result = {"code": 1, "msg": "已取消收藏!"}
+    else:
+        result = {"code": 0, "msg": "操作失败!"}
     return JsonResponse(result)
 
 

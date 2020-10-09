@@ -1,11 +1,22 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.views.decorators.clickjacking import xframe_options_exempt
+
 
 # Create your views here.
 
+@login_required()
+# 后台管理模块
+def management(request):
+    model = "management"
+    return render(request, 'layui-mini/base.html', locals())
 
-# 后台管理dashboard
+
+# 后台管理首页
+@xframe_options_exempt
+@login_required()
 def dashboard(request):
-    return render(request, 'management/dashboard.html', locals())
+    return render(request, 'layui-mini/management/index.html', locals())
 
 
 # 新增文章

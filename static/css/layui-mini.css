@@ -1,0 +1,25 @@
+/*后台公共模板*/
+.layui-nav-child dd {
+    text-align: center;!important;
+}
+/*个人中心*/
+.layui-card-header{
+    font-weight: bold;!important;
+    font-size: 18px;
+}
+.layui-table td, .layui-table th{
+    text-align: center;!important;
+}
+.layui-table-header th div{
+    text-align: center;!important;
+}
+.cintent-card {
+    padding: 20px;
+}
+.layui-form .layui-form-item .photo-change {
+    width: 300px;!important;
+}
+.photo-change button {
+    float: right;
+    margin-top: 60px;
+}

@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # admin管理页
     path('account/', include('account.urls', namespace='account')),
-    # 用户注册登录
+    # 个人中心
     path('blog/', include('blog.urls', namespace='blog')),
     # 博客前台
     path('management/', include('management.urls', namespace='management')),

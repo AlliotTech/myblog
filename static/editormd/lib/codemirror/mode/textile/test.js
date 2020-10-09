@@ -232,13 +232,13 @@
    */
 
   MT('divWithAttribute',
-      '[punctuation div][punctuation&attribute (#my-id)][punctuation . foo bar]');
+      '[punctuation div][punctuation&attribute (#account-id)][punctuation . foo bar]');
 
   MT('divWithAttributeAnd2emRightPadding',
-      '[punctuation div][punctuation&attribute (#my-id)((][punctuation . foo bar]');
+      '[punctuation div][punctuation&attribute (#account-id)((][punctuation . foo bar]');
 
   MT('divWithClassAndId',
-      '[punctuation div][punctuation&attribute (my-class#my-id)][punctuation . foo bar]');
+      '[punctuation div][punctuation&attribute (account-class#account-id)][punctuation . foo bar]');
 
   MT('paragraphWithCss',
       'p[attribute {color:red;}]. foo bar');
@@ -281,12 +281,12 @@
         '[punctuation&strong&em _bar_][punctuation&strong *]');
 
   MT('phraseModifierAttributes',
-      'p[attribute (my-class)]. This is a paragraph that has a class and' +
+      'p[attribute (account-class)]. This is a paragraph that has a class and' +
       ' this [em _][em&attribute (#special-phrase)][em emphasized phrase_]' +
       ' has an id.');
 
   MT('linkWithClass',
-      '[link "(my-class). This is a link with class":http://redcloth.org]');
+      '[link "(account-class). This is a link with class":http://redcloth.org]');
 
   /*
    * Layouts
@@ -384,7 +384,7 @@
       '[comment </div>]');
 
   MT('inlineHtml',
-      'I can use HTML directly in my [comment <span class="youbetcha">Textile</span>].');
+      'I can use HTML directly in account [comment <span class="youbetcha">Textile</span>].');
 
   /*
    * No-Textile

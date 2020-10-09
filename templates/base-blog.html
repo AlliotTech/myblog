@@ -78,12 +78,9 @@
                 </a>
 
                 <dl class="layui-nav-child">
-                    <dd><a href="{% url 'account:personalCenter' %}">个人中心</a></dd>
-
-                    <dd><a href="{% url 'management:dashboard' %}">网站管理</a></dd>
-
+                    <dd><a href="{% url 'account:account' %}">个人中心</a></dd>
+                    <dd><a href="{% url 'management:management' %}">网站管理</a></dd>
                     <dd><a href="{% url 'account:changePassword' %}">修改密码</a></dd>
-
                     <dd><a href="{% url 'account:logout' %}">退出登录</a></dd>
                 </dl>
             {% else %}
@@ -169,7 +166,7 @@
                         <span class="layui-nav-more"></span></a>
                     <dl class="layui-nav-child">
                         <dd data-name="button">
-                            <a href="{% url 'account:personalCenter' %}">个人中心</a>
+                            <a href="{% url 'account:account' %}">个人中心</a>
                         </dd>
                         <dd data-name="nav">
                             <a href="{% url 'management:dashboard' %}">网站管理</a>
@@ -221,20 +218,20 @@
         base: "{% static 'timeago/' %}"
     }).extend({
         timeago: 'timeago'
-    }).use(['timeago','layer'], function () {
+    }).use(['timeago', 'layer'], function () {
         var $ = layui.jquery;
         var timeago = layui.timeago;
         var layer = layui.layer;
         timeago.render($('.timeago'));
     });
     // ajax加载动画
-        var load
-        $(document).on('ajaxStart', function () {
-            load = layer.load();
-        })
-        $(document).on('ajaxComplete', function () {
-            layer.close(load);
-        })
+    var load
+    $(document).on('ajaxStart', function () {
+        load = layer.load();
+    })
+    $(document).on('ajaxComplete', function () {
+        layer.close(load);
+    })
     //导航的hover效果、二级菜单等功能，需要依赖element模块
     layui.use('element', function () {
         var element = layui.element;

@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改信息</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'css/layui-mini.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'layui-mini/lib/layui-v2.5.5/css/layui.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'layui-mini/css/layuimini.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'layui-mini/css/themes/default.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'fontawesome-free-5.11.2-web/css/all.min.css' %}" media='all'/>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style id="layuimini-bg-color">
+    </style>
+</head>
+<body>
+<div class="cintent-card">
+    <form class="layui-form" action="." method="post">
+        {% csrf_token %}
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名：</label>
+            <div class="layui-input-inline">
+                {{ user_form.username }}
+            </div>
+            <div class="layui-form-mid layui-word-aux">用户名唯一，登录使用，不可修改！</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱：</label>
+            <div class="layui-input-inline">
+                {{ user_form.email }}
+            </div>
+            <div class="layui-word-aux" id="change-email">
+                <a href="{% url 'account:changeEmail' %}" class="layui-btn layui-btn-normal">修改邮箱</a>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别：</label>
+            <div class="layui-input-block">
+                {{ userinfo_form.sex }}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机：</label>
+            <div class="layui-input-inline">
+                {{ userinfo_form.phone }}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">头像：</label>
+            <div class="layui-input-inline layui-btn-container photo-change">
+                <img src="/media/{{ userinfo.photo }}" id="photo-img">
+                <button type="button" class="layui-btn layui-btn-normal" id="editimg">修改头像</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">个人站点：</label>
+            <div class="layui-input-inline">
+                {{ userinfo_form.web }}
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">个性签名：</label>
+            <div class="layui-input-block">
+                {{ userinfo_form.aboutme }}
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="setmyinfo">确认修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
+<script src="{% static 'layui-mini/js/lay-config.js' %}" charset="utf-8"></script>
+<script>
+    //文本提交
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate
+            , $ = layui.jquery;
+        // 错误提示信息
+        if ('{{ message }}') {
+            layer.msg('{{ message }}')
+        }
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })
+            return false;
+        });
+        // 设置裁剪图片
+        $(function () {
+            w = $(window).width(); //浏览器当前窗口可视区域宽度
+            if (w > 768) {
+                open_height = '70%'
+            } else {
+                open_height = '100%'
+            }
+        })
+        layui.config({
+            base: "{% static 'cropper/' %}" //layui自定义layui组件目录
+        }).use(['form', 'croppers'], function () {
+            var $ = layui.jquery
+                , form = layui.form
+                , croppers = layui.croppers
+                , layer = layui.layer;
+
+            //创建一个头像上传组件
+            croppers.render({
+                elem: '#editimg'
+                , saveW: 150     //保存宽度
+                , saveH: 150
+                , mark: 1 / 1    //选取比例
+                , area: open_height  //弹窗宽度
+                , url: "{% url "account:photoUpload" %}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+                , done: function (src) { //上传完毕回调
+                    $("#photo-img").attr('src', src);
+                    $(".layui-nav-img").attr('src', src);
+                }
+            });
+        })
+    })
+</script>
+</body>
+</html>

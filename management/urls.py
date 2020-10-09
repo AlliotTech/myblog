@@ -4,6 +4,8 @@ from . import views
 app_name = "management"
 
 urlpatterns = [
+    path('management', views.management, name='management'),
+    # 后台管理模块
     path('dashboard/', views.dashboard, name='dashboard'),
     # 后台管理dashboard
     path('articleAdd/', views.articleAdd, name='articleAdd'),

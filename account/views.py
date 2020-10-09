@@ -6,13 +6,18 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMultiAlternatives
+from django.core.paginator import Paginator
 from django.db.models import Q
+from django.forms import model_to_dict
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from PIL import Image
 from account.forms import *
-from account.models import UserInfo
+from account.models import UserInfo, ArticleViewHistory, CommentMessage, LeaveMessage
+from django.views.decorators.clickjacking import xframe_options_exempt
+
+from blog.models import Article
 
 
 def sendEmail(receive, username, action, code):
@@ -202,17 +207,25 @@ def forgetPassword(request):
         return render(request, 'account/forgetPassword.html', locals())
 
 
+# 个人中心模块
 @login_required()
-# 判断用户是否登录，django自带的装饰器函数
-# 个人中心
+def account(request):
+    model = "account"
+    return render(request, 'layui-mini/base.html', locals())
+
+
+# 个人中心首页
+@login_required()
+@xframe_options_exempt
 def personalCenter(request):
     userinfo = UserInfo.objects.get(user_id=request.user.id)
     user = User.objects.get(username=request.user)
-    return render(request, 'account/personalCenter.html', locals())
+    return render(request, 'layui-mini/account/index.html', locals())
 
 
 # 修改密码
 @login_required()
+@xframe_options_exempt
 def changePassword(request):
     if request.method == "POST":
         change_password_form = ChangePasswordForm(request.POST)
@@ -231,14 +244,15 @@ def changePassword(request):
         else:
             message = "表单数据异常！"
         change_password_form = ChangePasswordForm()
-        return render(request, 'account/changePassword.html', locals())
+        return render(request, 'layui-mini/account/changePassword.html', locals())
     else:
         change_password_form = ChangePasswordForm()
-        return render(request, 'account/changePassword.html', locals())
+        return render(request, 'layui-mini/account/changePassword.html', locals())
 
 
 # 修改邮箱
 @login_required()
+@xframe_options_exempt
 def changeEmail(request):
     if request.method == "POST":
         change_email_form = ChangeEmailForm(request.POST)
@@ -263,24 +277,25 @@ def changeEmail(request):
                     user = request.user
                     user.email = email
                     user.save()
-                    return HttpResponseRedirect('/account/personalCenter/')
+                    return HttpResponseRedirect('layui-mini/account/personalCenter/')
                 change_email_form = ChangeEmailForm()
-                return render(request, 'account/changeEmail.html', locals())
+                return render(request, 'layui-mini/account/changeEmail.html', locals())
             else:
                 message = "密码错误！"
             change_email_form = ChangeEmailForm()
-            return render(request, 'account/changeEmail.html', locals())
+            return render(request, 'layui-mini/account/changeEmail.html', locals())
         else:
             message = change_email_form.errors
         change_email_form = ChangeEmailForm()
-        return render(request, 'account/changeEmail.html', locals())
+        return render(request, 'layui-mini/account/changeEmail.html', locals())
     else:
         change_email_form = ChangeEmailForm()
-        return render(request, 'account/changeEmail.html', locals())
+        return render(request, 'layui-mini/account/changeEmail.html', locals())
 
 
 # 修改信息
 @login_required()
+@xframe_options_exempt
 def changeInformation(request):
     userinfo = UserInfo.objects.get(user_id=request.user.id)
     user = User.objects.get(username=request.user)
@@ -295,9 +310,8 @@ def changeInformation(request):
             userinfo.aboutme = userinfo_data['aboutme']
             request.user.save()
             userinfo.save()
-            return HttpResponseRedirect('/account/personalCenter/')
-        else:
-            return render(request, 'account/changeInformation.html', locals())
+            message = "信息修改成功"
+            return render(request, 'layui-mini/account/changeInformation.html', locals())
     else:
         username = user.username
         email = user.email
@@ -307,39 +321,121 @@ def changeInformation(request):
         web = userinfo.web
         aboutme = userinfo.aboutme
         userinfo_form = UserInfoForm({'sex': sex, 'phone': phone, 'web': web, 'aboutme': aboutme})
-        return render(request, 'account/changeInformation.html', locals())
+        return render(request, 'layui-mini/account/changeInformation.html', locals())
 
 
 # 浏览记录
+@login_required()
+@xframe_options_exempt
 def historyBrowse(request):
-    browseList = []
-    for i in range(1, 11):
-        browseList.append(i)
-    return render(request, 'account/historyBrowse.html', locals())
-
-
-# 评论记录
-def historyComment(request):
-    commentList = []
-    for i in range(1, 11):
-        commentList.append(i)
-    return render(request, 'account/historyComment.html', locals())
+    return render(request, 'layui-mini/account/historyBrowse.html', locals())
 
 
 # 收藏记录
-def historyCollection(request):
-    collectionList = []
-    for i in range(1, 11):
-        collectionList.append(i)
-    return render(request, 'account/historyCollection.html', locals())
+@login_required()
+@xframe_options_exempt
+def historyLike(request):
+    return render(request, 'layui-mini/account/historyLike.html', locals())
+
+
+# 评论记录
+@login_required()
+@xframe_options_exempt
+def historyComment(request):
+    return render(request, 'layui-mini/account/historyComment.html', locals())
 
 
 # 留言记录
+@login_required()
+@xframe_options_exempt
 def historyLeave(request):
-    scoreList = []
-    for i in range(1, 11):
-        scoreList.append(i)
-    return render(request, 'account/historyLeave.html', locals())
+    return render(request, 'layui-mini/account/historyLeave.html', locals())
+
+
+# ajax动态数据表格接口
+def historyData(request):
+    page_index = request.GET.get('page')
+    page_limit = request.GET.get('limit')
+    page_type = request.GET.get('type')
+    user_id = request.user.id
+    # 浏览记录
+    if page_type == 'browse':
+        history_all = ArticleViewHistory.objects.filter(user=user_id)
+        lis = []
+        for history in history_all:
+            data = {}
+            data["id"] = history.id
+            data["article_id"] = history.article.id
+            data["title"] = history.article.title
+            data['category'] = history.article.category.name
+            data['category_id'] = history.article.category_id
+            data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
+            tags = history.article.tags.all()
+            tags_dict = {}
+            for tag in tags:
+                tags_dict[tag.id] = tag.name
+            data['tags'] = tags_dict
+            lis.append(data)
+    # 收藏记录
+    elif page_type == 'like':
+        history_all = ArticleViewHistory.objects.filter(user=user_id).filter(is_like=True)
+        lis = []
+        for history in history_all:
+            data = {}
+            data["id"] = history.id
+            data["article_id"] = history.article.id
+            data["title"] = history.article.title
+            data['category'] = history.article.category.name
+            data['category_id'] = history.article.category_id
+            data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
+            tags = history.article.tags.all()
+            tags_dict = {}
+            for tag in tags:
+                tags_dict[tag.id] = tag.name
+            data['tags'] = tags_dict
+            lis.append(data)
+    # 评论记录
+    elif page_type == 'comment':
+        history_all = CommentMessage.objects.filter(user=user_id)
+        lis = []
+        for history in history_all:
+            data = {}
+            data["id"] = history.id
+            data["article_id"] = history.article.id
+            data["title"] = history.article.title
+            data['category'] = history.article.category.name
+            data['category_id'] = history.article.category_id
+            data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
+            data['like'] = history.like
+            data['content'] = history.content
+            lis.append(data)
+    # 留言记录
+    elif page_type == 'leave':
+        history_all = LeaveMessage.objects.filter(user=user_id)
+        lis = []
+        for history in history_all:
+            data = {}
+            data["id"] = history.id
+            data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
+            data['like'] = history.like
+            data['content'] = history.content
+            lis.append(data)
+    # 分页器进行分配
+    try:
+        paginator = Paginator(lis, page_limit)
+        # 前端传来页数的数据
+        data = paginator.page(page_index)
+        # 放在一个列表里
+        articles_info = [x for x in data]
+        result = {"code": 0,
+                  "msg": "分页正常",
+                  "count": history_all.count(),
+                  "data": articles_info}
+    except:
+        result = {"code": 1,
+                  "msg": "分页调用异常！"
+                  }
+    return JsonResponse(result)
 
 
 # ajax用户注册验证

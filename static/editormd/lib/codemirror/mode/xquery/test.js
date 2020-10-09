@@ -44,19 +44,19 @@
 
   MT("test EQName variable",
      "[keyword declare] [keyword variable] [variable $\"http://www.example.com/ns/my\":var] [keyword :=] [atom 12][variable ;]",
-     "[tag <out>]{[variable $\"http://www.example.com/ns/my\":var]}[tag </out>]");
+     "[tag <out>]{[variable $\"http://www.example.com/ns/account\":var]}[tag </out>]");
 
   MT("test EQName function",
      "[keyword declare] [keyword function] [def&variable \"http://www.example.com/ns/my\":fn] ([variable $a] [keyword as] [atom xs:integer]) [keyword as] [atom xs:integer] {",
      "   [variable $a] [keyword +] [atom 2]",
      "}[variable ;]",
-     "[tag <out>]{[def&variable \"http://www.example.com/ns/my\":fn]([atom 12])}[tag </out>]");
+     "[tag <out>]{[def&variable \"http://www.example.com/ns/account\":fn]([atom 12])}[tag </out>]");
 
   MT("test EQName function with single quotes",
      "[keyword declare] [keyword function] [def&variable 'http://www.example.com/ns/my':fn] ([variable $a] [keyword as] [atom xs:integer]) [keyword as] [atom xs:integer] {",
      "   [variable $a] [keyword +] [atom 2]",
      "}[variable ;]",
-     "[tag <out>]{[def&variable 'http://www.example.com/ns/my':fn]([atom 12])}[tag </out>]");
+     "[tag <out>]{[def&variable 'http://www.example.com/ns/account':fn]([atom 12])}[tag </out>]");
 
   MT("testProcessingInstructions",
      "[def&variable data]([comment&meta <?target content?>]) [keyword instance] [keyword of] [atom xs:string]");

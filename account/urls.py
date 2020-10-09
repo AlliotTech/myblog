@@ -11,8 +11,11 @@ urlpatterns = [
     # 注销
     path('forgetPassword/', views.forgetPassword, name='forgetPassword'),
     # 忘记密码
+
+    path('account', views.account, name='account'),
+    # 个人中心模块
     path('personalCenter/', views.personalCenter, name='personalCenter'),
-    # 个人中心
+    # 个人中心首页
     path('changeInformation/', views.changeInformation, name='changeInformation'),
     # 修改信息
     path('changePassword/', views.changePassword, name='changePassword'),
@@ -21,14 +24,15 @@ urlpatterns = [
     # 修改邮箱
     path('historyBrowse/', views.historyBrowse, name='historyBrowse'),
     # 浏览记录
+    path('historyLike/', views.historyLike, name='historyLike'),
+    # 收藏记录
     path('historyComment/', views.historyComment, name='historyComment'),
     # 评论记录
-    path('historyCollection/', views.historyCollection, name='historyCollection'),
-    # 收藏记录
     path('historyLeave/', views.historyLeave, name='historyLeave'),
     # 留言记录
 
-
+    path('historyData', views.historyData, name='historyData'),
+    # ajax动态数据表格
     path('registerCheck', views.registerCheck, name='registerCheck'),
     # ajax用户注册信息验证
     path('photoUpload/', views.photoUpload, name='photoUpload'),

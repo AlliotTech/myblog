@@ -585,6 +585,7 @@
                     '        </ol>')
                 return $record;
             }
+
             // 点赞
             $("#article-action>a").eq(0).click(function () {
                 $(this).animate({
@@ -619,33 +620,55 @@
             })
             // 添加收藏
             $('#article-action .article-collection').click(function () {
+                var $like = $(this)
                 if ('{{ user.username }}') {
-                    $.ajax({
-                        type: "GET",
-                        url: "{% url 'blog:articleCollection' %}",
-                        data: {
-                            article_id: "{{ article.id }}",
-                            user_id: "{{ user.id }}"
-                        },
-                        success: function (result) {
-                            if (result.code == 1) {
-                                $(".article-collection").css({
-                                    'width': '45%',
-                                    'background': '#3498db',
-                                    'pointer-events': 'none'
-                                })
-                                $(".article-collection").find('i').text("已收藏")
-                                var like_num = parseInt($("#collection_action").text()) + 1
-                                $("#collection_action").text(like_num)
-                                layer.msg(result.msg, {icon: 6});
-                            } else {
-                                layer.alert(result.msg, {icon: 2});
+                    if ($like.find("i").text() == '已收藏') {
+                        $.ajax({
+                            type: "GET",
+                            url: "{% url 'blog:deleteCollection' %}",
+                            data: {
+                                article_id: "{{ article.id }}",
+                                user_id: "{{ user.id }}"
+                            },
+                            success: function (result) {
+                                if (result.code == 1) {
+                                    $(".article-collection").removeClass("iscollection")
+                                    $(".article-collection").find('i').text("收藏")
+                                    var like_num = parseInt($("#collection_action").text()) + 1
+                                    $("#collection_action").text(like_num)
+                                    layer.msg(result.msg, {icon: 6});
+                                } else {
+                                    layer.alert(result.msg, {icon: 2});
+                                }
+                            },
+                            error: function (xhr) {
+                                alert(xhr.text());
                             }
-                        },
-                        error: function (xhr) {
-                            alert(xhr.text());
-                        }
-                    })
+                        })
+                    } else {
+                        $.ajax({
+                            type: "GET",
+                            url: "{% url 'blog:articleCollection' %}",
+                            data: {
+                                article_id: "{{ article.id }}",
+                                user_id: "{{ user.id }}"
+                            },
+                            success: function (result) {
+                                if (result.code == 1) {
+                                    $(".article-collection").addClass("iscollection")
+                                    $(".article-collection").find('i').text("已收藏")
+                                    var like_num = parseInt($("#collection_action").text()) + 1
+                                    $("#collection_action").text(like_num)
+                                    layer.msg(result.msg, {icon: 6});
+                                } else {
+                                    layer.alert(result.msg, {icon: 2});
+                                }
+                            },
+                            error: function (xhr) {
+                                alert(xhr.text());
+                            }
+                        })
+                    }
                 } else {
                     layer.open({
                         type: 1,
@@ -668,27 +691,27 @@
             }
 
             function openContent() {
-                layui.use('layer', function () {
-                    var layer = layui.layer;
-                    layer.ready(function () {
-                        setTimeout(function () {
-                            layer.open({
-                                id: 'catalogue'
-                                , type: 1
-                                , title: ['📋目录', 'font-size:26px;color:#1e9fff']
-                                , area: '230px'
-                                , maxWidth: '500'
-                                , maxHeight: '650'
-                                , shade: 0
-                                , anim: 5
-                                , offset: ['80px', '15px']
-                                , content: $('.markdown-toc-list').html()
-                                , success: function (layero) {
-                                    layer.setTop(layero); //重点2
-                                }
-                            });
-                        }, 1000)
-                    });
+                if ($('.markdown-toc-list').length == 0) {
+                    return false;
+                }
+                layer.ready(function () {
+                    setTimeout(function () {
+                        layer.open({
+                            id: 'catalogue'
+                            , type: 1
+                            , title: ['📋目录', 'font-size:26px;color:#1e9fff']
+                            , area: '230px'
+                            , maxWidth: '500'
+                            , maxHeight: '650'
+                            , shade: 0
+                            , anim: 5
+                            , offset: ['80px', '15px']
+                            , content: $('.markdown-toc-list').html()
+                            , success: function (layero) {
+                                layer.setTop(layero); //重点2
+                            }
+                        });
+                    }, 1000)
                 });
             }
         });
