@@ -79,6 +79,8 @@
         </div>
     </form>
 </div>
+<script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/csrf.js' %}" charset="utf-8"></script>
 <script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
 <script src="{% static 'layui-mini/js/lay-config.js' %}" charset="utf-8"></script>
 <script>
@@ -125,6 +127,7 @@
                 , mark: 1 / 1    //选取比例
                 , area: open_height  //弹窗宽度
                 , url: "{% url "account:photoUpload" %}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+                , data: {type: "photo"}
                 , done: function (src) { //上传完毕回调
                     $("#photo-img").attr('src', src);
                     $(".layui-nav-img").attr('src', src);

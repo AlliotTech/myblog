@@ -39,7 +39,7 @@ class Article(models.Model):
     # 使用外键关联分类表与分类是一对多关系
     tags = models.ManyToManyField(Tag, verbose_name='标签', blank=True)
     # 使用外键关联标签表与标签是多对多关系
-    img = models.ImageField(upload_to='cover/', verbose_name='文章图片', blank=True, null=True)
+    img = models.ImageField(upload_to='cover/', verbose_name='文章图片', blank=True, null=True, default='cover/default.jpg')
     body = MDTextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者')
     """
@@ -52,7 +52,8 @@ class Article(models.Model):
     comment = models.PositiveIntegerField('评论数', default=0)
     created_time = models.DateTimeField('发布时间', auto_now_add=True)
     modified_time = models.DateTimeField('修改时间', auto_now=True)
-    recommend = models.BooleanField('推荐显示', default=False)
+    is_recommend = models.BooleanField('是否推荐显示', default=False)
+    is_release = models.BooleanField('是否发布', default=True)
 
     class Meta:
         verbose_name = '文章内容'

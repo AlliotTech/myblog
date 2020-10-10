@@ -7,7 +7,7 @@ from .models import Category, Tag, Article
 # 文章内容
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'category', 'title', 'view', 'like', 'collection', 'created_time', 'recommend')
+    list_display = ('id', 'category', 'title', 'view', 'like', 'collection', 'created_time', 'is_recommend', 'is_release')
     # 文章列表里显示想要显示的字段
     list_per_page = 30
     # 满50条数据就自动分页

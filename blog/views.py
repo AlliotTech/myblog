@@ -38,15 +38,15 @@ def aside():
     # 所有标签
     tags = Tag.objects.all()
     # 推荐阅读
-    recommend = Article.objects.all().filter(recommend=True).order_by('-created_time')[:6]
+    recommend = Article.objects.all().filter(is_recommend=True).filter(is_release=True).order_by('-created_time')[:6]
     # 阅读排行
-    viewTop = Article.objects.all().order_by('-view')[:9]
+    viewTop = Article.objects.all().filter(is_release=True).order_by('-view')[:9]
     # 点赞排行
-    likeTop = Article.objects.all().order_by('-like')[:9]
+    likeTop = Article.objects.all().filter(is_release=True).order_by('-like')[:9]
     # 收藏排行
-    collectionTop = Article.objects.all().order_by('-collection')[:9]
+    collectionTop = Article.objects.all().filter(is_release=True).order_by('-collection')[:9]
     # 评论排行
-    commentTop = Article.objects.all().order_by('-comment')[:9]
+    commentTop = Article.objects.all().filter(is_release=True).order_by('-comment')[:9]
     return locals()
 
 
@@ -85,7 +85,7 @@ def compressImage(request):
 # 首页
 def index(request):
     aside_dict = aside()
-    count = Article.objects.all().count()
+    count = Article.objects.all().filter(is_release=True).count()
     page_count = (count // 5) + 1
     return render(request, 'blog/index.html', locals())
 
@@ -95,7 +95,7 @@ def indexPage(request):
     page_index = request.GET.get('page')
     # 前台传来的一页显示多少条数据
     page_limit = request.GET.get('limit')
-    articles_all = Article.objects.all()
+    articles_all = Article.objects.all().filter(is_release=True)
     # 处理成LayUi官方文档的格式
     lis = []
     for article in articles_all:
@@ -127,7 +127,7 @@ def indexPage(request):
 
 # 文章分类列表
 def category(request, category_id):
-    articles_all = Article.objects.filter(category_id=category_id)
+    articles_all = Article.objects.filter(category_id=category_id).filter(is_release=True)
     count = articles_all.count()
     category_name = Category.objects.get(id=category_id)
     return render(request, 'blog/categoryList.html',
@@ -141,7 +141,7 @@ def categoryPage(request):
     page_index = request.GET.get('page')
     # 前台传来的一页显示多少条数据
     page_limit = request.GET.get('limit')
-    articles_all = Article.objects.filter(category_id=category_id)
+    articles_all = Article.objects.filter(category_id=category_id).filter(is_release=True)
     # 处理成LayUi官方文档的格式
     lis = []
     for article in articles_all:

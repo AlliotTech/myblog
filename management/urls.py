@@ -26,4 +26,11 @@ urlpatterns = [
     # 网站友情链接
     path('managementUser/', views.managementUser, name='managementUser'),
     # 用户管理
+
+    path('coverUpload/', views.coverUpload, name='coverUpload'),
+    # ajax文章封面图片上传
+    path('articleDel/', views.articleDel, name='articleDel'),
+    # ajax删除文章
+    path('articleEdit-<int:article_id>/', views.articleEdit, name='articleEdit'),
+    # ajax修改文章
 ]

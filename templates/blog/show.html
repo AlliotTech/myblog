@@ -163,6 +163,7 @@
                                 <div class="layui-tab-content">
                                     {#                                    最新评论#}
                                     <div class="layui-tab-item layui-show">
+                                    {% if all_comment %}
                                         {% for ol in all_comment %}
                                             <ol class="list-body">
                                                 {% for li in ol %}
@@ -211,10 +212,17 @@
                                                 {% endfor %}
                                             </ol>
                                         {% endfor %}
+                                    {% else %}
+                                        <div class="comment-tips">
+                                        <h3>暂无评论哦，快来评论一下吧！</h3>
+                                        </div>
+                                    {% endif %}
+
                                     </div>
                                     {#热门评论#}
                                     <div class="layui-tab-item">
                                         <ol class="list-body">
+                                        {% if hot_comment %}
                                             {% for i in hot_comment %}
                                                 <li class="message-content" id="hot-{{ i.id }}">
                                                     <a href="#">
@@ -247,6 +255,11 @@
                                                     </div>
                                                 </li>
                                             {% endfor %}
+                                        {% else %}
+                                            <div class="comment-tips">
+                                                <h3>暂无评论哦，快来评论一下吧！</h3>
+                                            </div>
+                                        {% endif %}
                                         </ol>
                                     </div>
                                     {#                                        我的评论#}
@@ -287,7 +300,9 @@
                                                     </li>
                                                 {% endfor %}
                                                 {% else %}
-                                                <h3>🥺您还没有发表评论，快来评论吧！</h3>
+                                                <div class="comment-tips">
+                                                    <h3>🥺您还没有发表评论，快来评论吧！</h3>
+                                                </div>
                                             </ol>
                                         {% endif %}
                                     </div>

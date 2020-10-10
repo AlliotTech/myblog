@@ -29,7 +29,7 @@
             },
             {
               "title": "文章列表",
-              "href": "page/layer.html",
+              "href": "/management/articleList",
               "icon": "fa fa-clipboard-list",
               "target": "_self"
             },

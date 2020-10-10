@@ -40,3 +40,7 @@
     width: 200px;
     height: 100%;
 }
+/*弹窗内容*/
+.collection-box-div {
+    padding: 30px;
+}

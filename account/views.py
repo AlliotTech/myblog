@@ -360,9 +360,9 @@ def historyData(request):
     user_id = request.user.id
     # 浏览记录
     if page_type == 'browse':
-        history_all = ArticleViewHistory.objects.filter(user=user_id)
+        table_data = ArticleViewHistory.objects.filter(user=user_id)
         lis = []
-        for history in history_all:
+        for history in table_data:
             data = {}
             data["id"] = history.id
             data["article_id"] = history.article.id
@@ -378,9 +378,9 @@ def historyData(request):
             lis.append(data)
     # 收藏记录
     elif page_type == 'like':
-        history_all = ArticleViewHistory.objects.filter(user=user_id).filter(is_like=True)
+        table_data = ArticleViewHistory.objects.filter(user=user_id).filter(is_like=True)
         lis = []
-        for history in history_all:
+        for history in table_data:
             data = {}
             data["id"] = history.id
             data["article_id"] = history.article.id
@@ -396,9 +396,9 @@ def historyData(request):
             lis.append(data)
     # 评论记录
     elif page_type == 'comment':
-        history_all = CommentMessage.objects.filter(user=user_id)
+        table_data = CommentMessage.objects.filter(user=user_id)
         lis = []
-        for history in history_all:
+        for history in table_data:
             data = {}
             data["id"] = history.id
             data["article_id"] = history.article.id
@@ -411,15 +411,35 @@ def historyData(request):
             lis.append(data)
     # 留言记录
     elif page_type == 'leave':
-        history_all = LeaveMessage.objects.filter(user=user_id)
+        table_data = LeaveMessage.objects.filter(user=user_id)
         lis = []
-        for history in history_all:
+        for history in table_data:
             data = {}
             data["id"] = history.id
             data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
             data['like'] = history.like
             data['content'] = history.content
             lis.append(data)
+    # 文章列表
+    elif page_type == 'article_list':
+        table_data = Article.objects.all()
+        lis = []
+        for article in table_data:
+            data = {}
+            data["id"] = article.id
+            data["title"] = article.title
+            data['created_time'] = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
+            data['is_release'] = article.is_release
+            data['is_recommend'] = article.is_recommend
+            data['category'] = article.category.name
+            data['category_id'] = article.category_id
+            tags = article.tags.all()
+            tags_dict = {}
+            for tag in tags:
+                tags_dict[tag.id] = tag.name
+            data['tags'] = tags_dict
+            lis.append(data)
+        print(lis)
     # 分页器进行分配
     try:
         paginator = Paginator(lis, page_limit)
@@ -429,9 +449,10 @@ def historyData(request):
         articles_info = [x for x in data]
         result = {"code": 0,
                   "msg": "分页正常",
-                  "count": history_all.count(),
+                  "count": table_data.count(),
                   "data": articles_info}
-    except:
+    except Exception as e:
+        print(e)
         result = {"code": 1,
                   "msg": "分页调用异常！"
                   }

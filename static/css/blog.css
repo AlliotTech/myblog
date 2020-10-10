@@ -701,6 +701,12 @@ aside > h4, .index-new > h4 {
 
 /*留言评论*/
 /*发表留言评论*/
+.comment-tips h3 {
+    text-align: center;
+    padding-top: 30px;
+    font-size: 20px;
+    color: #7f8c8d;
+}
 .message-board .message-editor .message-title {
     margin: 20px 0;
 }
