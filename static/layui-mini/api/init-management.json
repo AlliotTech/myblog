@@ -35,7 +35,7 @@
             },
             {
               "title": "文章分类",
-              "href": "page/test.html",
+              "href": "/management/articleCategory",
               "icon": "fa fa-calendar-alt",
               "target": "_self"
             },

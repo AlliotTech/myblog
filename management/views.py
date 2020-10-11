@@ -27,18 +27,14 @@ def dashboard(request):
 @xframe_options_exempt
 @login_required()
 def articleList(request):
-    articleList = []
-    for i in range(1, 11):
-        articleList.append(i)
     return render(request, 'layui-mini/management/articleList.html', locals())
 
 
 # 文章分类
-def articleClass(request):
-    classList = []
-    for i in range(1, 11):
-        classList.append(i)
-    return render(request, 'management/articleClass.html', locals())
+@xframe_options_exempt
+@login_required()
+def articleCategory(request):
+    return render(request, 'layui-mini/management/articleCategory.html', locals())
 
 
 # 文章标签
@@ -175,10 +171,76 @@ def articleDel(request):
 @login_required()
 def articleEdit(request, article_id):
     if request.method == "POST":
-        pass
+        article_id = request.POST.get("id")
+        title = request.POST.get("title")
+        category_id = request.POST.get("category_id")
+        excerpt = request.POST.get("excerpt")
+        tags = request.POST.get("tags")
+        cover_img = request.POST.get("cover_img")
+        img = str(cover_img).split("media/")[1]
+        content = request.POST.get("content")
+        article_type = request.POST.get("type")
+        recommended = request.POST.get("recommended")
+        try:
+            article = Article.objects.get(id=article_id)
+            article.title = title
+            article.excerpt = excerpt
+            article.img = img
+            article.body = content
+            article.author_id = request.user.id
+            article.category_id = category_id
+            article.is_recommend = recommended
+            if article_type == '发布':
+                article.is_release = 1
+            elif article_type == '保存':
+                article.is_release = 0
+            article.save()
+            article.tags.clear()
+            article.tags.add(*list(Tag.objects.filter(id__in=tags.split(','))))
+            result = {
+                "code": "1",
+                "msg": "提交成功！",
+            }
+        except:
+            result = {
+                "code": "0",
+                "msg": "提交失败！",
+            }
+        return JsonResponse(result)
     else:
         article = Article.objects.get(id=article_id)
         category_all = Category.objects.all()
         tag_all = Tag.objects.all()
         tags = list(article.tags.values_list('id', flat=True))
         return render(request, 'layui-mini/management/articleEdit.html', locals())
+
+
+# ajax删除文章分类
+def categoryDel(request):
+    category_id = request.GET.get("del_id")
+    if category_id:
+        Category.objects.get(id=category_id).delete()
+        result = {"code": 1, "msg": "删除成功!"}
+    else:
+        result = {"code": 0, "msg": "删除失败!"}
+    return JsonResponse(result)
+
+# ajax修改文章分类
+def categoryEdit(request):
+    if request.method == "POST":
+        category_id = request.POST.get("category_id")
+        name = request.POST.get("name")
+        try:
+            category = Category.objects.get(id=category_id)
+            category.name = name
+            category.save()
+            result = {
+                "code": "1",
+                "msg": "提交成功！",
+            }
+        except:
+            result = {
+                "code": "0",
+                "msg": "提交失败！",
+            }
+    return JsonResponse(result)

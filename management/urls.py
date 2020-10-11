@@ -12,7 +12,7 @@ urlpatterns = [
     # 新增文章
     path('articleList/', views.articleList, name='articleList'),
     # 文章列表
-    path('articleClass/', views.articleClass, name='articleClass'),
+    path('articleCategory/', views.articleCategory, name='articleCategory'),
     # 文章分类
     path('articleTag/', views.articleTag, name='articleTag'),
     # 文章标签
@@ -33,4 +33,9 @@ urlpatterns = [
     # ajax删除文章
     path('articleEdit-<int:article_id>/', views.articleEdit, name='articleEdit'),
     # ajax修改文章
+    path('categoryDel/', views.categoryDel, name='categoryDel'),
+    # ajax删除分类
+    path('categoryEdit/', views.categoryEdit, name='categoryEdit'),
+    # ajax修改分类
+
 ]

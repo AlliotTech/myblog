@@ -17,7 +17,7 @@ from account.forms import *
 from account.models import UserInfo, ArticleViewHistory, CommentMessage, LeaveMessage
 from django.views.decorators.clickjacking import xframe_options_exempt
 
-from blog.models import Article
+from blog.models import Article, Category
 
 
 def sendEmail(receive, username, action, code):
@@ -439,6 +439,16 @@ def historyData(request):
                 tags_dict[tag.id] = tag.name
             data['tags'] = tags_dict
             lis.append(data)
+    # 文章分类
+    elif page_type == 'article_category':
+        table_data = Category.objects.all()
+        lis = []
+        for category in table_data:
+            data = {}
+            data["id"] = category.id
+            data["name"] = category.name
+            data["article_count"] = Article.objects.filter(category_id=category.id).count()
+            lis.append(data)
         print(lis)
     # 分页器进行分配
     try:
@@ -454,7 +464,7 @@ def historyData(request):
     except Exception as e:
         print(e)
         result = {"code": 1,
-                  "msg": "分页调用异常！"
+                  "msg": "查询数据为空！"
                   }
     return JsonResponse(result)
 

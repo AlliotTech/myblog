@@ -44,3 +44,14 @@
 .collection-box-div {
     padding: 30px;
 }
+.categoryEdit-text {
+    padding-bottom: 20px;
+    text-align: center;
+}
+/*markdown样式适配*/
+.markdown-body ol li {
+    list-style-type: decimal;
+}
+.markdown-body ul li {
+    list-style-type: disc;
+}

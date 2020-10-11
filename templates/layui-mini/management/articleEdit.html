@@ -84,12 +84,12 @@
             <label class="layui-form-label">文章内容：</label>
             <div class="layui-input-block" id="input-textarea">
                 <div id="test-editor">
-                    <textarea style="display:none;"></textarea>
+                    <textarea style="display:none;">{{ article.body }}</textarea>
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
-            <div class="layui-input-block">
+            <div class="layui-input-block" id="submit-btn">
                 <button class="layui-btn" lay-submit lay-filter="release">立即发布</button>
                 <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save">暂存草稿</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -128,7 +128,15 @@
             tex: true,                   // 开启科学公式TeX语言支持，默认关闭
             flowChart: true,             // 开启流程图支持，默认关闭
             sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭,
+            // 适配全屏时按钮显示异常问题
+            onfullscreen: function () {
+                $("#submit-btn").hide()
+            },
+            onfullscreenExit: function () {
+                $("#submit-btn").show()
+            }
         });
+
         //创建一个图片上传组件
         croppers.render({
             elem: '#editimg'
@@ -148,18 +156,18 @@
             $.each($('input[name="tag"]:checked'), function (i, val) {
                 tags.push($(val).val())
             })
-            console.log(data.field)
-            console.log($('#cover-img')[0].src)
             var recommended
             if (data.field.recommended == "on") {
                 recommended = 1
             } else {
                 recommended = 0
             }
+
             $.ajax({
                 type: "POST",
-                url: "{% url 'management:articleAdd' %}",
+                url: '/management/articleEdit-' + {{article.id}} + '/',
                 data: {
+                    id: {{ article.id }},
                     title: data.field.title,
                     category_id: data.field.category_id,
                     excerpt: data.field.excerpt,
