@@ -68,3 +68,17 @@ body {
     -moz-border-radius: 2em;
     border-radius: 2em
 }
+
+/*自定义样式*/
+fieldset legend {
+    text-align: center;
+    font-size: 25px;
+}
+fieldset {
+    margin-bottom: 20px!important;
+}
+fieldset form > div {
+    text-align: center;
+    margin-top: 15px;
+}
+

@@ -353,7 +353,7 @@ def historyLeave(request):
 
 
 # ajax动态数据表格接口
-def historyData(request):
+def tableData(request):
     page_index = request.GET.get('page')
     page_limit = request.GET.get('limit')
     page_type = request.GET.get('type')
@@ -449,7 +449,6 @@ def historyData(request):
             data["name"] = category.name
             data["article_count"] = Article.objects.filter(category_id=category.id).count()
             lis.append(data)
-        print(lis)
     # 分页器进行分配
     try:
         paginator = Paginator(lis, page_limit)
@@ -466,6 +465,33 @@ def historyData(request):
         result = {"code": 1,
                   "msg": "查询数据为空！"
                   }
+    return JsonResponse(result)
+
+
+# ajax动态表格搜索
+def tableSearch(request):
+    search_type = request.GET.get("type")
+    # 搜索文章分类名：
+    if search_type == "category_name":
+        category = request.GET.get("category")
+        # 模糊查询，不区分大小写
+        table_data = Category.objects.filter(name__iexact=category)
+        table_body = []
+        for category in table_data:
+            info = {"id": category.id, "name": category.name}
+            table_body.append(info)
+        # 放在一个列表里
+        result_data = [x for x in table_body]
+        if table_data.count() == 0:
+            result = {"code": 1,
+                      "msg": "查询记录为空！",
+                      "count": table_data.count(),
+                      "data": result_data}
+        else:
+            result = {"code": 0,
+                      "count": table_data.count(),
+                      "data": result_data}
+        print(result)
     return JsonResponse(result)
 
 

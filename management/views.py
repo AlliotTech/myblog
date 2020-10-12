@@ -225,6 +225,7 @@ def categoryDel(request):
         result = {"code": 0, "msg": "删除失败!"}
     return JsonResponse(result)
 
+
 # ajax修改文章分类
 def categoryEdit(request):
     if request.method == "POST":

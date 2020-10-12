@@ -31,8 +31,11 @@ urlpatterns = [
     path('historyLeave/', views.historyLeave, name='historyLeave'),
     # 留言记录
 
-    path('historyData', views.historyData, name='historyData'),
-    # ajax动态数据表格
+    path('tableData', views.tableData, name='tableData'),
+    # ajax动态表格数据
+    path('tableSearch', views.tableSearch, name='tableSearch'),
+    # ajax动态表格搜索
+
     path('registerCheck', views.registerCheck, name='registerCheck'),
     # ajax用户注册信息验证
     path('photoUpload/', views.photoUpload, name='photoUpload'),
