@@ -70,6 +70,7 @@ body {
 }
 
 /*自定义样式*/
+/*数据表格样式*/
 fieldset legend {
     text-align: center;
     font-size: 25px;
@@ -77,8 +78,16 @@ fieldset legend {
 fieldset {
     margin-bottom: 20px!important;
 }
-fieldset form > div {
+fieldset > div {
     text-align: center;
     margin-top: 15px;
 }
-
+/*弹窗样式*/
+.collection-box-div {
+    padding: 20px;
+}
+.collection-text {
+    font-size: 15px;
+    padding-bottom: 20px;
+    text-align: center;
+}
