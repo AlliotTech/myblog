@@ -37,5 +37,7 @@ urlpatterns = [
     # ajax删除分类
     path('categoryEdit/', views.categoryEdit, name='categoryEdit'),
     # ajax修改分类
+    path('categoryAdd/', views.categoryAdd, name='categoryAdd'),
+    # ajax新增分类
 
 ]

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>文章分类</title>
+    <title>文章列表</title>
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
     <link rel="stylesheet" href="{% static 'css/layui-mini.css' %}" media="all">
     <link rel="stylesheet" href="{% static 'css/public.css' %}" media="all">
@@ -24,14 +24,11 @@
 </div>
 <div id="collection-box" class="layui-hide">
     <div class="collection-box-div">
-        您确定要删除该文章分类吗？
+        您确定要删除本篇文章吗？
     </div>
 </div>
-<script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
-<script src="{% static 'js/csrf.js' %}" charset="utf-8"></script>
 <script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
 <script src="{% static 'layui-mini/js/lay-config.js' %}" charset="utf-8"></script>
-
 <script type="text/html" id="bar">
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="show"><i class="layui-icon layui-icon-read"></i>查看</a>
     <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="edit" href="javascript:;"
@@ -41,68 +38,93 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i
             class="layui-icon layui-icon-delete"></i>删除</a>
 </script>
-<script type="text/html" id="toolbar">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">添加</button>
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">删除</button>
-    </div>
-</script>
 <script>
     layui.use('table', function () {
         var table = layui.table,
-            $ = layui.jquery,
-            form = layui.form;
+            $ = layui.jquery;
         // 数据表格
         table.render({
             elem: '#article_list'
-            , url: "{% url 'account:historyData' %}?type=article_category" //数据接口
-            , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+            , url: "{% url 'account:historyData' %}?type=article_list" //数据接口
             , page: true //开启分页
             , height: 600
             , limits: [10, 15, 20, 25, 30]
             , even: true
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                {field: 'id', title: 'ID', sort: true, fixed: 'left', width: '5%'}
+                , {field: 'title', title: '文章标题'}
                 , {
-                    field: 'name', title: '分类名称', sort: true, templet: function (res) {
-                        var str = '<span><a href="#" onclick="open_win(\'/blog/category-' + res.id + '\')">' + res.name + '</a></span>'
+                    field: 'category', title: '文章分类', sort: true, width: '10%', templet: function (res) {
+                        var str = '<span><a href="#" onclick="open_win(\'/blog/category-' + res.category_id + '\')">' + res.category + '</a></span>'
                         return str;
                     }
                 }
-                , {field: 'article_count', title: '文章数', sort: true}
+                , {
+                    field: 'tags', title: '文章标签', templet: function (res) {
+                        var value = res.tags;
+                        var str = '';
+                        for (var key in value) {
+                            str += '<span class="label-tag tag-color-' + key + '">' +
+                                '<a href="#" onclick="open_win(\'/blog/tag-' + key + '\')">' + value[key] + '</a></span>'
+                        }
+                        return str;
+                    }
+                }
+                , {field: 'created_time', title: '发布时间', sort: true}
+                , {
+                    field: 'is_release', title: '是否发布', sort: true, width: '8%', templet: function (res) {
+                        var str = '';
+                        if (res.is_release) {
+                            str = '<i class="layui-icon layui-icon-ok-circle" style="font-size: 20px; color: #27ae60;"></i> '
+                        } else {
+                            str = '<i class="layui-icon layui-icon-close-fill" style="font-size: 20px; color: #e74c3c;"></i> '
+                        }
+                        return str;
+                    }
+                }
+                , {
+                    field: 'is_recommend', title: '是否推荐', sort: true, width: '8%', templet: function (res) {
+                        var str = '';
+                        if (res.is_recommend) {
+                            str = '<i class="layui-icon layui-icon-ok-circle" style="font-size: 20px; color: #27ae60;"></i> '
+                        } else {
+                            str = '<i class="layui-icon layui-icon-close-fill" style="font-size: 20px; color: #e74c3c;"></i> '
+                        }
+                        return str;
+                    }
+                }
                 , {title: '操作', toolbar: '#bar'}
             ]]
             , initSort: {
-                field: 'article_count' //排序字段，对应 cols 设定的各字段名
+                field: 'created_time' //排序字段，对应 cols 设定的各字段名
                 , type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
             }
         });
 
         //监听事件
         table.on('tool(article_list)', function (obj) {
-            var category_id = obj.data.id;
+            var article_id = obj.data.id;
             var event = obj.event;
             if (event == 'show') {
                 open_win('/blog/show-' + article_id + '/')
             } else if (event == 'del') {
                 layer.open({
                     type: 1
-                    , title: '分类删除'
+                    , title: '文章删除'
                     , content: $('#collection-box').html()
                     , btn: ['确定', '取消']
                     , yes: function () {
                         $.ajax({
                             type: "GET",
-                            url: "{% url 'management:categoryDel' %}",
+                            url: "{% url 'management:articleDel' %}",
                             data: {
-                                del_id: category_id,
+                                del_id: article_id,
                             },
                             success: function (result) {
                                 if (result.code == 1) {
                                     layer.msg(result.msg, {icon: 6});
                                     table.reload('article_list', {
-                                        url: "{% url 'account:historyData' %}?type=article_category"
+                                        url: "{% url 'account:historyData' %}?type=article_list"
                                     });
                                 } else {
                                     layer.alert(result.msg, {icon: 2});
@@ -119,48 +141,8 @@
                     }
                 });
             } else if (event == 'edit') {
-                layer.open({
-                    type: 1
-                    , title: '修改文章分类'
-                    , content: '<div class="collection-box-div">\n' +
-                        '    <div class="categoryEdit-text">\n' +
-                        '        请输入新文章分类名:\n' +
-                        '    </div>\n' +
-                        '    <div class="layui-input-inline">\n' +
-                        '        <input type="text" id="categoryname" name="categoryname" lay-verify="required" lay-reqtext="请填写文章分类名"\n' +
-                        '               autocomplete="off" class="layui-input">\n' +
-                        '    </div>\n' +
-                        '</div>'
-                    , btn: ['确定', '取消']
-                    , yes: function () {
-                        var categoryname = $('input[name="categoryname"]').val();
-                        $.ajax({
-                            type: "POST",
-                            url: "{% url 'management:categoryEdit' %}",
-                            data: {
-                                name: categoryname,
-                                category_id: category_id,
-                            },
-                            success: function (result) {
-                                if (result.code == 1) {
-                                    layer.msg(result.msg, {icon: 6});
-                                    table.reload('article_list', {
-                                        url: "{% url 'account:historyData' %}?type=article_category"
-                                    });
-                                } else {
-                                    layer.alert(result.msg, {icon: 2});
-                                }
-                            },
-                            error: function (xhr) {
-                                alert(xhr.text());
-                            }
-                        })
-                        layer.closeAll();
-                    }
-                    , btn2: function () {
-                        layer.closeAll();
-                    }
-                });
+                var url = '/management/articleEdit-' + article_id
+                $(this).attr("layuimini-content-href", url)
             }
         });
     });

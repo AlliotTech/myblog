@@ -470,12 +470,13 @@ def tableData(request):
 
 # ajax动态表格搜索
 def tableSearch(request):
+    global title_search, category_search
     search_type = request.GET.get("type")
-    # 搜索文章分类名：
+    # 搜索文章分类：
     if search_type == "category_name":
         category = request.GET.get("category")
         # 模糊查询，不区分大小写
-        table_data = Category.objects.filter(name__iexact=category)
+        table_data = Category.objects.filter(name__icontains=category)
         table_body = []
         for category in table_data:
             info = {"id": category.id, "name": category.name}
@@ -491,7 +492,61 @@ def tableSearch(request):
             result = {"code": 0,
                       "count": table_data.count(),
                       "data": result_data}
-        print(result)
+    # 搜索文章列表
+    elif search_type == "article":
+        title = request.GET.get("title")
+        category = request.GET.get("category")
+        created_time = request.GET.get("created_time")
+        print(title, category, created_time)
+        q1 = Q()
+        q1.connector = 'AND'
+        if title:
+            q1.children.append(('title__icontains', title))
+        if category:
+            q1.children.append(('category__name__icontains', category))
+        if created_time != "undefined":
+            start_date = created_time.split()[0]
+            end_date = created_time.split()[2]
+            print(start_date, end_date)
+            q1.children.append(('created_time__range', [start_date, end_date]))
+        table_data = Article.objects.filter(q1)
+        print(table_data)
+        table_body = []
+        for article in table_data:
+            data = {}
+            data["id"] = article.id
+            data["title"] = article.title
+            data['created_time'] = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
+            data['is_release'] = article.is_release
+            data['is_recommend'] = article.is_recommend
+            data['category'] = article.category.name
+            data['category_id'] = article.category_id
+            tags = article.tags.all()
+            tags_dict = {}
+            for tag in tags:
+                tags_dict[tag.id] = tag.name
+            data['tags'] = tags_dict
+            table_body.append(data)
+            # info = {"id": article.id,
+            #         "title": article.title,
+            #         "category": article.category.name,
+            #         "created_time": article.created_time.strftime("%Y-%m-%d %H:%M:%S"),
+            #         "is_release": article.is_release,
+            #         "is_recommend": article.is_recommend}
+            # table_body.append(info)
+        print(table_body)
+    # 放在一个列表里
+    result_data = [x for x in table_body]
+    if len(table_body) == 0:
+        result = {"code": 1,
+                  "msg": "查询记录为空！",
+                  "count": 0,
+                  "data": result_data}
+    else:
+        result = {"code": 0,
+                  "count": len(table_body),
+                  "data": result_data}
+
     return JsonResponse(result)
 
 

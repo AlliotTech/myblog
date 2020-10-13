@@ -11,58 +11,26 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-<button type="button" class="layui-btn layui-btn-primary">原始按钮</button>
-<div class="layui-hide" id="reply-div">
-    <textarea id="reply" style="display: none;"></textarea>
+<div class="layui-form">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">日期范围</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="created_time" placeholder=" - ">
+            </div>
+        </div>
+    </div>
 </div>
 <script src="../static/layui/layui.all.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
-    layui.use('layedit', function () {
-        var layedit = layui.layedit;
-        var form = layui.form;
-        var $ = layui.jquery;
-        var reply_textarea;
-        // 图片接口放到建立编辑器前面，否则无效
-        layedit.set({
-            uploadImage: {
-                url: '/index.php/admin/base/layuifwb', //接口url
-                type: 'post' //默认post
-            }
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        //日期范围
+        laydate.render({
+            elem: '#created_time'
+            , range: true
         });
-        $("body").delegate(".layui-btn-primary", "click", function () {
-            layer.open({
-                type: 1
-                , title: '回复留言'
-                , area: ['400px', '300px']
-                , offset: 'auto'
-                , content: $('#reply-div').html()
-                , btn: ['发表回复', '取消回复']
-                , btnAlign: 'c'
-                , yes: function (index, layero) {
-                    var $content = layedit.getContent(reply_textarea)
-                    console.log($content)
-                }
-                , btn2: function () {
-                    layer.closeAll();
-                }
-                , success: function (layero, index) {
-
-                    // 设置编辑器
-                    reply_textarea = layedit.build($(layero).find('#reply'), {
-                        height: 150 //设置编辑器高度
-                        , tool: ['face', 'image', '|', 'link', 'unlink']
-                    });
-
-                    // 建立发表留言编辑器
-                    form.verify({ // 这里就是把富文本数据同步到<textarea>中
-                        content: function (value) {
-                            return layedit.sync(reply_textarea);
-                        }
-                    });
-                },
-            });
-        })
     });
 </script>
 

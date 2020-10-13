@@ -118,7 +118,8 @@ def indexPage(request):
                   "msg": "分页正常",
                   "count": articles_all.count(),
                   "data": articles_info}
-    except:
+    except Exception as e:
+        print(e)
         result = {"code": 0,
                   "msg": "分页调用异常！"
                   }
@@ -164,7 +165,8 @@ def categoryPage(request):
                   "msg": "分页正常",
                   "count": articles_all.count(),
                   "data": articles_info}
-    except:
+    except Exception as e:
+        print(e)
         result = {"code": 0,
                   "msg": "分页调用异常！"
                   }

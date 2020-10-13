@@ -1,58 +1,107 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>文章列表</title>
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
-    <link rel="stylesheet" href="{% static 'css/layui-mini.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'css/public.css' %}" media="all">
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="{% static 'layui-mini/lib/layui-v2.5.5/css/layui.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'layui-mini/css/layuimini.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'layui-mini/css/themes/default.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'fontawesome-free-5.11.2-web/css/all.min.css' %}" media='all'/>
-    <!--[if lt IE 9]>
-    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <style id="layuimini-bg-color">
-    </style>
+    <link rel="stylesheet" href="{% static 'layui-mini/css/public.css' %}" media="all">
 </head>
 <body>
-<div class="cintent-card">
-    <table id="article_list" lay-filter="article_list"></table>
-</div>
-<div id="collection-box" class="layui-hide">
-    <div class="collection-box-div">
-        您确定要删除本篇文章吗？
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div class="layui-form layui-form-pane">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">文章标题</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">文章分类</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="category" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">发布日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="created_time">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <script type="text/html" id="toolbar">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除</button>
+            </div>
+        </script>
+        <table class="layui-hide" id="currentTable" lay-filter="currentTableFilter"></table>
+        <script type="text/html" id="TableBar">
+            <a class="layui-btn layui-btn-xs data-count-view" lay-event="view">
+                <i class="layui-icon layui-icon-read"></i>查看</a>
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">
+                <i class="layui-icon layui-icon-edit"></i>编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">
+                <i class="layui-icon layui-icon-delete"></i>删除</a>
+        </script>
+
     </div>
 </div>
 <script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
-<script src="{% static 'layui-mini/js/lay-config.js' %}" charset="utf-8"></script>
-<script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="show"><i class="layui-icon layui-icon-read"></i>查看</a>
-    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="edit" href="javascript:;"
-       data-title="修改文章">
-        <i class="layui-icon layui-icon-edit"></i>
-        修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i
-            class="layui-icon layui-icon-delete"></i>删除</a>
+<script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/csrf.js' %}" charset="utf-8"></script>
+<script>
+    // 打开新窗口
+    function open_win(url) {
+        window.open(url);
+    }
 </script>
 <script>
-    layui.use('table', function () {
-        var table = layui.table,
-            $ = layui.jquery;
-        // 数据表格
+    layui.use(['form', 'table', 'laydate'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table,
+            laydate = layui.laydate;
+        //日期范围
+        var time_range
+        laydate.render({
+            elem: '#created_time'
+            , range: true
+            , done: function (value) {
+                return time_range = value
+            }
+        });
+        // 初始化表格
         table.render({
-            elem: '#article_list'
-            , url: "{% url 'account:historyData' %}?type=article_list" //数据接口
-            , page: true //开启分页
-            , height: 600
-            , limits: [10, 15, 20, 25, 30]
-            , even: true
-            , cols: [[ //表头
-                {field: 'id', title: 'ID', sort: true, fixed: 'left', width: '5%'}
-                , {field: 'title', title: '文章标题'}
+            elem: '#currentTable',
+            url: "{% url 'account:tableData' %}?type=article_list",//数据接口,
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            title: '文章列表',
+            cols: [[ //表头
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'ID', sort: true, fixed: 'left', width: '5%'}
+                , {
+                    field: 'title', title: '文章标题', templet: function (res) {
+                        var str = '<span><a href="#" onclick="open_win(\'/blog/show-' + res.id + '\')">' + res.title + '</a></span>'
+                        return str;
+                    }
+                }
                 , {
                     field: 'category', title: '文章分类', sort: true, width: '10%', templet: function (res) {
                         var str = '<span><a href="#" onclick="open_win(\'/blog/category-' + res.category_id + '\')">' + res.category + '</a></span>'
@@ -93,72 +142,149 @@
                         return str;
                     }
                 }
-                , {title: '操作', toolbar: '#bar'}
-            ]]
-            , initSort: {
+                , {title: '操作', toolbar: '#TableBar'}
+            ]],
+            initSort: {
                 field: 'created_time' //排序字段，对应 cols 设定的各字段名
                 , type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
-            }
+            },
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            even: true
         });
 
-        //监听事件
-        table.on('tool(article_list)', function (obj) {
-            var article_id = obj.data.id;
-            var event = obj.event;
-            if (event == 'show') {
-                open_win('/blog/show-' + article_id + '/')
-            } else if (event == 'del') {
-                layer.open({
-                    type: 1
-                    , title: '文章删除'
-                    , content: $('#collection-box').html()
-                    , btn: ['确定', '取消']
-                    , yes: function () {
-                        $.ajax({
-                            type: "GET",
-                            url: "{% url 'management:articleDel' %}",
-                            data: {
-                                del_id: article_id,
-                            },
-                            success: function (result) {
-                                if (result.code == 1) {
-                                    layer.msg(result.msg, {icon: 6});
-                                    table.reload('article_list', {
-                                        url: "{% url 'account:historyData' %}?type=article_list"
-                                    });
-                                } else {
-                                    layer.alert(result.msg, {icon: 2});
-                                }
-                            },
-                            error: function (xhr) {
-                                alert(xhr.text());
-                            }
-                        })
-                        layer.closeAll();
-                    }
-                    , btn2: function () {
-                        layer.closeAll();
-                    }
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            var result = JSON.stringify(data.field);
+            var search_len = 0
+            Object.keys(data.field).forEach(function (key) {
+                search_len = search_len + data.field[key].length
+            })
+            if (search_len == 0 && !(time_range)) {
+                layer.msg("请输入搜索条件！", {icon: 2})
+                return false;
+            }
+            var data = 'type=article&category=' + data.field.category + '&title=' + data.field.title + '&created_time=' + time_range
+            var url = '/account/tableSearch?' + data
+            console.log(url)
+            //执行表格数据重载
+            table.reload('currentTable', {
+                url: url
+                , where: {
+                    searchParams: result
+                }
+            }, 'data');
+        });
+
+        // 头工具栏事件
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {
+                // 监听添加操作
+                var index = layer.open({
+                    title: '添加文章',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    area: ['70%', '70%'],
+                    shadeClose: true,
+                    content: '/management/articleAdd',
                 });
-            } else if (event == 'edit') {
-                var url = '/management/articleEdit-' + article_id
-                $(this).attr("layuimini-content-href", url)
+            } else if (obj.event === 'delete') {
+                // 监听删除操作
+                var checkStatus = table.checkStatus('currentTable')
+                    , data = checkStatus.data;
+                layer.confirm('确定要删除吗？', function (index) {
+                    var delidArr = []
+                    data.forEach(function (array) {
+                        delidArr.push(array.id)
+                    })
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'management:articleDel' %}",
+                        data: {
+                            delidArr: delidArr.toString(),
+                        },
+                        success: function (result) {
+                            if (result.code == 1) {
+                                layer.msg(result.msg, {icon: 6});
+                                //执行表格数据重载
+                                var data = 'type=article_list'
+                                var url = '/account/tableData?' + data
+                                table.reload('currentTable', {
+                                    url: url
+                                    , where: {
+                                        searchParams: result
+                                    }
+                                }, 'data');
+                            } else {
+                                layer.alert(result.msg, {icon: 2});
+                            }
+                        },
+                        error: function (xhr) {
+                            alert(xhr.text());
+                        }
+                    })
+                    layer.closeAll();
+                })
             }
         });
-    });
 
-    // 打开新窗口
-    function open_win(url) {
-        window.open(url);
-    }
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            console.log(obj)
+        });
 
-    layui.use(['form', 'miniTab'], function () {
-        var form = layui.form,
-            layer = layui.layer,
-            miniTab = layui.miniTab;
-
-        miniTab.listen();
-
+        // 监听行工具事件
+        table.on('tool(currentTableFilter)', function (obj) {
+            if (obj.event === 'edit') {
+                // 修改文章
+                var url = '/management/articleEdit-' + obj.data.id
+                var index = layer.open({
+                    title: '修改文章',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    area: ['70%', '70%'],
+                    shadeClose: true,
+                    content: url,
+                });
+            } else if (obj.event === 'delete') {
+                // 删除文章
+                layer.confirm('确定要删除吗？', function (index) {
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'management:articleDel' %}",
+                        data: {del_id: obj.data.id},
+                        success: function (result) {
+                            if (result.code == 1) {
+                                layer.msg(result.msg, {icon: 6});
+                                layer.close(index);
+                                //执行表格数据重载
+                                var data = 'type=article_list'
+                                var url = '/account/tableData?' + data
+                                table.reload('currentTable', {
+                                    url: url
+                                    , where: {
+                                        searchParams: result
+                                    }
+                                }, 'data');
+                            } else {
+                                layer.msg(result.msg, {icon: 2});
+                                layer.closeAll();
+                            }
+                        },
+                        error: function (xhr) {
+                            alert(xhr.text());
+                        }
+                    })
+                });
+            } else if (obj.event === 'view') {
+                // 查看文章
+                var url = '/blog/show-' + obj.data.id
+                open_win(url)
+            }
+        });
     });
 </script>
 </body>

@@ -38,6 +38,8 @@ def articleCategory(request):
 
 
 # 文章标签
+@xframe_options_exempt
+@login_required()
 def articleTag(request):
     tagList = []
     for i in range(1, 11):
@@ -46,6 +48,8 @@ def articleTag(request):
 
 
 # 文章评论
+@xframe_options_exempt
+@login_required()
 def articleComment(request):
     commentList = []
     for i in range(1, 11):
@@ -54,6 +58,8 @@ def articleComment(request):
 
 
 # 留言管理
+@xframe_options_exempt
+@login_required()
 def websiteLeaveMessage(request):
     leaveList = []
     for i in range(1, 11):
@@ -62,6 +68,8 @@ def websiteLeaveMessage(request):
 
 
 # 轮播图管理
+@xframe_options_exempt
+@login_required()
 def websiteCarousel(request):
     carouselList = []
     for i in range(1, 6):
@@ -70,6 +78,8 @@ def websiteCarousel(request):
 
 
 # 友情链接管理
+@xframe_options_exempt
+@login_required()
 def websiteLink(request):
     linkList = []
     for i in range(1, 11):
@@ -78,6 +88,8 @@ def websiteLink(request):
 
 
 # 用户管理
+@xframe_options_exempt
+@login_required()
 def managementUser(request):
     userList = []
     for i in range(1, 11):
@@ -143,7 +155,8 @@ def articleAdd(request):
                 "code": "1",
                 "msg": "提交成功！",
             }
-        except:
+        except Exception as e:
+            print(e)
             result = {
                 "code": "0",
                 "msg": "提交失败！",
@@ -158,8 +171,14 @@ def articleAdd(request):
 # ajax删除文章
 def articleDel(request):
     article_id = request.GET.get("del_id")
+    article_arr = request.GET.get("delidArr")
     if article_id:
         Article.objects.get(id=article_id).delete()
+        result = {"code": 1, "msg": "删除成功!"}
+    elif article_arr:
+        article_list = article_arr.split(',')
+        for i in article_list:
+            Article.objects.get(id=i).delete()
         result = {"code": 1, "msg": "删除成功!"}
     else:
         result = {"code": 0, "msg": "删除失败!"}
@@ -201,7 +220,8 @@ def articleEdit(request, article_id):
                 "code": "1",
                 "msg": "提交成功！",
             }
-        except:
+        except Exception as e:
+            print(e)
             result = {
                 "code": "0",
                 "msg": "提交失败！",
@@ -218,8 +238,14 @@ def articleEdit(request, article_id):
 # ajax删除文章分类
 def categoryDel(request):
     category_id = request.GET.get("del_id")
+    category_arr = request.GET.get("delidArr")
     if category_id:
         Category.objects.get(id=category_id).delete()
+        result = {"code": 1, "msg": "删除成功!"}
+    elif category_arr:
+        category_list = category_arr.split(',')
+        for i in category_list:
+            Category.objects.get(id=i).delete()
         result = {"code": 1, "msg": "删除成功!"}
     else:
         result = {"code": 0, "msg": "删除失败!"}
@@ -237,11 +263,33 @@ def categoryEdit(request):
             category.save()
             result = {
                 "code": "1",
-                "msg": "提交成功！",
+                "msg": "修改成功！",
             }
-        except:
+        except Exception as e:
+            print(e)
             result = {
                 "code": "0",
-                "msg": "提交失败！",
+                "msg": "修改失败！",
             }
-    return JsonResponse(result)
+        return JsonResponse(result)
+
+
+# ajax新增文章分类
+def categoryAdd(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        try:
+            category = Category()
+            category.name = name
+            category.save()
+            result = {
+                "code": "1",
+                "msg": "添加成功！",
+            }
+        except Exception as e:
+            print(e)
+            result = {
+                "code": "0",
+                "msg": "添加失败！",
+            }
+        return JsonResponse(result)
