@@ -26,8 +26,8 @@ class UserInfo(models.Model):
 
 
 class ArticleViewHistory(models.Model):
-    article = models.ForeignKey(Article, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='文章名')
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='用户名')
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, blank=True, null=True, verbose_name='文章名')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='用户名')
     time = models.DateTimeField(auto_now_add=True, verbose_name='浏览时间')
     is_like = models.BooleanField(verbose_name='是否收藏', default=0)
 

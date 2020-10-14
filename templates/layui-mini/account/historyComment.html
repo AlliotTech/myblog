@@ -35,7 +35,7 @@
         // 数据表格
         table.render({
             elem: '#comment'
-            , url: "{% url 'account:historyData' %}?type=comment" //数据接口
+            , url: "{% url 'account:tableData' %}?type=comment" //数据接口
             , page: true //开启分页
             , height: 600
             , limits: [10, 15, 20, 25, 30]
@@ -78,7 +78,7 @@
                         if (result.code == 1) {
                             layer.msg(result.msg, {icon: 6});
                             table.reload('comment', {
-                                url: "{% url 'account:historyData' %}?type=comment"
+                                url: "{% url 'account:tableData' %}?type=comment"
                             });
                         } else {
                             layer.alert(result.msg, {icon: 2});

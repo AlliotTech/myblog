@@ -35,7 +35,7 @@
         // 数据表格
         table.render({
             elem: '#leave'
-            , url: "{% url 'account:historyData' %}?type=leave" //数据接口
+            , url: "{% url 'account:tableData' %}?type=leave" //数据接口
             , page: true //开启分页
             , height: 600
             , limits: [10, 15, 20, 25, 30]
@@ -70,7 +70,7 @@
                         if (result.code == 1) {
                             layer.msg(result.msg, {icon: 6});
                             table.reload('leave', {
-                                url: "{% url 'account:historyData' %}?type=leave"
+                                url: "{% url 'account:tableData' %}?type=leave"
                             });
                         } else {
                             layer.alert(result.msg, {icon: 2});

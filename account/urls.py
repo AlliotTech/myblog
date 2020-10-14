@@ -12,7 +12,7 @@ urlpatterns = [
     path('forgetPassword/', views.forgetPassword, name='forgetPassword'),
     # 忘记密码
 
-    path('account', views.account, name='account'),
+    path('', views.account, name='account'),
     # 个人中心模块
     path('personalCenter/', views.personalCenter, name='personalCenter'),
     # 个人中心首页

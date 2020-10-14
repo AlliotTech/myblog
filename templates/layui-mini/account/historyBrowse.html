@@ -33,7 +33,7 @@
         // 数据表格
         table.render({
             elem: '#browse'
-            , url: "{% url 'account:historyData' %}?type=browse"
+            , url: "{% url 'account:tableData' %}?type=browse"
             , page: true //开启分页
             , height: 600
             , limits: [10, 20, 30, 40, 50]
