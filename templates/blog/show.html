@@ -163,42 +163,88 @@
                                 <div class="layui-tab-content">
                                     {#                                    最新评论#}
                                     <div class="layui-tab-item layui-show">
-                                    {% if all_comment %}
-                                        {% for ol in all_comment %}
-                                            <ol class="list-body">
-                                                {% for li in ol %}
-                                                    <li class="reply-{{ li.level }} message-content"
-                                                        id="all-{{ li.id }}">
+                                        {% if all_comment %}
+                                            {% for ol in all_comment %}
+                                                <ol class="list-body">
+                                                    {% for li in ol %}
+                                                        <li class="reply-{{ li.level }} message-content"
+                                                            id="all-{{ li.id }}">
+                                                            <a href="#">
+                                                                <img lay-src="../media/{{ li.photo }}"
+                                                                     class="layui-nav-img">
+                                                            </a>
+                                                            <div class="text-box">
+                                                                <div class="box-info">
+                                                                    {% if li.reply_name == 'None' %}
+                                                                        <a href="#">{{ li.username }}</a>
+                                                                    {% else %}
+                                                                        <a href="#">{{ li.username }}</a>
+                                                                        <em>回复</em>
+                                                                        <a href="#">{{ li.reply_name }}</a>
+                                                                    {% endif %}
+                                                                    <span class="timeago"
+                                                                          datetime="{{ li.time }}"></span>
+                                                                </div>
+                                                                <div class="box-body">
+                                                                    {{ li.content | safe }}
+                                                                </div>
+                                                                <div class="box-action">
+                                                                    <a href="javascript:;" class="action-like"><i
+                                                                            class="fas fa-thumbs-up"></i>赞<em>{{ li.like }}</em></a>
+                                                                    {% if li.username == user.username %}
+                                                                        <a href="javascript:;"
+                                                                           class="action-reply click-no"><i
+                                                                                class="fas fa-comment-alt"></i>回复</a>
+                                                                    {% else %}
+                                                                        <a href="javascript:;" class="action-reply"><i
+                                                                                class="fas fa-comment-alt"></i>回复</a>
+                                                                    {% endif %}
+                                                                    {% if li.username == user.username %}
+                                                                        <a href="javascript:;" class="action-delete"><i
+                                                                                class="fas fa-trash-alt"></i>删除</a>
+                                                                    {% else %}
+                                                                        <a href="javascript:;"
+                                                                           class="action-delete click-no"><i
+                                                                                class="fas fa-trash-alt"></i>删除</a>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ol>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="comment-tips">
+                                                <h3>暂无评论哦，快来评论一下吧！</h3>
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
+                                    {#热门评论#}
+                                    <div class="layui-tab-item">
+                                        <ol class="list-body">
+                                            {% if hot_comment %}
+                                                {% for i in hot_comment %}
+                                                    <li class="message-content" id="hot-{{ i.id }}">
                                                         <a href="#">
-                                                            <img lay-src="../media/{{ li.photo }}"
+                                                            <img src="/media/{{ i.user.userinfo.photo }}"
                                                                  class="layui-nav-img">
                                                         </a>
                                                         <div class="text-box">
                                                             <div class="box-info">
-                                                                {% if li.reply_name == 'None' %}
-                                                                    <a href="#">{{ li.username }}</a>
-                                                                {% else %}
-                                                                    <a href="#">{{ li.username }}</a>
-                                                                    <em>回复</em>
-                                                                    <a href="#">{{ li.reply_name }}</a>
-                                                                {% endif %}
-                                                                <span class="timeago" datetime="{{ li.time }}"></span>
+                                                                <a href="#">{{ i.user.username }}</a>
+                                                                <span class="timeago"
+                                                                      datetime="{{ i.time|date:"Y-m-d H:i:s" }}"></span>
                                                             </div>
                                                             <div class="box-body">
-                                                                {{ li.content | safe }}
+                                                                {{ i.content | safe }}
                                                             </div>
                                                             <div class="box-action">
                                                                 <a href="javascript:;" class="action-like"><i
-                                                                        class="fas fa-thumbs-up"></i>赞<em>{{ li.like }}</em></a>
-                                                                {% if li.username == user.username %}
-                                                                    <a href="javascript:;"
-                                                                       class="action-reply click-no"><i
-                                                                            class="fas fa-comment-alt"></i>回复</a>
-                                                                {% else %}
-                                                                    <a href="javascript:;" class="action-reply"><i
-                                                                            class="fas fa-comment-alt"></i>回复</a>
-                                                                {% endif %}
-                                                                {% if li.username == user.username %}
+                                                                        class="fas fa-thumbs-up"></i>赞<em>{{ i.like }}</em></a>
+                                                                <a href="javascript:;" class="action-reply click-no"><i
+                                                                        class="fas fa-comment-alt"></i>回复</a>
+                                                                {% if i.user.username == user.username %}
                                                                     <a href="javascript:;" class="action-delete"><i
                                                                             class="fas fa-trash-alt"></i>删除</a>
                                                                 {% else %}
@@ -210,56 +256,11 @@
                                                         </div>
                                                     </li>
                                                 {% endfor %}
-                                            </ol>
-                                        {% endfor %}
-                                    {% else %}
-                                        <div class="comment-tips">
-                                        <h3>暂无评论哦，快来评论一下吧！</h3>
-                                        </div>
-                                    {% endif %}
-
-                                    </div>
-                                    {#热门评论#}
-                                    <div class="layui-tab-item">
-                                        <ol class="list-body">
-                                        {% if hot_comment %}
-                                            {% for i in hot_comment %}
-                                                <li class="message-content" id="hot-{{ i.id }}">
-                                                    <a href="#">
-                                                        <img src="/media/{{ i.user.userinfo.photo }}"
-                                                             class="layui-nav-img">
-                                                    </a>
-                                                    <div class="text-box">
-                                                        <div class="box-info">
-                                                            <a href="#">{{ i.user.username }}</a>
-                                                            <span class="timeago"
-                                                                  datetime="{{ i.time|date:"Y-m-d H:i:s" }}"></span>
-                                                        </div>
-                                                        <div class="box-body">
-                                                            {{ i.content | safe }}
-                                                        </div>
-                                                        <div class="box-action">
-                                                            <a href="javascript:;" class="action-like"><i
-                                                                    class="fas fa-thumbs-up"></i>赞<em>{{ i.like }}</em></a>
-                                                            <a href="javascript:;" class="action-reply click-no"><i
-                                                                    class="fas fa-comment-alt"></i>回复</a>
-                                                            {% if i.user.username == user.username %}
-                                                                <a href="javascript:;" class="action-delete"><i
-                                                                        class="fas fa-trash-alt"></i>删除</a>
-                                                            {% else %}
-                                                                <a href="javascript:;"
-                                                                   class="action-delete click-no"><i
-                                                                        class="fas fa-trash-alt"></i>删除</a>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            {% endfor %}
-                                        {% else %}
-                                            <div class="comment-tips">
-                                                <h3>暂无评论哦，快来评论一下吧！</h3>
-                                            </div>
-                                        {% endif %}
+                                            {% else %}
+                                                <div class="comment-tips">
+                                                    <h3>暂无评论哦，快来评论一下吧！</h3>
+                                                </div>
+                                            {% endif %}
                                         </ol>
                                     </div>
                                     {#                                        我的评论#}
@@ -714,10 +715,11 @@
                         layer.open({
                             id: 'catalogue'
                             , type: 1
-                            , title: ['📋目录', 'font-size:26px;color:#1e9fff']
+                            , title: ['📋目录', 'font-size:24px;color:#1e9fff']
                             , area: '230px'
                             , maxWidth: '500'
                             , maxHeight: '650'
+                            , maxmin: true
                             , shade: 0
                             , anim: 5
                             , offset: ['80px', '15px']
