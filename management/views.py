@@ -145,9 +145,9 @@ def articleAdd(request):
             article.author_id = request.user.id
             article.category_id = category_id
             article.is_recommend = recommended
-            if article_type == '发布':
+            if article_type == 'release':
                 article.is_release = 1
-            elif article_type == '保存':
+            elif article_type == 'save':
                 article.is_release = 0
             article.save()
             article.tags.add(*list(Tag.objects.filter(id__in=tags.split(','))))
@@ -209,9 +209,9 @@ def articleEdit(request, article_id):
             article.author_id = request.user.id
             article.category_id = category_id
             article.is_recommend = recommended
-            if article_type == '发布':
+            if article_type == 'release':
                 article.is_release = 1
-            elif article_type == '保存':
+            elif article_type == 'save':
                 article.is_release = 0
             article.save()
             article.tags.clear()

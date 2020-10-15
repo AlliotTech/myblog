@@ -5,19 +5,9 @@
     <meta charset="UTF-8">
     <title>文章发布</title>
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
-    <link rel="stylesheet" href="{% static 'css/layui-mini.css' %}" media="all">
     <link rel="stylesheet" href="{% static 'layui-mini/lib/layui-v2.5.5/css/layui.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'layui-mini/css/layuimini.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'layui-mini/css/themes/default.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'fontawesome-free-5.11.2-web/css/all.min.css' %}" media='all'/>
+    <link rel="stylesheet" href="{% static 'layui-mini/css/public.css' %}" media="all">
     <link rel="stylesheet" href="{% static 'editormd/css/editormd.css' %}">
-    <link rel="stylesheet" href="{% static 'css/public.css' %}">
-    <!--[if lt IE 9]>
-    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <style id="layuimini-bg-color">
-    </style>
 </head>
 <body>
 
@@ -78,7 +68,7 @@
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" id="submit-btn">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="release">立即发布</button>
                 <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save">暂存草稿</button>
@@ -87,10 +77,11 @@
         </div>
     </form>
 </div>
-<script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
-<script src="{% static 'js/csrf.js' %}" charset="utf-8"></script>
 <script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
 <script src="{% static 'layui-mini/js/lay-config.js' %}" charset="utf-8"></script>
+<script src="{% static 'layui-mini/js/lay-module/layuimini/miniTab.js' %}" charset="utf-8"></script>
+<script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/csrf.js' %}" charset="utf-8"></script>
 <script src="{% static 'editormd/editormd.js' %}" charset="utf-8"></script>
 <script>
     // 设置裁剪图片
@@ -102,13 +93,12 @@
             open_height = '100%'
         }
     })
-    layui.config({
-        base: "{% static 'cropper/' %}" //layui自定义layui组件目录
-    }).use(['form', 'croppers'], function () {
+    layui.use(['form', 'miniTab', 'croppers'], function () {
         var $ = layui.jquery
             , form = layui.form
             , croppers = layui.croppers
-            , layer = layui.layer;
+            , layer = layui.layer
+            , miniTab = layui.miniTab;
         // markdown编辑器
         var editor = editormd("test-editor", {
             width: "100%",
@@ -162,11 +152,14 @@
                     cover_img: $('#cover-img')[0].src,
                     content: editor.getMarkdown(),
                     recommended: recommended,
-                    type: "发表",
+                    type: "release",
                 },
                 success: function (result) {
                     if (result.code == 1) {
                         layer.msg(result.msg, {icon: 6});
+                        setTimeout(function () {
+                            miniTab.deleteCurrentByIframe();
+                        }, 2000);
                     } else {
                         layer.alert(result.msg, {icon: 2});
                     }
@@ -200,11 +193,14 @@
                     cover_img: $('#cover-img')[0].src,
                     content: editor.getMarkdown(),
                     recommended: recommended,
-                    type: "保存",
+                    type: "save",
                 },
                 success: function (result) {
                     if (result.code == 1) {
                         layer.msg(result.msg, {icon: 6});
+                        setTimeout(function () {
+                            miniTab.deleteCurrentByIframe();
+                        }, 2000);
                     } else {
                         layer.alert(result.msg, {icon: 2});
                     }

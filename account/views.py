@@ -497,7 +497,6 @@ def tableSearch(request):
         title = request.GET.get("title")
         category = request.GET.get("category")
         created_time = request.GET.get("created_time")
-        print(title, category, created_time)
         q1 = Q()
         q1.connector = 'AND'
         if title:
@@ -527,14 +526,67 @@ def tableSearch(request):
                 tags_dict[tag.id] = tag.name
             data['tags'] = tags_dict
             table_body.append(data)
-            # info = {"id": article.id,
-            #         "title": article.title,
-            #         "category": article.category.name,
-            #         "created_time": article.created_time.strftime("%Y-%m-%d %H:%M:%S"),
-            #         "is_release": article.is_release,
-            #         "is_recommend": article.is_recommend}
-            # table_body.append(info)
-        print(table_body)
+    # 搜索浏览记录
+    elif search_type == "browse":
+        title = request.GET.get("title")
+        category = request.GET.get("category")
+        time = request.GET.get("time")
+        q1 = Q()
+        q1.connector = 'AND'
+        if title:
+            q1.children.append(('article__title__icontains', title))
+        if category:
+            q1.children.append(('category__name__icontains', category))
+        if time != "undefined":
+            start_date = time.split()[0]
+            end_date = time.split()[2]
+            q1.children.append(('time__range', [start_date, end_date]))
+        table_data = ArticleViewHistory.objects.filter(q1)
+        table_body = []
+        for history in table_data:
+            data = {}
+            data["aritcle_id"] = history.article.id
+            data["title"] = history.article.title
+            data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
+            data['category'] =history.article.category.name
+            data['category_id'] = history.article.category_id
+            tags = history.article.tags.all()
+            tags_dict = {}
+            for tag in tags:
+                tags_dict[tag.id] = tag.name
+            data['tags'] = tags_dict
+            table_body.append(data)
+    # 搜索收藏记录
+    elif search_type == "like":
+        title = request.GET.get("title")
+        category = request.GET.get("category")
+        time = request.GET.get("time")
+        q1 = Q()
+        q1.connector = 'AND'
+        if title:
+            q1.children.append(('article__title__icontains', title))
+        if category:
+            q1.children.append(('category__name__icontains', category))
+        if time != "undefined":
+            start_date = time.split()[0]
+            end_date = time.split()[2]
+            q1.children.append(('time__range', [start_date, end_date]))
+        table_data = ArticleViewHistory.objects.filter(q1).filter(is_like=True)
+        table_body = []
+        for history in table_data:
+            data = {}
+            data["aritcle_id"] = history.article.id
+            data["title"] = history.article.title
+            data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
+            data['category'] =history.article.category.name
+            data['category_id'] = history.article.category_id
+            tags = history.article.tags.all()
+            tags_dict = {}
+            for tag in tags:
+                tags_dict[tag.id] = tag.name
+            data['tags'] = tags_dict
+            table_body.append(data)
+    print(table_body)
     # 放在一个列表里
     result_data = [x for x in table_body]
     if len(table_body) == 0:

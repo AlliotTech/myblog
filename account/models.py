@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from blog.models import Article
+from blog.models import Article, Category
 from django.db import models
 
 
@@ -27,6 +27,7 @@ class UserInfo(models.Model):
 
 class ArticleViewHistory(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, blank=True, null=True, verbose_name='文章名')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True, verbose_name='分类名')
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='用户名')
     time = models.DateTimeField(auto_now_add=True, verbose_name='浏览时间')
     is_like = models.BooleanField(verbose_name='是否收藏', default=0)

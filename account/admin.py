@@ -17,9 +17,9 @@ class RegisterAdmin(admin.ModelAdmin):
 # 用户浏览记录
 @admin.register(ArticleViewHistory)
 class ArticleViewHistoryAdmin(admin.ModelAdmin):
-    list_display = ('article', 'user', 'time', 'is_like')
+    list_display = ('article', 'category', 'user', 'time', 'is_like')
     # 文章列表里显示想要显示的字段
-    list_display_links = ('article', 'user', 'is_like')
+    list_display_links = ('article', 'is_like')
     # 设置哪些字段可以点击进入编辑界面
 
 

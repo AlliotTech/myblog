@@ -111,9 +111,7 @@
                 open_height = '100%'
             }
         })
-        layui.config({
-            base: "{% static 'cropper/' %}" //layui自定义layui组件目录
-        }).use(['form', 'croppers'], function () {
+        layui.use(['form', 'croppers'], function () {
             var $ = layui.jquery
                 , form = layui.form
                 , croppers = layui.croppers

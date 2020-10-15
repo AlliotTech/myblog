@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>评论记录</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'css/layui-mini.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'css/public.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'layui-mini/lib/layui-v2.5.5/css/layui.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'layui-mini/css/layuimini.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'layui-mini/css/themes/default.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'fontawesome-free-5.11.2-web/css/all.min.css' %}" media='all'/>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style id="layuimini-bg-color">
+    </style>
+</head>
+<body>
+<div class="cintent-card">
+    <table id="comment" lay-filter="comment"></table>
+</div>
+<script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
+<script src="{% static 'layui-mini/js/lay-config.js' %}" charset="utf-8"></script>
+<script type="text/html" id="bar">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="show"><i class="layui-icon layui-icon-read"></i>查看</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+</script>
+<script>
+    layui.use('table', function () {
+        var table = layui.table,
+            $ = layui.jquery;
+        // 数据表格
+        table.render({
+            elem: '#comment'
+            , url: "{% url 'account:tableData' %}?type=comment" //数据接口
+            , page: true //开启分页
+            , height: 600
+            , limits: [10, 15, 20, 25, 30]
+            , even: true
+            , cols: [[ //表头
+                {field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                , {field: 'title', title: '文章标题'}
+                , {
+                    field: 'category', title: '文章分类', sort: true, templet: function (res) {
+                        var str = '<span><a href="#" onclick="open_win(\'/blog/category-' + res.category_id + '\')">' + res.category + '</a></span>'
+                        return str;
+                    }
+                }
+                , {field: 'content', title: '评论内容'}
+                , {field: 'time', title: '评论时间', sort: true}
+                , {field: 'like', title: '评论点赞数', sort: true}
+                , {title: '操作', toolbar: '#bar'}
+            ]]
+            , initSort: {
+                field: 'time' //排序字段，对应 cols 设定的各字段名
+                , type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+        });
+
+        //监听事件
+        table.on('tool(comment)', function (obj) {
+            var del_id = obj.data.id;
+            var article_id = obj.data.article_id;
+            var event = obj.event;
+            if (event == 'show') {
+                open_win('/blog/show-' + article_id + '/')
+            } else if (event == 'del') {
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'blog:delComment' %}",
+                    data: {
+                        del_id: del_id,
+                    },
+                    success: function (result) {
+                        if (result.code == 1) {
+                            layer.msg(result.msg, {icon: 6});
+                            table.reload('comment', {
+                                url: "{% url 'account:tableData' %}?type=comment"
+                            });
+                        } else {
+                            layer.alert(result.msg, {icon: 2});
+                        }
+                    },
+                    error: function (xhr) {
+                        alert(xhr.text());
+                    }
+                })
+            }
+        });
+    });
+
+    // 打开新窗口
+    function open_win(url) {
+        window.open(url);
+    }
+</script>
+</body>
+</html>
