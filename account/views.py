@@ -548,7 +548,7 @@ def tableSearch(request):
             data["aritcle_id"] = history.article.id
             data["title"] = history.article.title
             data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
-            data['category'] =history.article.category.name
+            data['category'] = history.article.category.name
             data['category_id'] = history.article.category_id
             tags = history.article.tags.all()
             tags_dict = {}
@@ -578,7 +578,7 @@ def tableSearch(request):
             data["aritcle_id"] = history.article.id
             data["title"] = history.article.title
             data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
-            data['category'] =history.article.category.name
+            data['category'] = history.article.category.name
             data['category_id'] = history.article.category_id
             tags = history.article.tags.all()
             tags_dict = {}
@@ -586,7 +586,36 @@ def tableSearch(request):
                 tags_dict[tag.id] = tag.name
             data['tags'] = tags_dict
             table_body.append(data)
-    print(table_body)
+    # 搜索评论记录
+    elif search_type == "comment":
+        title = request.GET.get("title")
+        content = request.GET.get("content")
+        time = request.GET.get("time")
+        print(title, content, time)
+        q1 = Q()
+        q1.connector = 'AND'
+        if title:
+            q1.children.append(('article__title__icontains', title))
+        if content:
+            q1.children.append(('content__icontains', content))
+        if time != "undefined":
+            start_date = time.split()[0]
+            end_date = time.split()[2]
+            q1.children.append(('time__range', [start_date, end_date]))
+        table_data = CommentMessage.objects.filter(q1).filter(user=request.user)
+        table_body = []
+        for history in table_data:
+            data = {}
+            data['aritcle_id'] = history.article.id
+            data['title'] = history.article.title
+            data['category'] = history.article.category.name
+            data['category_id'] = history.article.category_id
+            data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
+            data['like'] = history.like
+            data['content'] = history.content
+            data['content_id'] = history.id
+            table_body.append(data)
+        print(table_body)
     # 放在一个列表里
     result_data = [x for x in table_body]
     if len(table_body) == 0:

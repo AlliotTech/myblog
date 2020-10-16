@@ -560,9 +560,9 @@ def postComment(request):
         article = Article.objects.get(id=article_id)
         article.comment = CommentMessage.objects.filter(article=article).count()
         article.save()
-        result = {"code": 1, "msg": "留言成功!"}
+        result = {"code": 1, "msg": "评论成功!"}
     else:
-        result = {"code": 0, "msg": "留言失败!"}
+        result = {"code": 0, "msg": "评论失败!"}
     return JsonResponse(result)
 
 

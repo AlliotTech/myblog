@@ -260,10 +260,9 @@
         $(window).scroll(function () {
             p = $(this).scrollTop();
             if (t < p) {
-                $('.nav-fixed').stop().slideUp();
-
+                $('.nav-fixed').stop().slideUp(700);
             } else {
-                $('.nav-fixed').stop().slideDown();
+                $('.nav-fixed').stop().slideDown(700);
             }
             t = p;
         })
@@ -272,9 +271,7 @@
     $(window).scroll(function () {
         var scroll_len = $(window).scrollTop();
         if (scroll_len > 120) {
-            $('#back-top').stop().fadeIn(1000), function () {
-
-            };
+            $('#back-top').stop().fadeIn(1000);
         } else {
             $('#back-top').stop().fadeOut(1000);
         }

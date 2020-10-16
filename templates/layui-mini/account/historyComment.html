@@ -24,18 +24,17 @@
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">文章分类</label>
+                        <label class="layui-form-label">评论内容</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="category" autocomplete="off" class="layui-input">
+                            <input type="text" name="content" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">浏览日期</label>
+                        <label class="layui-form-label">评论日期</label>
                         <div class="layui-input-inline">
                             <input type="text" class="layui-input" id="time">
                         </div>
                     </div>
-
                     <div class="layui-inline">
                         <button type="submit" class="layui-btn layui-btn-primary" lay-submit
                                 lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
@@ -44,12 +43,18 @@
                 </div>
             </div>
         </fieldset>
+        <script type="text/html" id="toolbar">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete">删除</button>
+            </div>
+        </script>
         <table class="layui-hide" id="currentTable" lay-filter="currentTableFilter"></table>
         <script type="text/html" id="TableBar">
             <a class="layui-btn layui-btn-xs data-count-view" lay-event="view">
                 <i class="layui-icon layui-icon-read"></i>查看</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs data-count-view" lay-event="delete">
+                <i class="layui-icon layui-icon-delete"></i>删除</a>
         </script>
-
     </div>
 </div>
 <script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
@@ -82,25 +87,17 @@
             defaultToolbar: ['filter', 'exports', 'print'],
             title: '文章列表',
             cols: [[ //表头
-                {field: 'title', title: '文章标题'}
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'title', title: '文章标题'}
                 , {
                     field: 'category', title: '文章分类', sort: true, templet: function (res) {
                         var str = '<span><a href="#" onclick="open_win(\'/blog/category-' + res.category_id + '\')">' + res.category + '</a></span>'
                         return str;
                     }
                 }
-                , {
-                    field: 'tags', title: '文章标签', templet: function (res) {
-                        var value = res.tags;
-                        var str = '';
-                        for (var key in value) {
-                            str += '<span class="label-tag tag-color-' + key + '">' +
-                                '<a href="#" onclick="open_win(\'/blog/tag-' + key + '\')">' + value[key] + '</a></span>'
-                        }
-                        return str;
-                    }
-                }
-                , {field: 'time', title: '浏览时间', sort: true}
+                , {field: 'content', title: '评论内容', width: '15%'}
+                , {field: 'time', title: '评论时间', sort: true}
+                , {field: 'like', title: '评论点赞数', sort: true}
                 , {title: '操作', toolbar: '#TableBar'}
             ]],
             initSort: {
@@ -124,7 +121,7 @@
                 layer.msg("请输入搜索条件！", {icon: 2})
                 return false;
             }
-            var data = 'type=comment&category=' + data.field.category + '&title=' + data.field.title + '&time=' + time_range
+            var data = 'type=comment&content=' + data.field.content + '&title=' + data.field.title + '&time=' + time_range
             var url = '/account/tableSearch?' + data
             //执行表格数据重载
             table.reload('currentTable', {
