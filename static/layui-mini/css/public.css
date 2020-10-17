@@ -70,6 +70,15 @@ body {
 }
 
 /*layui-mini自定义样式*/
+/*图片放大效果*/
+.img-zoom img {
+    transition: all 2s;
+}
+
+.img-zoom img:hover {
+    transform: scale(1.05);
+}
+
 /*数据表格样式*/
 fieldset legend {
     text-align: center;
@@ -211,3 +220,23 @@ fieldset > div {
     list-style: decimal;
 }
 
+/*修改个人信息*/
+.photo-change {
+    width: 270px !important;
+}
+
+.photo-change button {
+    left: 25px;
+    position: relative;
+}
+
+#id_sex li{
+    display: inline-block;
+    margin-right: 40px;
+}
+
+#id_sex .layui-form-radio {
+    margin-top: 0px;
+    margin-right: 0px;
+    padding-right: 0px;
+}

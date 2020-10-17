@@ -41,20 +41,14 @@ def articleCategory(request):
 @xframe_options_exempt
 @login_required()
 def articleTag(request):
-    tagList = []
-    for i in range(1, 11):
-        tagList.append(i)
-    return render(request, 'management/articleTag.html', locals())
+    return render(request, 'layui-mini/management/articleTag.html', locals())
 
 
 # 文章评论
 @xframe_options_exempt
 @login_required()
 def articleComment(request):
-    commentList = []
-    for i in range(1, 11):
-        commentList.append(i)
-    return render(request, 'management/articleComment.html', locals())
+    return render(request, 'layui-mini/management/articleComment.html', locals())
 
 
 # 留言管理
@@ -293,3 +287,63 @@ def categoryAdd(request):
                 "msg": "添加失败！",
             }
         return JsonResponse(result)
+
+
+# ajax添加文章标签
+def tagAdd(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        try:
+            tag = Tag()
+            tag.name = name
+            tag.save()
+            result = {
+                "code": "1",
+                "msg": "添加成功！",
+            }
+        except Exception as e:
+            print(e)
+            result = {
+                "code": "0",
+                "msg": "添加失败！",
+            }
+        return JsonResponse(result)
+
+
+# ajax 修改文章标签
+def tagEdit(request):
+    if request.method == "POST":
+        tag_id = request.POST.get("tag_id")
+        name = request.POST.get("name")
+        try:
+            tag = Tag.objects.get(id=tag_id)
+            tag.name = name
+            tag.save()
+            result = {
+                "code": "1",
+                "msg": "修改成功！",
+            }
+        except Exception as e:
+            print(e)
+            result = {
+                "code": "0",
+                "msg": "修改失败！",
+            }
+        return JsonResponse(result)
+
+
+# ajax删除标签
+def tagDel(request):
+    tag_id = request.GET.get("del_id")
+    tag_arr = request.GET.get("delidArr")
+    if tag_id:
+        Tag.objects.get(id=tag_id).delete()
+        result = {"code": 1, "msg": "删除成功!"}
+    elif tag_arr:
+        tag_list = tag_arr.split(',')
+        for i in tag_list:
+            Tag.objects.get(id=i).delete()
+        result = {"code": 1, "msg": "删除成功!"}
+    else:
+        result = {"code": 0, "msg": "删除失败!"}
+    return JsonResponse(result)

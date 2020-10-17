@@ -5,53 +5,45 @@
     <meta charset="UTF-8">
     <title>修改邮箱</title>
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
-    <link rel="stylesheet" href="{% static 'css/layui-mini.css' %}" media="all">
     <link rel="stylesheet" href="{% static 'layui-mini/lib/layui-v2.5.5/css/layui.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'layui-mini/css/layuimini.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'layui-mini/css/themes/default.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'fontawesome-free-5.11.2-web/css/all.min.css' %}" media='all'/>
-    <!--[if lt IE 9]>
-    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <style id="layuimini-bg-color">
-    </style>
+    <link rel="stylesheet" href="{% static 'layui-mini/css/public.css' %}" media="all">
 </head>
 <body>
-<div class="cintent-card">
-    <form class="layui-form" action="{% url 'account:changeEmail' %}" method="post">
-        {% csrf_token %}
-        <div class="layui-card-body" pad15="">
-            <div class="layui-form-item">
-                <label class="layui-form-label">{{ change_email_form.password.label }}</label>
-                <div class="layui-input-inline">
-                    {{ change_email_form.password }}
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <form class="layui-form" action="{% url 'account:changeEmail' %}" method="post">
+            {% csrf_token %}
+            <div class="layui-card-body" pad15="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">{{ change_email_form.password.label }}</label>
+                    <div class="layui-input-inline">
+                        {{ change_email_form.password }}
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">{{ change_email_form.email.label }}</label>
+                    <div class="layui-input-inline">
+                        {{ change_email_form.email }}
+                    </div>
+                    <button type="button" class="layui-btn layui-btn-normal" id="send_btn">发送验证码</button>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">{{ change_email_form.email_code.label }}</label>
+                    <div class="layui-input-inline">
+                        {{ change_email_form.email_code }}
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" class="layui-btn" lay-submit="">提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">{{ change_email_form.email.label }}</label>
-                <div class="layui-input-inline">
-                    {{ change_email_form.email }}
-                </div>
-                <button type="button" class="layui-btn layui-btn-normal" id="send_btn">发送验证码</button>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">{{ change_email_form.email_code.label }}</label>
-                <div class="layui-input-inline">
-                    {{ change_email_form.email_code }}
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button type="submit" class="layui-btn" lay-submit="">提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                </div>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 <script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
-<script src="{% static 'layui-mini/js/lay-config.js' %}" charset="utf-8"></script>
 <script>
     layui.use(['form'], function () {
         var form = layui.form

@@ -17,7 +17,7 @@ from account.forms import *
 from account.models import UserInfo, ArticleViewHistory, CommentMessage, LeaveMessage
 from django.views.decorators.clickjacking import xframe_options_exempt
 
-from blog.models import Article, Category
+from blog.models import Article, Category, Tag
 
 
 def sendEmail(receive, username, action, code):
@@ -300,9 +300,11 @@ def changeInformation(request):
     userinfo = UserInfo.objects.get(user_id=request.user.id)
     user = User.objects.get(username=request.user)
     if request.method == "POST":
+        print("来了")
         user_form = UserForm(request.POST)
         userinfo_form = UserInfoForm(request.POST)
         if userinfo_form.is_valid():
+            print("通过了")
             userinfo_data = userinfo_form.cleaned_data
             userinfo.sex = userinfo_data['sex']
             userinfo.phone = userinfo_data['phone']
@@ -310,8 +312,16 @@ def changeInformation(request):
             userinfo.aboutme = userinfo_data['aboutme']
             request.user.save()
             userinfo.save()
-            message = "信息修改成功"
-            return render(request, 'layui-mini/account/changeInformation.html', locals())
+            data = {
+                "code": 1,
+                "msg": "修改成功！"
+            }
+        else:
+            data = {
+                "code": 1,
+                "msg": "修改失败！"
+            }
+        return JsonResponse(data)
     else:
         username = user.username
         email = user.email
@@ -449,6 +459,33 @@ def tableData(request):
             data["name"] = category.name
             data["article_count"] = Article.objects.filter(category_id=category.id).count()
             lis.append(data)
+    # 文章标签
+    elif page_type == 'article_tag':
+        table_data = Tag.objects.all()
+        lis = []
+        for tag in table_data:
+            data = {}
+            data["id"] = tag.id
+            data["name"] = tag.name
+            data["article_count"] = Article.objects.filter(tags=tag.id).count()
+            lis.append(data)
+    # 文章评论
+    elif page_type == 'article_comment':
+        table_data = CommentMessage.objects.all()
+        lis = []
+        for history in table_data:
+            data = {}
+            data["id"] = history.id
+            data["article_id"] = history.article.id
+            data["title"] = history.article.title
+            data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
+            data['user'] = history.user.username
+            data['content'] = history.content
+            if history.level == 0:
+                data['type'] = "评论"
+            else:
+                data['type'] = "回复"
+            lis.append(data)
     # 分页器进行分配
     try:
         paginator = Paginator(lis, page_limit)
@@ -472,62 +509,8 @@ def tableData(request):
 def tableSearch(request):
     global title_search, category_search
     search_type = request.GET.get("type")
-    # 搜索文章分类：
-    if search_type == "category_name":
-        category = request.GET.get("category")
-        # 模糊查询，不区分大小写
-        table_data = Category.objects.filter(name__icontains=category)
-        table_body = []
-        for category in table_data:
-            info = {"id": category.id, "name": category.name}
-            table_body.append(info)
-        # 放在一个列表里
-        result_data = [x for x in table_body]
-        if table_data.count() == 0:
-            result = {"code": 1,
-                      "msg": "查询记录为空！",
-                      "count": table_data.count(),
-                      "data": result_data}
-        else:
-            result = {"code": 0,
-                      "count": table_data.count(),
-                      "data": result_data}
-    # 搜索文章列表
-    elif search_type == "article":
-        title = request.GET.get("title")
-        category = request.GET.get("category")
-        created_time = request.GET.get("created_time")
-        q1 = Q()
-        q1.connector = 'AND'
-        if title:
-            q1.children.append(('title__icontains', title))
-        if category:
-            q1.children.append(('category__name__icontains', category))
-        if created_time != "undefined":
-            start_date = created_time.split()[0]
-            end_date = created_time.split()[2]
-            print(start_date, end_date)
-            q1.children.append(('created_time__range', [start_date, end_date]))
-        table_data = Article.objects.filter(q1)
-        print(table_data)
-        table_body = []
-        for article in table_data:
-            data = {}
-            data["id"] = article.id
-            data["title"] = article.title
-            data['created_time'] = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
-            data['is_release'] = article.is_release
-            data['is_recommend'] = article.is_recommend
-            data['category'] = article.category.name
-            data['category_id'] = article.category_id
-            tags = article.tags.all()
-            tags_dict = {}
-            for tag in tags:
-                tags_dict[tag.id] = tag.name
-            data['tags'] = tags_dict
-            table_body.append(data)
     # 搜索浏览记录
-    elif search_type == "browse":
+    if search_type == "browse":
         title = request.GET.get("title")
         category = request.GET.get("category")
         time = request.GET.get("time")
@@ -540,7 +523,9 @@ def tableSearch(request):
         if time != "undefined":
             start_date = time.split()[0]
             end_date = time.split()[2]
-            q1.children.append(('time__range', [start_date, end_date]))
+            start_time = start_date + " 00:00:01"
+            end_time = end_date + " 23:59:59"
+            q1.children.append(('time__range', [start_time, end_time]))
         table_data = ArticleViewHistory.objects.filter(q1)
         table_body = []
         for history in table_data:
@@ -570,7 +555,9 @@ def tableSearch(request):
         if time != "undefined":
             start_date = time.split()[0]
             end_date = time.split()[2]
-            q1.children.append(('time__range', [start_date, end_date]))
+            start_time = start_date + " 00:00:01"
+            end_time = end_date + " 23:59:59"
+            q1.children.append(('time__range', [start_time, end_time]))
         table_data = ArticleViewHistory.objects.filter(q1).filter(is_like=True)
         table_body = []
         for history in table_data:
@@ -601,7 +588,9 @@ def tableSearch(request):
         if time != "undefined":
             start_date = time.split()[0]
             end_date = time.split()[2]
-            q1.children.append(('time__range', [start_date, end_date]))
+            start_time = start_date + " 00:00:01"
+            end_time = end_date + " 23:59:59"
+            q1.children.append(('time__range', [start_time, end_time]))
         table_data = CommentMessage.objects.filter(q1).filter(user=request.user)
         table_body = []
         for history in table_data:
@@ -614,6 +603,136 @@ def tableSearch(request):
             data['like'] = history.like
             data['content'] = history.content
             data['content_id'] = history.id
+            table_body.append(data)
+        print(table_body)
+    # 搜索留言记录
+    elif search_type == "leave":
+        content = request.GET.get("content")
+        time = request.GET.get("time")
+        print(content, time)
+        q1 = Q()
+        q1.connector = 'AND'
+        if content:
+            q1.children.append(('content__icontains', content))
+        if time != "undefined":
+            start_date = time.split()[0]
+            end_date = time.split()[2]
+            start_time = start_date + " 00:00:01"
+            end_time = end_date + " 23:59:59"
+            q1.children.append(('time__range', [start_time, end_time]))
+        table_data = LeaveMessage.objects.filter(q1).filter(user=request.user)
+        table_body = []
+        for history in table_data:
+            data = {}
+            data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
+            data['like'] = history.like
+            data['content'] = history.content
+            data['content_id'] = history.id
+            table_body.append(data)
+        print(table_body)
+    # 搜索文章分类：
+    elif search_type == "category_name":
+        category = request.GET.get("category")
+        # 模糊查询，不区分大小写
+        table_data = Category.objects.filter(name__icontains=category)
+        table_body = []
+        for category in table_data:
+            info = {"id": category.id, "name": category.name}
+            table_body.append(info)
+        # 放在一个列表里
+        result_data = [x for x in table_body]
+        if table_data.count() == 0:
+            result = {"code": 1,
+                      "msg": "查询记录为空！",
+                      "count": table_data.count(),
+                      "data": result_data}
+        else:
+            result = {"code": 0,
+                      "count": table_data.count(),
+                      "data": result_data}
+    # 搜索文章标签：
+    elif search_type == "tag_name":
+        tag = request.GET.get("tag")
+        # 模糊查询，不区分大小写
+        table_data = Tag.objects.filter(name__icontains=tag)
+        table_body = []
+        for tag in table_data:
+            info = {"id": tag.id, "name": tag.name}
+            table_body.append(info)
+        # 放在一个列表里
+        result_data = [x for x in table_body]
+        if table_data.count() == 0:
+            result = {"code": 1,
+                      "msg": "查询记录为空！",
+                      "count": table_data.count(),
+                      "data": result_data}
+        else:
+            result = {"code": 0,
+                      "count": table_data.count(),
+                      "data": result_data}
+    # 搜索文章列表
+    elif search_type == "article":
+        title = request.GET.get("title")
+        category = request.GET.get("category")
+        created_time = request.GET.get("created_time")
+        q1 = Q()
+        q1.connector = 'AND'
+        if title:
+            q1.children.append(('title__icontains', title))
+        if category:
+            q1.children.append(('category__name__icontains', category))
+        if created_time != "undefined":
+            start_date = created_time.split()[0]
+            end_date = created_time.split()[2]
+            start_time = start_date + " 00:00:01"
+            end_time = end_date + " 23:59:59"
+            q1.children.append(('time__range', [start_time, end_time]))
+        table_data = Article.objects.filter(q1)
+        print(table_data)
+        table_body = []
+        for article in table_data:
+            data = {}
+            data["id"] = article.id
+            data["title"] = article.title
+            data['created_time'] = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
+            data['is_release'] = article.is_release
+            data['is_recommend'] = article.is_recommend
+            data['category'] = article.category.name
+            data['category_id'] = article.category_id
+            tags = article.tags.all()
+            tags_dict = {}
+            for tag in tags:
+                tags_dict[tag.id] = tag.name
+            data['tags'] = tags_dict
+            table_body.append(data)
+    # 搜索文章评论
+    elif search_type == "article_comment":
+        title = request.GET.get("title")
+        content = request.GET.get("content")
+        time = request.GET.get("time")
+        print(title, content, time)
+        q1 = Q()
+        q1.connector = 'AND'
+        if title:
+            q1.children.append(('article__title__icontains', title))
+        if content:
+            q1.children.append(('content__icontains', content))
+        if time != "undefined":
+            start_date = time.split()[0]
+            end_date = time.split()[2]
+            start_time = start_date + " 00:00:01"
+            end_time = end_date + " 23:59:59"
+            q1.children.append(('time__range', [start_time, end_time]))
+        table_data = CommentMessage.objects.filter(q1)
+        table_body = []
+        for history in table_data:
+            data = {}
+            data["id"] = history.id
+            data["article_id"] = history.article.id
+            data["title"] = history.article.title
+            data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
+            data['user'] = history.user.username
+            data['content'] = history.content
             table_body.append(data)
         print(table_body)
     # 放在一个列表里

@@ -39,5 +39,10 @@ urlpatterns = [
     # ajax修改分类
     path('categoryAdd/', views.categoryAdd, name='categoryAdd'),
     # ajax新增分类
-
+    path('tagAdd/', views.tagAdd, name='tagAdd'),
+    # ajax新增标签
+    path('tagEdit/', views.tagEdit, name='tagEdit'),
+    # ajax修改标签
+    path('tagDel/', views.tagDel, name='tagDel'),
+    # ajax删除标签
 ]

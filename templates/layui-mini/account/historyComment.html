@@ -88,6 +88,7 @@
             title: '文章列表',
             cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'ID'}
                 , {field: 'title', title: '文章标题'}
                 , {
                     field: 'category', title: '文章分类', sort: true, templet: function (res) {
@@ -131,13 +132,87 @@
                 }
             }, 'data');
         });
-
+        // 头工具栏事件
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'delete') {
+                // 监听删除操作
+                var checkStatus = table.checkStatus('currentTable')
+                    , data = checkStatus.data;
+                layer.confirm('确定要删除吗？', function (index) {
+                    var delidArr = []
+                    data.forEach(function (array) {
+                        delidArr.push(array.id)
+                    })
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'blog:delComment' %}",
+                        data: {
+                            delidArr: delidArr.toString(),
+                        },
+                        success: function (result) {
+                            if (result.code == 1) {
+                                layer.msg(result.msg, {icon: 6});
+                                //执行表格数据重载
+                                var data = 'type=comment'
+                                var url = '/account/tableData?' + data
+                                table.reload('currentTable', {
+                                    url: url
+                                    , where: {
+                                        searchParams: result
+                                    }
+                                }, 'data');
+                            } else {
+                                layer.alert(result.msg, {icon: 2});
+                            }
+                        },
+                        error: function (xhr) {
+                            alert(xhr.text());
+                        }
+                    })
+                    layer.closeAll();
+                })
+            }
+        });
         // 监听行工具事件
         table.on('tool(currentTableFilter)', function (obj) {
             if (obj.event === 'view') {
                 // 查看文章
                 var url = '/blog/show-' + obj.data.article_id
                 open_win(url)
+            } else if (obj.event === 'delete') {
+                // 删除评论
+                layer.confirm('确定要删除评论吗？', function (index) {
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'blog:delComment' %}",
+                        data: {
+                            del_id: obj.data.id
+                        },
+                        success: function (result) {
+                            if (result.code == 1) {
+                                layer.msg(result.msg, {icon: 6});
+                                setTimeout(function () {
+                                    layer.closeAll();
+                                }, 2000);
+                                //执行表格数据重载
+                                var data = 'type=comment'
+                                var url = '/account/tableData?' + data
+                                table.reload('currentTable', {
+                                    url: url
+                                    , where: {
+                                        searchParams: result
+                                    }
+                                }, 'data');
+                            } else {
+                                layer.msg(result.msg, {icon: 2});
+                                layer.closeAll();
+                            }
+                        },
+                        error: function (xhr) {
+                            alert(xhr.text());
+                        }
+                    })
+                });
             }
         });
     });

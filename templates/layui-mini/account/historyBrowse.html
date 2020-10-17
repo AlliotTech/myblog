@@ -82,7 +82,8 @@
             defaultToolbar: ['filter', 'exports', 'print'],
             title: '文章列表',
             cols: [[ //表头
-                {field: 'title', title: '文章标题'}
+                {field: 'id', title: 'ID'}
+                , {field: 'title', title: '文章标题'}
                 , {
                     field: 'category', title: '文章分类', sort: true, templet: function (res) {
                         var str = '<span><a href="#" onclick="open_win(\'/blog/category-' + res.category_id + '\')">' + res.category + '</a></span>'

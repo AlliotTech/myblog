@@ -43,9 +43,9 @@ urlpatterns = [
     path('delMessage', views.delMessage, name='delMessage'),
     # ajax删除留言
     path('postComment', views.postComment, name='postComment'),
-    # ajax发布留言
+    # ajax发布评论
     path('likeComment', views.likeComment, name='likeComment'),
-    # ajax点赞留言
+    # ajax点赞评论
     path('delComment', views.delComment, name='delComment'),
-    # ajax删除留言
+    # ajax删除评论
 ]

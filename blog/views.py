@@ -414,6 +414,8 @@ def likeMessage(request):
 # ajax删除留言
 def delMessage(request):
     message_id = request.GET.get("del_id")
+    user_id = request.GET.get("user_id")
+    delid_arr = request.GET.get("delidArr")
     if message_id:
         message = LeaveMessage.objects.get(id=message_id)
         reply = LeaveMessage.objects.filter(reply_id=message_id)
@@ -423,6 +425,18 @@ def delMessage(request):
         else:
             message.content = "该内容已被用户删除"
             message.save()
+        result = {"code": 1, "msg": "删除成功!"}
+    elif delid_arr:
+        article_list = delid_arr.split(',')
+        for i in article_list:
+            message = LeaveMessage.objects.get(id=i)
+            reply = LeaveMessage.objects.filter(reply_id=i)
+            # 根留言且没有回复，可以删除
+            if message.level == 0 and len(reply) == 0:
+                LeaveMessage.objects.get(id=i).delete()
+            else:
+                message.content = "该内容已被用户删除"
+                message.save()
         result = {"code": 1, "msg": "删除成功!"}
     else:
         result = {"code": 0, "msg": "删除失败!"}
@@ -582,6 +596,8 @@ def likeComment(request):
 # ajax删除评论
 def delComment(request):
     message_id = request.GET.get("del_id")
+    delid_arr = request.GET.get("delidArr")
+    print(message_id, delid_arr)
     if message_id:
         message = CommentMessage.objects.get(id=message_id)
         reply = CommentMessage.objects.filter(reply_id=message_id)
@@ -591,6 +607,18 @@ def delComment(request):
         else:
             message.content = "该内容已被用户删除"
             message.save()
+        result = {"code": 1, "msg": "删除成功!"}
+    elif delid_arr:
+        article_list = delid_arr.split(',')
+        for i in article_list:
+            message = CommentMessage.objects.get(id=i)
+            reply = CommentMessage.objects.filter(reply_id=i)
+            # 根留言且没有回复，可以删除
+            if message.level == 0 and len(reply) == 0:
+                CommentMessage.objects.get(id=i).delete()
+            else:
+                message.content = "该内容已被用户删除"
+                message.save()
         result = {"code": 1, "msg": "删除成功!"}
     else:
         result = {"code": 0, "msg": "删除失败!"}
