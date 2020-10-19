@@ -915,15 +915,15 @@ def markdownUpload(request):
         code = imgSave(file, filepath)
         if (code == 1):
             result = {
-                "code": "1",
-                "message": "success!",
+                "success": 1,
+                "message": "上传成功！",
                 "url": filepath,
             }
             print(result["url"])
             return JsonResponse(result)
         else:
             result = {
-                "code": "0",
+                "success": "0",
                 "msg": "上传失败!",
                 "src": None,
             }
