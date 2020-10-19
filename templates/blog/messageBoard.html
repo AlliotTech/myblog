@@ -24,9 +24,9 @@
                                     <div class="layui-hide-xs layui-col-md1">
                                         <a>
                                             {% if userinfo.photo %}
-                                                <img lay-src="/media/{{ userinfo.photo }}" class="layui-nav-img">
+                                                <img lay-src="/media/{{ userinfo.photo }}" class="layui-nav-img img-rotate">
                                             {% else %}
-                                                <img lay-src="/media/photo/default.png" class="layui-nav-img">
+                                                <img lay-src="/media/photo/default.png" class="layui-nav-img img-rotate">
                                             {% endif %}
                                         </a>
                                     </div>
@@ -52,18 +52,18 @@
                                                 {% for li in ol %}
                                                     <li class="reply-{{ li.level }} message-content"
                                                         id="all-{{ li.id }}">
-                                                        <a href="#">
-                                                            <img lay-src="../media/{{ li.photo }}"
-                                                                 class="layui-nav-img">
+                                                        <a href={{ li.web }} target="_blank">
+                                                            <img lay-src="/media/{{ li.photo }}"
+                                                                 class="layui-nav-img img-rotate">
                                                         </a>
                                                         <div class="text-box">
                                                             <div class="box-info">
                                                                 {% if li.reply_name == 'None' %}
-                                                                    <a href="#">{{ li.username }}</a>
+                                                                    <a href={{ li.web }} target="_blank">{{ li.username }}</a>
                                                                 {% else %}
-                                                                    <a href="#">{{ li.username }}</a>
+                                                                    <a href={{ li.web }} target="_blank">{{ li.username }}</a>
                                                                     <em>回复</em>
-                                                                    <a href="#">{{ li.reply_name }}</a>
+                                                                    <a href={{ li.reply_web }} target="_blank">{{ li.reply_name }}</a>
                                                                 {% endif %}
                                                                 <span class="timeago" datetime="{{ li.time }}"></span>
                                                             </div>
@@ -100,13 +100,13 @@
                                         <ol class="list-body">
                                             {% for i in hot_message %}
                                                 <li class="message-content" id="hot-{{ i.id }}">
-                                                    <a href="#">
+                                                    <a href={{ i.user.userinfo.web }} target="_blank">
                                                         <img src="/media/{{ i.user.userinfo.photo }}"
-                                                             class="layui-nav-img">
+                                                             class="layui-nav-img img-rotate">
                                                     </a>
                                                     <div class="text-box">
                                                         <div class="box-info">
-                                                            <a href="#">{{ i.user.username }}</a>
+                                                            <a href={{ i.user.userinfo.web }} target="_blank">{{ i.user.username }}</a>
                                                             <span class="timeago"
                                                                   datetime="{{ i.time|date:"Y-m-d H:i:s" }}"></span>
                                                         </div>
@@ -138,13 +138,13 @@
                                             <ol class="list-body">
                                                 {% for i in my_message %}
                                                     <li class="message-content" id="my-{{ i.id }}">
-                                                        <a href="#">
+                                                        <a href={{ i.user.userinfo.web }} target="_blank">
                                                             <img src="/media/{{ i.user.userinfo.photo }}"
-                                                                 class="layui-nav-img">
+                                                                 class="layui-nav-img img-rotate">
                                                         </a>
                                                         <div class="text-box">
                                                             <div class="box-info">
-                                                                <a href="#">{{ i.user.username }}</a>
+                                                                <a href={{ i.user.userinfo.web }} target="_blank">{{ i.user.username }}</a>
                                                                 <span class="timeago"
                                                                       datetime="{{ i.time|date:"Y-m-d H:i:s" }}"></span>
                                                             </div>
@@ -409,7 +409,7 @@
                 var $record = $('<ol class="list-body">\n' +
                     '            <li class="message-content">\n' +
                     '                <a href="#">\n' +
-                    '                    <img src="/media/{{ userinfo.photo }}" class="layui-nav-img">\n' +
+                    '                    <img src="/media/{{ userinfo.photo }}" class="layui-nav-img img-rotate">\n' +
                     '                </a>\n' +
                     '                <div class="text-box">\n' +
                     '                    <div class="box-info">\n' +
@@ -433,7 +433,7 @@
                 var $record = $('<ol class="list-body">\n' +
                     '            <li class="reply-'+reply_level+' message-content" id="all-'+reply_id+'">\n' +
                     '                <a href="#">\n' +
-                    '                    <img src="/media/{{ userinfo.photo }}" class="layui-nav-img">\n' +
+                    '                    <img src="/media/{{ userinfo.photo }}" class="layui-nav-img img-rotate">\n' +
                     '                </a>\n' +
                     '                <div class="text-box">\n' +
                     '                    <div class="box-info">\n' +

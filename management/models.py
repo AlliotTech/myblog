@@ -3,10 +3,10 @@ from django.db import models
 # Create your models here.
 
 
-# 轮播图
 from mdeditor.fields import MDTextField
 
 
+# 轮播图
 class Carousel(models.Model):
     img = models.ImageField('轮播图', upload_to='carousel/')
     url = models.URLField('图片链接', max_length=100)

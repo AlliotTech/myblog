@@ -16,6 +16,8 @@ from PIL import Image
 from account.forms import *
 from account.models import UserInfo, ArticleViewHistory, CommentMessage, LeaveMessage
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views.decorators.clickjacking import xframe_options_sameorigin
+from django.views.decorators.csrf import csrf_exempt
 
 from blog.models import Article, Category, Tag
 
@@ -895,6 +897,35 @@ def commentUpload(request):
                 "data": {
                     "src": None,
                 }
+            }
+        return JsonResponse(result)
+
+
+# ajax markdown 图片上传
+@csrf_exempt
+@xframe_options_sameorigin
+def markdownUpload(request):
+    print(request.method)
+    if request.method == "POST":
+        dir = 'markdown/'
+        file = request.FILES.get('editormd-image-file')
+        filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
+        filepath = 'media/' + dir + filename
+        # 图片资源写入服务器
+        code = imgSave(file, filepath)
+        if (code == 1):
+            result = {
+                "code": "1",
+                "message": "success!",
+                "url": filepath,
+            }
+            print(result["url"])
+            return JsonResponse(result)
+        else:
+            result = {
+                "code": "0",
+                "msg": "上传失败!",
+                "src": None,
             }
         return JsonResponse(result)
 

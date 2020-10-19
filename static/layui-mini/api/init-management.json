@@ -60,9 +60,15 @@
           "target": "_self",
           "child": [
             {
-              "title": "留言管理",
-              "href": "page/welcome-1.html",
-              "icon": "fa fa-comment-dots",
+              "title": "网站配置",
+              "href": "/management/websiteConfig",
+              "icon": "fa fa-cog",
+              "target": "_self"
+            },
+            {
+              "title": "关于页面",
+              "href": "/management/websiteAbout",
+              "icon": "fa fa-info",
               "target": "_self"
             },
             {
@@ -75,6 +81,12 @@
               "title": "友链管理",
               "href": "page/welcome-3.html",
               "icon": "fa fa-link",
+              "target": "_self"
+            },
+            {
+              "title": "留言管理",
+              "href": "page/welcome-3.html",
+              "icon": "fa fa-comment-dots",
               "target": "_self"
             }
           ]

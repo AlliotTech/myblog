@@ -13,7 +13,7 @@ class UserInfo(models.Model):
     phone = models.CharField(verbose_name='手机', max_length=20, default="保密")
     sex_choice = [('1', '男'), ('2', '女')]
     sex = models.CharField(verbose_name='性别', max_length=1, choices=sex_choice, default=1)
-    web = models.CharField(verbose_name='个人网站', max_length=50, default="保密")
+    web = models.CharField(verbose_name='个人网站', max_length=50, default="#")
     aboutme = models.TextField(verbose_name='个性签名', max_length=200, default="保密")
     photo = models.ImageField(upload_to='photo/', verbose_name='头像', default='photo/default.png')
 

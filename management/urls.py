@@ -24,6 +24,10 @@ urlpatterns = [
     # 网站轮播图
     path('websiteLink/', views.websiteLink, name='websiteLink'),
     # 网站友情链接
+    path('websiteAbout/', views.websiteAbout, name='websiteAbout'),
+    # 网站关于
+    path('websiteConfig/', views.websiteConfig, name='websiteConfig'),
+    # 网站配置
     path('managementUser/', views.managementUser, name='managementUser'),
     # 用户管理
 

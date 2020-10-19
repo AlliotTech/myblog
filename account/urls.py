@@ -42,6 +42,8 @@ urlpatterns = [
     # ajax头像上传
     path('commentUpload/', views.commentUpload, name='commentUpload'),
     # ajax图片上传
+    path('markdownUpload/', views.markdownUpload, name='markdownUpload'),
+    # ajax markdown图片上传
     path('emailCode/', views.emailCode, name='emailCode'),
     # ajax获取邮件验证码
     path('checkEmailCode/', views.checkEmailCode, name='checkEmailCode'),

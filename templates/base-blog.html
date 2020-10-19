@@ -169,7 +169,7 @@
                             <a href="{% url 'account:account' %}">个人中心</a>
                         </dd>
                         <dd data-name="nav">
-                            <a href="{% url 'management:dashboard' %}">网站管理</a>
+                            <a href="{% url 'management:management' %}">网站管理</a>
                         </dd>
                         <dd data-name="button">
                             <a href="{% url 'account:logout' %}">退出登录</a>
@@ -267,6 +267,7 @@
             t = p;
         })
     })
+
     /*判断当在第一屏的时候，回到顶部按钮的时候隐藏*/
     $(window).scroll(function () {
         var scroll_len = $(window).scrollTop();

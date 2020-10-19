@@ -225,10 +225,12 @@ def comment_record(article, root_id, record):
     for comment in CommentMessage.objects.filter(root_id=root_id):
         comment_dict = model_to_dict(comment)
         comment_dict['photo'] = CommentMessage.objects.get(id=comment.id).user.userinfo.photo.name
+        comment_dict['web'] = CommentMessage.objects.get(id=comment.id).user.userinfo.web
         comment_dict['username'] = CommentMessage.objects.get(id=comment.id).user.username
         comment_dict['time'] = CommentMessage.objects.get(id=comment.id).time.strftime("%Y-%m-%d %H:%M:%S")
         reply_id = CommentMessage.objects.get(id=comment.id).reply_id
         comment_dict['reply_name'] = CommentMessage.objects.get(id=reply_id).user.username
+        comment_dict['reply_web'] = CommentMessage.objects.get(id=reply_id).user.userinfo.web
         record.append(comment_dict)
     return record
 
@@ -288,6 +290,7 @@ def show(request, article_id):
             info_dict['root_id'] = 'None'
             info_dict['reply_name'] = 'None'
             info_dict['photo'] = CommentMessage.objects.get(id=info.id).user.userinfo.photo.name
+            info_dict['web'] = CommentMessage.objects.get(id=info.id).user.userinfo.web
             info_dict['time'] = CommentMessage.objects.get(id=info.id).time.strftime("%Y-%m-%d %H:%M:%S")
             record.append(info_dict)
             # 根据根留言查找子回复
@@ -334,10 +337,13 @@ def build_record(root_id, record):
     for comment in LeaveMessage.objects.filter(root_id=root_id):
         comment_dict = model_to_dict(comment)
         comment_dict['photo'] = LeaveMessage.objects.get(id=comment.id).user.userinfo.photo.name
+        comment_dict['web'] = LeaveMessage.objects.get(id=comment.id).user.userinfo.web
         comment_dict['username'] = LeaveMessage.objects.get(id=comment.id).user.username
         comment_dict['time'] = LeaveMessage.objects.get(id=comment.id).time.strftime("%Y-%m-%d %H:%M:%S")
         reply_id = LeaveMessage.objects.get(id=comment.id).reply_id
         comment_dict['reply_name'] = LeaveMessage.objects.get(id=reply_id).user.username
+        comment_dict['reply_web'] = LeaveMessage.objects.get(id=reply_id).user.userinfo.web
+        print(comment_dict['reply_web'])
         record.append(comment_dict)
     return record
 
@@ -357,6 +363,7 @@ def messageBoard(request):
             info_dict['root_id'] = 'None'
             info_dict['reply_name'] = 'None'
             info_dict['photo'] = LeaveMessage.objects.get(id=info.id).user.userinfo.photo.name
+            info_dict['web'] = LeaveMessage.objects.get(id=info.id).user.userinfo.web
             info_dict['time'] = LeaveMessage.objects.get(id=info.id).time.strftime("%Y-%m-%d %H:%M:%S")
             record.append(info_dict)
             # 根据根留言查找子回复

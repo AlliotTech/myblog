@@ -3,10 +3,9 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.clickjacking import xframe_options_exempt
-
-# Create your views here.
 from account.views import imgSave
 from blog.models import Category, Tag, Article
+from management.models import About
 
 
 @login_required()
@@ -51,13 +50,44 @@ def articleComment(request):
     return render(request, 'layui-mini/management/articleComment.html', locals())
 
 
+# 网站关于
+@xframe_options_exempt
+@login_required()
+def websiteAbout(request):
+    if request.method == "POST":
+        try:
+            about = About.objects.get(id=1)
+            about.body = request.POST.get("content")
+            about.save()
+            result = {
+                "code": "1",
+                "msg": "修改成功!",
+            }
+        except Exception as e:
+            print(e)
+            result = {
+                "code": "0",
+                "msg": "修改失败!",
+            }
+        return JsonResponse(result)
+    else:
+        about = About.objects.get(id=1)
+        body = about.body
+        time = about.time
+    return render(request, 'layui-mini/management/websiteAbout.html', locals())
+
+
+# 网站配置
+@xframe_options_exempt
+@login_required()
+def websiteConfig(request):
+    return render(request, 'layui-mini/management/websiteConfig.html', locals())
+
+
 # 留言管理
 @xframe_options_exempt
 @login_required()
 def websiteLeaveMessage(request):
-    leaveList = []
-    for i in range(1, 11):
-        leaveList.append(i)
     return render(request, 'management/websiteLeaveMessage.html', locals())
 
 
@@ -65,9 +95,6 @@ def websiteLeaveMessage(request):
 @xframe_options_exempt
 @login_required()
 def websiteCarousel(request):
-    carouselList = []
-    for i in range(1, 6):
-        carouselList.append(i)
     return render(request, 'management/websiteCarousel.html', locals())
 
 
@@ -75,9 +102,6 @@ def websiteCarousel(request):
 @xframe_options_exempt
 @login_required()
 def websiteLink(request):
-    linkList = []
-    for i in range(1, 11):
-        linkList.append(i)
     return render(request, 'management/websiteLink.html', locals())
 
 
@@ -85,9 +109,6 @@ def websiteLink(request):
 @xframe_options_exempt
 @login_required()
 def managementUser(request):
-    userList = []
-    for i in range(1, 11):
-        userList.append(i)
     return render(request, 'management/managementUser.html', locals())
 
 

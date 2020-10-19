@@ -205,7 +205,7 @@
             hr               : "fa-minus",
             link             : "fa-link",
             "reference-link" : "fa-anchor",
-            image            : "fa-cover-o",
+            image            : "fa-picture-o",
             code             : "fa-code",
             "preformatted-text" : "fa-file-code-o",
             "code-block"     : "fa-file-code-o",

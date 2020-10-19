@@ -14,7 +14,7 @@ body {
 }
 
 /**必填红点 */
-.layuimini-form > .layui-form-item > .required:after {
+.layuimini-form   .layui-form-item > .required:after {
     content: '*';
     color: red;
     position: absolute;
@@ -25,15 +25,15 @@ body {
     right: 5px;
 }
 
-.layuimini-form > .layui-form-item > .layui-form-label {
+.layuimini-form   .layui-form-item > .layui-form-label {
     width: 120px !important;
 }
 
-.layuimini-form > .layui-form-item > .layui-input-block {
+.layuimini-form   .layui-form-item > .layui-input-block {
     margin-left: 150px !important;
 }
 
-.layuimini-form > .layui-form-item > .layui-input-block > tip {
+.layuimini-form  .layui-form-item > .layui-input-block > tip {
     display: inline-block;
     margin-top: 10px;
     line-height: 10px;
@@ -89,9 +89,11 @@ fieldset {
     margin-bottom: 20px !important;
 }
 
-fieldset > div {
+fieldset legend {
     text-align: center;
     margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 30px!important;
 }
 
 /*弹窗样式*/
@@ -239,4 +241,8 @@ fieldset > div {
     margin-top: 0px;
     margin-right: 0px;
     padding-right: 0px;
+}
+/*关于编辑页*/
+.about-textarea {
+    margin-left: 0px!important;
 }
