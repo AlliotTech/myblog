@@ -14,7 +14,7 @@ body {
 }
 
 /**必填红点 */
-.layuimini-form   .layui-form-item > .required:after {
+.required:after {
     content: '*';
     color: red;
     position: absolute;
@@ -25,15 +25,7 @@ body {
     right: 5px;
 }
 
-.layuimini-form   .layui-form-item > .layui-form-label {
-    width: 120px !important;
-}
-
-.layuimini-form   .layui-form-item > .layui-input-block {
-    margin-left: 150px !important;
-}
-
-.layuimini-form  .layui-form-item > .layui-input-block > tip {
+tip {
     display: inline-block;
     margin-top: 10px;
     line-height: 10px;
@@ -93,7 +85,7 @@ fieldset legend {
     text-align: center;
     margin-top: 15px;
     margin-bottom: 15px;
-    font-size: 30px!important;
+    font-size: 30px !important;
 }
 
 /*弹窗样式*/
@@ -232,7 +224,7 @@ fieldset legend {
     position: relative;
 }
 
-#id_sex li{
+#id_sex li {
     display: inline-block;
     margin-right: 40px;
 }
@@ -242,7 +234,30 @@ fieldset legend {
     margin-right: 0px;
     padding-right: 0px;
 }
+
 /*关于编辑页*/
 .about-textarea {
-    margin-left: 0px!important;
+    margin-left: 0px !important;
+}
+
+/*网站配置页*/
+.config-row {
+    padding-bottom: 20px;
+}
+.photo-config td {
+    text-align: center;
+}
+.photo-config span {
+    padding-right: 1.5em;
+}
+.photo-config button {
+    margin-left: 1.5em;
+}
+.info-photo {
+    text-align: center;
+}
+.info-photo img{
+    width: 150px;
+    height: 100%;
+    margin: 0 1em;
 }

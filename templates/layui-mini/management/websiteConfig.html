@@ -18,137 +18,176 @@
             <fieldset class="layui-elem-field layui-field-title">
                 <legend>网站配置</legend>
                 <div class="layui-field-box">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label required">网站名称</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="sitename" lay-verify="required" lay-reqtext="网站域名不能为空"
-                                   placeholder="请输入网站名称" value="layuimini" class="layui-input">
-                            <tip>填写自己部署网站的名称。</tip>
+                    <div class="layui-row config-row">
+                        <div class="layui-col-xs12 layui-col-md4">
+                            <label class="layui-form-label required">网站名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="sitename" lay-verify="required" lay-reqtext="网站域名不能为空"
+                                       placeholder="请输入网站名称" value="layuimini" class="layui-input">
+                            </div>
                         </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label required">网站域名</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="domain" lay-verify="required" lay-reqtext="网站域名不能为空"
-                                   placeholder="请输入网站域名"
-                                   value="http://layuimini.99php.cn" class="layui-input">
+                        <div class="layui-col-xs12 layui-col-md4">
+                            <label class="layui-form-label required">网站域名</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="domain" lay-verify="required" lay-reqtext="网站域名不能为空"
+                                       placeholder="请输入网站域名"
+                                       value="http://layuimini.99php.cn" class="layui-input">
+                            </div>
                         </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label required">首页标题</label>
-                        <div class="layui-input-block">
-                            <input name="title" class="layui-input">
+                        <div class="layui-col-xs12 layui-col-md4">
+                            <label class="layui-form-label required">首页标题</label>
+                            <div class="layui-input-block">
+                                <input name="title" class="layui-input" lay-verify="required" lay-reqtext="首页标题不能为空"
+                                       placeholder="请输入首页标题">
+                            </div>
                         </div>
                     </div>
                     <div class="layui-form-item layui-form-text">
                         <label class="layui-form-label">META关键词</label>
                         <div class="layui-input-block">
-                            <textarea name="keywords" class="layui-textarea" placeholder="多个关键词用英文状态 , 号分割"></textarea>
+                            <textarea name="keywords" class="layui-textarea"></textarea>
+                            <tip>多个关键词用英文状态 , 号分割</tip>
                         </div>
                     </div>
                     <div class="layui-form-item layui-form-text">
                         <label class="layui-form-label">META描述</label>
                         <div class="layui-input-block">
-                            <textarea name="descript" class="layui-textarea">layuimini，最简洁、清爽、易用的layui后台框架模板。</textarea>
+                            <textarea name="descript" class="layui-textarea"></textarea>
                         </div>
                     </div>
-                    <div class="layui-form-item layui-form-text">
+                    <div class="layui-form-item">
                         <label class="layui-form-label required">版权信息</label>
                         <div class="layui-input-block">
-                            <textarea name="copyright"
-                                      class="layui-textarea">© 2019 layuimini.99php.cn MIT license</textarea>
+                            <input name="copyright" class="layui-input" lay-verify="required" lay-reqtext="版权信息不能为空"
+                                   placeholder="请输入版权信息">
                         </div>
                     </div>
                 </div>
             </fieldset>
             <fieldset class="layui-elem-field layui-field-title">
                 <legend>图片配置</legend>
-                <div class="layui-field-box">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label required">默认头像</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="sitename" lay-verify="required" lay-reqtext="网站域名不能为空"
-                                   placeholder="请输入网站名称" value="layuimini" class="layui-input">
-                            <tip>填写自己部署网站的名称。</tip>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label required">默认文章封面</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="domain" lay-verify="required" lay-reqtext="网站域名不能为空"
-                                   placeholder="请输入网站域名"
-                                   value="http://layuimini.99php.cn" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label required">赞赏二维码</label>
-                        <div class="layui-input-block">
-                            <input name="title" class="layui-input">
-                        </div>
-                    </div>
-                </div>
+                <table class="layui-table photo-config" lay-skin="nob">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div>
+                                <span>前台logo</span>
+                                <img src="/static/images/logo.png">
+                                <button type="button" class="layui-btn layui-btn-warm">修改</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span>后台logo</span>
+                                <img src="/static/images/favicon-gray.png">
+                                <button type="button" class="layui-btn layui-btn-warm">修改</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span>icon</span>
+                                <img src="/static/images/favicon.ico">
+                                <button type="button" class="layui-btn layui-btn-warm">修改</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                <span>默认头像</span>
+                                <img src="/media/photo/default.png">
+                                <button type="button" class="layui-btn layui-btn-warm">修改</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span>默认封面</span>
+                                <img src="/media/cover/default.jpg">
+                                <button type="button" class="layui-btn layui-btn-warm">修改</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span>赞赏二维码</span>
+                                <img src="/static/images/pay.png">
+                                <button type="button" class="layui-btn layui-btn-warm">修改</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </fieldset>
             <fieldset class="layui-elem-field layui-field-title">
                 <legend>博主信息</legend>
-                <div class="layui-field-box">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label required">职位</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="sitename" lay-verify="required" lay-reqtext="网站域名不能为空"
-                                   placeholder="请输入网站名称" value="layuimini" class="layui-input">
-                            <tip>填写自己部署网站的名称。</tip>
+                <div class="layui-row config-row">
+                    <div class="layui-col-xs12 layui-col-md4">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label required">职位</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="sitename" class="layui-input">
+                            </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    <div class="layui-col-xs12 layui-col-md4">
+                        <div class="layui-form-item">
                         <label class="layui-form-label required">单位</label>
                         <div class="layui-input-block">
-                            <input type="text" name="domain" lay-verify="required" lay-reqtext="网站域名不能为空"
-                                   placeholder="请输入网站域名"
-                                   value="http://layuimini.99php.cn" class="layui-input">
+                            <input type="text" name="domain" class="layui-input">
+                        </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    <div class="layui-col-xs12 layui-col-md4">
+                        <div class="layui-form-item">
                         <label class="layui-form-label required">地址</label>
                         <div class="layui-input-block">
-                            <input name="title" class="layui-input">
+                            <input type="text" name="title" class="layui-input">
+                        </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    <div class="layui-col-xs12 layui-col-md4">
+                        <div class="layui-form-item">
                         <label class="layui-form-label required">邮箱</label>
                         <div class="layui-input-block">
-                            <input name="title" class="layui-input">
+                            <input type="text" name="sitename" class="layui-input">
+                        </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label required">qq二维码</label>
+                    <div class="layui-col-xs12 layui-col-md4">
+                        <div class="layui-form-item">
+                        <label class="layui-form-label required">CSDN</label>
                         <div class="layui-input-block">
-                            <input name="title" class="layui-input">
+                            <input type="text" name="domain" class="layui-input">
+                        </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label required">微信二维码</label>
+                    <div class="layui-col-xs12 layui-col-md4">
+                        <div class="layui-form-item">
+                        <label class="layui-form-label required">github</label>
                         <div class="layui-input-block">
-                            <input name="title" class="layui-input">
+                            <input type="text" name="title" class="layui-input">
+                        </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label required">csdn地址</label>
-                        <div class="layui-input-block">
-                            <input name="title" class="layui-input">
+                    <div class="layui-col-xs12 layui-col-md6">
+                        <div class="info-photo">
+                            <span>QQ二维码</span>
+                            <img src="/static/images/qq.png">
+                            <button type="button" class="layui-btn">修改</button>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label required">github地址</label>
-                        <div class="layui-input-block">
-                            <input name="title" class="layui-input">
+                    <div class="layui-col-xs12 layui-col-md6">
+                        <div class="info-photo">
+                            <span>微信二维码</span>
+                            <img src="/static/images/weixin.png">
+                            <button type="button" class="layui-btn">修改</button>
                         </div>
                     </div>
-
                 </div>
             </fieldset>
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn layui-btn-normal" lay-submit lay-filter="setting">确认保存</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
         </div>

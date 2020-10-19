@@ -81,6 +81,7 @@ def websiteAbout(request):
 @xframe_options_exempt
 @login_required()
 def websiteConfig(request):
+
     return render(request, 'layui-mini/management/websiteConfig.html', locals())
 
 
