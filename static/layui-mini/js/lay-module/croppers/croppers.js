@@ -16,7 +16,7 @@ layui.define(['jquery', 'layer', 'cropper'], function (exports) {
         "            </label>\n" +
         "            <input class=\"layui-upload-file\" id=\"cropper_avatarImgUpload\" type=\"file\" value=\"选择图片\" name=\"file\">\n" +
         "        </div>\n" +
-        "        <div class=\"layui-form-mid layui-word-aux\">头像的尺寸限定150x150px,大小在50kb以内</div>\n" +
+        "        <div class=\"layui-form-mid layui-word-aux\">添加图片后拖动选区，完成图片裁剪上传</div>\n" +
         "    </div>\n" +
         "    <div class=\"layui-row layui-col-space15\">\n" +
         "        <div class=\"layui-col-md9 layui-col-xs12\">\n" +

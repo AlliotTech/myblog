@@ -95,7 +95,7 @@
                         <td>
                             <div>
                                 <span>默认头像</span>
-                                <img src="/media/photo/default.png">
+                                <img src="/media/photo/default.jpg">
                                 <button type="button" class="layui-btn layui-btn-warm">修改</button>
                             </div>
                         </td>
@@ -130,53 +130,53 @@
                     </div>
                     <div class="layui-col-xs12 layui-col-md4">
                         <div class="layui-form-item">
-                        <label class="layui-form-label required">单位</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="domain" class="layui-input">
-                        </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-xs12 layui-col-md4">
-                        <div class="layui-form-item">
-                        <label class="layui-form-label required">地址</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="title" class="layui-input">
-                        </div>
+                            <label class="layui-form-label required">单位</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="domain" class="layui-input">
+                            </div>
                         </div>
                     </div>
                     <div class="layui-col-xs12 layui-col-md4">
                         <div class="layui-form-item">
-                        <label class="layui-form-label required">邮箱</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="sitename" class="layui-input">
-                        </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-xs12 layui-col-md4">
-                        <div class="layui-form-item">
-                        <label class="layui-form-label required">CSDN</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="domain" class="layui-input">
-                        </div>
+                            <label class="layui-form-label required">地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="title" class="layui-input">
+                            </div>
                         </div>
                     </div>
                     <div class="layui-col-xs12 layui-col-md4">
                         <div class="layui-form-item">
-                        <label class="layui-form-label required">github</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="title" class="layui-input">
-                        </div>
+                            <label class="layui-form-label required">邮箱</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="sitename" class="layui-input">
+                            </div>
                         </div>
                     </div>
-                    <div class="layui-col-xs12 layui-col-md6">
-                        <div class="info-photo">
+                    <div class="layui-col-xs12 layui-col-md4">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label required">CSDN</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="domain" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12 layui-col-md4">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label required">github</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="title" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12 layui-col-md6 info-photo">
+                        <div>
                             <span>QQ二维码</span>
                             <img src="/static/images/qq.png">
                             <button type="button" class="layui-btn">修改</button>
                         </div>
                     </div>
-                    <div class="layui-col-xs12 layui-col-md6">
-                        <div class="info-photo">
+                    <div class="layui-col-xs12 layui-col-md6 info-photo">
+                        <div>
                             <span>微信二维码</span>
                             <img src="/static/images/weixin.png">
                             <button type="button" class="layui-btn">修改</button>
@@ -197,7 +197,8 @@
 <script>
     layui.use(['form'], function () {
         var form = layui.form
-            , layer = layui.layer;
+            , layer = layui.layer
+            , $ = layui.jquery;
 
         //监听提交
         form.on('submit(setting)', function (data) {
@@ -206,7 +207,22 @@
             });
             return false;
         });
-
+        // 二维码图片点击放大
+        $('.info-photo img').on('click', function () {
+            layer.photos({
+                photos: '.info-photo',
+                closeBtn: 2,
+                anim: 0
+            });
+        })
+        // 二维码图片点击放大
+        $('.photo-config img').on('click', function () {
+            layer.photos({
+                photos: '.photo-config',
+                closeBtn: 2,
+                anim: 0
+            });
+        })
     });
 </script>
 </body>

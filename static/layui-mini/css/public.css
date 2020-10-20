@@ -244,19 +244,23 @@ fieldset legend {
 .config-row {
     padding-bottom: 20px;
 }
+
 .photo-config td {
     text-align: center;
 }
+
 .photo-config span {
     padding-right: 1.5em;
 }
+
 .photo-config button {
     margin-left: 1.5em;
 }
 .info-photo {
     text-align: center;
 }
-.info-photo img{
+
+.info-photo img {
     width: 150px;
     height: 100%;
     margin: 0 1em;

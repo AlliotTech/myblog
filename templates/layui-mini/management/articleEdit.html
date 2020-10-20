@@ -70,9 +70,10 @@
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">封面图片：</label>
-            <div class="layui-input-block article-photo-change img-zoom">
+            <div class="layui-input-block article-photo-change">
                 <img src=/media/{{ article.img }} id="cover-img">
                 <button type="button" class="layui-btn layui-btn-normal" id="editimg">修改封面</button>
+                <tip>点击图片查看大图，图片分辨率：300*200</tip>
             </div>
         </div>
         <div class="layui-form-item">
@@ -175,6 +176,14 @@
                 $("#cover-img").attr('src', src);
             }
         });
+        // 封面图片点击放大
+        $('.article-photo-change img').on('click', function () {
+            layer.photos({
+                photos: '.article-photo-change',
+                closeBtn: 2,
+                anim: 0
+            });
+        })
     });
 </script>
 </body>

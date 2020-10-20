@@ -142,7 +142,7 @@
                                             {% if userinfo.photo %}
                                                 <img src="/media/{{ userinfo.photo }}" class="layui-nav-img img-rotate">
                                             {% else %}
-                                                <img src="/media/photo/default.png" class="layui-nav-img img-rotate">
+                                                <img src="/media/photo/default.jpg" class="layui-nav-img img-rotate">
                                             {% endif %}
                                         </a>
                                     </div>
@@ -731,6 +731,14 @@
                     }, 1000)
                 });
             }
+            // 图片点击放大
+            $('#editormd-view img').on('click', function () {
+                layer.photos({
+                    photos: '#editormd-view',
+                    closeBtn: 2,
+                    anim: 0
+                });
+            })
         });
     </script>
 {% endblock %}

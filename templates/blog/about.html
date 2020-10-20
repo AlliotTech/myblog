@@ -20,27 +20,6 @@
             <!--    页面主体部分-->
             <div class="layui-col-xs12 layui-col-md10 page-main-centre">
                 <div class="layui-row main-centre">
-                    <div class="layui-hide" id="content">
-                        <div class="content-div">
-                            <ul>
-                                <li>第一章：三字经</li>
-                                <li>第二章：百家姓</li>
-                                <li>第三章：唐诗三百首</li>
-                                <li>第四章：钢铁是怎样炼成的这真是一个难题</li>
-                                <li>第一章：三字经</li>
-                                <li>第二章：百家姓</li>
-                                <li>第三章：唐诗三百首</li>
-                                <li>第四章：钢铁是怎样炼成的</li>
-                                <li>第一章：三字经</li>
-                                <li>第二章：百家姓</li>
-                                <li>第三章：唐诗三百首</li>
-                                <li>第四章：钢铁是怎样炼成的</li>
-                                <li>第一章：三字经</li>
-                                <li>第二章：百家姓</li>
-                                <li>第三章：唐诗三百首</li>
-                            </ul>
-                        </div>
-                    </div>
                     <!--            主体中间正文部分-->
                     <div class="layui-col-md7 main-left">
                         <!--            文章内容-->
@@ -106,5 +85,14 @@
                 });
             });
         }
+
+        // 图片点击放大
+        $('#editormd-view img').on('click', function () {
+            layer.photos({
+                photos: '#editormd-view',
+                closeBtn: 2,
+                anim: 0
+            });
+        })
     </script>
 {% endblock %}

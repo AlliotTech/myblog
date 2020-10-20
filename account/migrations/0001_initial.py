@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('sex', models.CharField(choices=[('1', '男'), ('2', '女')], default=1, max_length=1, verbose_name='性别')),
                 ('web', models.CharField(default='保密', max_length=50, verbose_name='个人网站')),
                 ('aboutme', models.TextField(default='保密', max_length=200, verbose_name='个性签名')),
-                ('photo', models.ImageField(default='photo/default.png', upload_to='photo/', verbose_name='头像')),
+                ('photo', models.ImageField(default='photo/default.jpg', upload_to='photo/', verbose_name='头像')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={

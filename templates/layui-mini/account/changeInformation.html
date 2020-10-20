@@ -44,9 +44,10 @@
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">头像：</label>
-                <div class="layui-input-inline layui-btn-container photo-change img-zoom">
+                <div class="layui-input-inline layui-btn-container photo-change">
                     <img src="/media/{{ userinfo.photo }}" id="photo-img">
                     <button type="button" class="layui-btn layui-btn-normal" id="editimg">修改头像</button>
+                    <tip>点击图片查看大图，图片分辨率：150*150</tip>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -138,6 +139,14 @@
             })
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
+        // 图片点击放大
+        $('.photo-change img').on('click', function () {
+            layer.photos({
+                photos: '.photo-change',
+                closeBtn: 2,
+                anim: 0
+            });
+        })
     })
 </script>
 </body>
