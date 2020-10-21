@@ -171,7 +171,7 @@
             , mark: 3 / 2    //选取比例
             , area: open_height  //弹窗宽度
             , url: "{% url "account:imageUpload" %}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
-            , data: {dir: 'cover'}
+            , data: {type: 'cover'}
             , done: function (src) { //上传完毕回调
                 console.log(src)
                 $("#cover-img").attr('src', src);

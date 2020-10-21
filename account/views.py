@@ -844,24 +844,57 @@ def checkEmailCode(request):
 # ajax图片上传接口
 def imageUpload(request):
     if request.method == "POST":
-        dir = request.POST.get("dir")
         file = request.FILES.get('file')
-        filename = "/%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
-        filepath = 'media/' + dir + filename
-        # 图片资源写入服务器
-        code = imgSave(file, filepath)
-        if (code == 1):
-            # 图片路径写入数据库
-            url = dir + filename
-            userinfo = UserInfo.objects.get(user_id=request.user.id)
-            userinfo.photo = url
-            userinfo.save()
-            data = {
-                "msg": "上传成功",
-                "src": filepath,
-                "code": "1",
-            }
-            return JsonResponse(data)
+        type = request.POST.get('type')
+        # 修改头像
+        if type == 'photo':
+            filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
+            filepath = 'media/photo/' + filename
+            if imgSave(file, filepath):
+                userinfo = UserInfo.objects.get(user_id=request.user.id)
+                userinfo.photo = 'photo/' + filename
+                userinfo.save()
+                data = {
+                    "msg": "上传成功",
+                    "src": filepath,
+                    "code": "1",
+                }
+            else:
+                data = {
+                    "msg": "上传失败",
+                    "code": "0",
+                }
+        # 文章封面
+        elif type == 'cover':
+            filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
+            filepath = 'media/cover/' + filename
+            if imgSave(file, filepath):
+                data = {
+                    "msg": "上传成功",
+                    "src": filepath,
+                    "code": "1",
+                }
+            else:
+                data = {
+                    "msg": "上传失败",
+                    "code": "0",
+                }
+        # 修改默认图像
+        elif type == 'default':
+            src = request.POST.get('src')
+            print(src)
+            filepath = '.' + src
+            if imgSave(file, filepath):
+                data = {
+                    "msg": "上传成功",
+                    "src": filepath[1:],
+                    "code": "1",
+                }
+            else:
+                data = {
+                    "msg": "上传失败",
+                    "code": "0",
+                }
         else:
             data = {
                 "msg": "上传失败",
@@ -900,6 +933,8 @@ def commentUpload(request):
 
 
 # ajax markdown 图片上传
+@csrf_exempt
+@xframe_options_sameorigin
 def markdownUpload(request):
     if request.method == "POST":
         dir = 'markdown/'
