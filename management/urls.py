@@ -28,6 +28,8 @@ urlpatterns = [
     # 网站关于
     path('websiteConfig/', views.websiteConfig, name='websiteConfig'),
     # 网站配置
+    path('BloggerInfo/', views.BloggerInfo, name='BloggerInfo'),
+    # 博主信息
     path('managementUser/', views.managementUser, name='managementUser'),
     # 用户管理
 

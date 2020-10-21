@@ -66,9 +66,15 @@
               "target": "_self"
             },
             {
+              "title": "博主信息",
+              "href": "/management/BloggerInfo",
+              "icon": "fa fa-info",
+              "target": "_self"
+            },
+            {
               "title": "关于页面",
               "href": "/management/websiteAbout",
-              "icon": "fa fa-info",
+              "icon": "fa fa-pager",
               "target": "_self"
             },
             {

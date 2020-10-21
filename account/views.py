@@ -841,21 +841,19 @@ def checkEmailCode(request):
             return JsonResponse(data)
 
 
-# ajax头像上传
-def photoUpload(request):
+# ajax图片上传接口
+def imageUpload(request):
     if request.method == "POST":
-        dir = 'photo/'
+        dir = request.POST.get("dir")
         file = request.FILES.get('file')
-        filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
+        filename = "/%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
         filepath = 'media/' + dir + filename
         # 图片资源写入服务器
         code = imgSave(file, filepath)
         if (code == 1):
             # 图片路径写入数据库
             url = dir + filename
-            print(url)
             userinfo = UserInfo.objects.get(user_id=request.user.id)
-            print(userinfo.photo)
             userinfo.photo = url
             userinfo.save()
             data = {
@@ -902,10 +900,7 @@ def commentUpload(request):
 
 
 # ajax markdown 图片上传
-@csrf_exempt
-@xframe_options_sameorigin
 def markdownUpload(request):
-    print(request.method)
     if request.method == "POST":
         dir = 'markdown/'
         file = request.FILES.get('editormd-image-file')
@@ -919,7 +914,6 @@ def markdownUpload(request):
                 "message": "上传成功！",
                 "url": filepath,
             }
-            print(result["url"])
             return JsonResponse(result)
         else:
             result = {

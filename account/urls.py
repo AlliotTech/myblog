@@ -38,10 +38,10 @@ urlpatterns = [
 
     path('registerCheck', views.registerCheck, name='registerCheck'),
     # ajax用户注册信息验证
-    path('photoUpload/', views.photoUpload, name='photoUpload'),
-    # ajax头像上传
+    path('imageUpload/', views.imageUpload, name='imageUpload'),
+    # ajax图片上传接口(头像 文章封面)
     path('commentUpload/', views.commentUpload, name='commentUpload'),
-    # ajax图片上传
+    # ajax评论图片上传
     path('markdownUpload/', views.markdownUpload, name='markdownUpload'),
     # ajax markdown图片上传
     path('emailCode/', views.emailCode, name='emailCode'),

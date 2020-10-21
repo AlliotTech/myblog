@@ -112,19 +112,19 @@
         <div class="about-me">
             <div>
                 <i class="fas fa-user-cog"></i>
-                <span>运维工程师</span>
+                <span>{{ aside_dict.info.position }}</span>
             </div>
             <div>
                 <i class="fas fa-user-friends"></i>
-                <span>世纪佳缘网</span>
+                <span>{{ aside_dict.info.company }}</span>
             </div>
             <div>
                 <i class="fas fa-location-arrow"></i>
-                <span>北京</span>
+                <span>{{ aside_dict.info.location }}</span>
             </div>
             <div>
                 <i class="fas fa-envelope"></i>
-                <span>cuiliang0302@qq.com</span>
+                <span>{{ aside_dict.info.email }}</span>
             </div>
             <div class="about-logo">
                 <span>
@@ -144,10 +144,10 @@
                     </a>
                 </span>
                 <span>
-                    <a href="https://blog.csdn.net/qq_33816243"><img src="{% static 'images/csdn.png' %}"></a>
+                    <a href={{ aside_dict.info.csdn }} target="_blank"><img src="{% static 'images/csdn.png' %}"></a>
                 </span>
                 <span>
-                    <a href="https://github.com/cuiliang0302"><i class="fab fa-github"></i></a>
+                    <a href={{ aside_dict.info.github }} target="_blank"><i class="fab fa-github"></i></a>
                 </span>
             </div>
         </div>

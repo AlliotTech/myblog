@@ -43,3 +43,31 @@ class About(models.Model):
     class Meta:
         verbose_name = '关于'
         verbose_name_plural = '关于'
+
+
+# 网站配置
+class WebsiteConfig(models.Model):
+    name = models.CharField('网站名称', max_length=20)
+    domain = models.URLField('网站域名', max_length=50)
+    index_title = models.CharField('首页标题', max_length=50)
+    keywords = models.CharField('META关键词', max_length=200)
+    descript = models.CharField('META描述', max_length=300)
+    copyright = models.CharField('版权信息', max_length=100)
+
+    class Meta:
+        verbose_name = '网站配置'
+        verbose_name_plural = '网站配置'
+
+
+# 博主信息
+class BloggerInfo(models.Model):
+    position = models.CharField('职位', max_length=10)
+    company = models.CharField('单位', max_length=20)
+    location = models.CharField('地址', max_length=10)
+    email = models.EmailField('邮箱', max_length=50)
+    csdn = models.URLField('CSDN', max_length=50)
+    github = models.URLField('GitHub', max_length=50)
+
+    class Meta:
+        verbose_name = '博主信息'
+        verbose_name_plural = '博主信息'

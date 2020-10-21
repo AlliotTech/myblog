@@ -117,73 +117,6 @@
                     </tbody>
                 </table>
             </fieldset>
-            <fieldset class="layui-elem-field layui-field-title">
-                <legend>博主信息</legend>
-                <div class="layui-row config-row">
-                    <div class="layui-col-xs12 layui-col-md4">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label required">职位</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="sitename" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-xs12 layui-col-md4">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label required">单位</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="domain" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-xs12 layui-col-md4">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label required">地址</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="title" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-xs12 layui-col-md4">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label required">邮箱</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="sitename" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-xs12 layui-col-md4">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label required">CSDN</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="domain" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-xs12 layui-col-md4">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label required">github</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="title" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-xs12 layui-col-md6 info-photo">
-                        <div>
-                            <span>QQ二维码</span>
-                            <img src="/static/images/qq.png">
-                            <button type="button" class="layui-btn">修改</button>
-                        </div>
-                    </div>
-                    <div class="layui-col-xs12 layui-col-md6 info-photo">
-                        <div>
-                            <span>微信二维码</span>
-                            <img src="/static/images/weixin.png">
-                            <button type="button" class="layui-btn">修改</button>
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn layui-btn-normal" lay-submit lay-filter="setting">确认保存</button>
@@ -208,14 +141,6 @@
             return false;
         });
         // 二维码图片点击放大
-        $('.info-photo img').on('click', function () {
-            layer.photos({
-                photos: '.info-photo',
-                closeBtn: 2,
-                anim: 0
-            });
-        })
-        // 二维码图片点击放大
         $('.photo-config img').on('click', function () {
             layer.photos({
                 photos: '.photo-config',
@@ -223,6 +148,7 @@
                 anim: 0
             });
         })
+
     });
 </script>
 </body>

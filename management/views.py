@@ -81,8 +81,14 @@ def websiteAbout(request):
 @xframe_options_exempt
 @login_required()
 def websiteConfig(request):
-
     return render(request, 'layui-mini/management/websiteConfig.html', locals())
+
+
+# 博主信息
+@xframe_options_exempt
+@login_required()
+def BloggerInfo(request):
+    return render(request, 'layui-mini/management/bloggerInfo.html', locals())
 
 
 # 留言管理
