@@ -302,16 +302,15 @@ def changeInformation(request):
     userinfo = UserInfo.objects.get(user_id=request.user.id)
     user = User.objects.get(username=request.user)
     if request.method == "POST":
-        print("来了")
         user_form = UserForm(request.POST)
         userinfo_form = UserInfoForm(request.POST)
         if userinfo_form.is_valid():
-            print("通过了")
             userinfo_data = userinfo_form.cleaned_data
             userinfo.sex = userinfo_data['sex']
             userinfo.phone = userinfo_data['phone']
             userinfo.web = userinfo_data['web']
             userinfo.aboutme = userinfo_data['aboutme']
+            userinfo.photo = request.POST.get('photo')[6:]
             request.user.save()
             userinfo.save()
             data = {
@@ -846,60 +845,76 @@ def imageUpload(request):
     if request.method == "POST":
         file = request.FILES.get('file')
         type = request.POST.get('type')
-        # 修改头像
-        if type == 'photo':
-            filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
-            filepath = 'media/photo/' + filename
-            if imgSave(file, filepath):
-                userinfo = UserInfo.objects.get(user_id=request.user.id)
-                userinfo.photo = 'photo/' + filename
-                userinfo.save()
-                data = {
-                    "msg": "上传成功",
-                    "src": filepath,
-                    "code": "1",
-                }
-            else:
-                data = {
-                    "msg": "上传失败",
-                    "code": "0",
-                }
-        # 文章封面
-        elif type == 'cover':
-            filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
-            filepath = 'media/cover/' + filename
-            if imgSave(file, filepath):
-                data = {
-                    "msg": "上传成功",
-                    "src": filepath,
-                    "code": "1",
-                }
-            else:
-                data = {
-                    "msg": "上传失败",
-                    "code": "0",
-                }
-        # 修改默认图像
-        elif type == 'default':
-            src = request.POST.get('src')
-            print(src)
-            filepath = '.' + src
-            if imgSave(file, filepath):
-                data = {
-                    "msg": "上传成功",
-                    "src": filepath[1:],
-                    "code": "1",
-                }
-            else:
-                data = {
-                    "msg": "上传失败",
-                    "code": "0",
-                }
+        # type值为(images cover photo)
+        filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
+        filepath = 'media/' + type + '/' + filename
+        if imgSave(file, filepath):
+            data = {
+                "msg": "上传成功",
+                "src": filepath,
+                "code": "1",
+            }
         else:
             data = {
                 "msg": "上传失败",
                 "code": "0",
             }
+        return JsonResponse(data)
+
+        # # 修改头像
+        # if type == 'photo':
+        #     filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
+        #     filepath = 'media/photo/' + filename
+        #     if imgSave(file, filepath):
+        #         userinfo = UserInfo.objects.get(user_id=request.user.id)
+        #         userinfo.photo = 'photo/' + filename
+        #         userinfo.save()
+        #         data = {
+        #             "msg": "上传成功",
+        #             "src": filepath,
+        #             "code": "1",
+        #         }
+        #     else:
+        #         data = {
+        #             "msg": "上传失败",
+        #             "code": "0",
+        #         }
+        # # 文章封面
+        # elif type == 'cover':
+        #     filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
+        #     filepath = 'media/cover/' + filename
+        #     if imgSave(file, filepath):
+        #         data = {
+        #             "msg": "上传成功",
+        #             "src": filepath,
+        #             "code": "1",
+        #         }
+        #     else:
+        #         data = {
+        #             "msg": "上传失败",
+        #             "code": "0",
+        #         }
+        # # 修改默认图像
+        # elif type == 'default':
+        #     src = request.POST.get('src')
+        #     print(src)
+        #     filepath = '.' + src
+        #     if imgSave(file, filepath):
+        #         data = {
+        #             "msg": "上传成功",
+        #             "src": filepath[1:],
+        #             "code": "1",
+        #         }
+        #     else:
+        #         data = {
+        #             "msg": "上传失败",
+        #             "code": "0",
+        #         }
+        # else:
+        #     data = {
+        #         "msg": "上传失败",
+        #         "code": "0",
+        #     }
         return JsonResponse(data)
 
 

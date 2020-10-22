@@ -265,3 +265,7 @@ fieldset legend {
     height: 100%;
     margin: 0 1em;
 }
+.submit-btn {
+    text-align: center;
+    margin: 50px 0;
+}

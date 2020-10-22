@@ -41,8 +41,8 @@ class About(models.Model):
     time = models.DateTimeField('更新时间', auto_now=True)
 
     class Meta:
-        verbose_name = '关于'
-        verbose_name_plural = '关于'
+        verbose_name = '关于页面'
+        verbose_name_plural = '关于页面'
 
 
 # 网站配置
@@ -59,6 +59,21 @@ class WebsiteConfig(models.Model):
         verbose_name_plural = '网站配置'
 
 
+# 图片配置
+class ImagesConfig(models.Model):
+    foreground = models.ImageField(upload_to='images/', verbose_name='前台logo', default='images/logo_forground.png')
+    background = models.ImageField(upload_to='images/', verbose_name='后台logo', default='images/logo_background.png')
+    icon = models.ImageField(upload_to='images/', verbose_name='icon', default='images/favicon.ico')
+    photo = models.ImageField(upload_to='images/', verbose_name='默认头像', default='images/photo.jpg')
+    cover = models.ImageField(upload_to='images/', verbose_name='默认封面', default='images/cover.jpg')
+    pay = models.ImageField(upload_to='images/', verbose_name='赞赏二维码', default='images/pay.png')
+
+
+    class Meta:
+        verbose_name = '图片配置'
+        verbose_name_plural = '图片配置'
+
+
 # 博主信息
 class BloggerInfo(models.Model):
     position = models.CharField('职位', max_length=10)
@@ -67,6 +82,8 @@ class BloggerInfo(models.Model):
     email = models.EmailField('邮箱', max_length=50)
     csdn = models.URLField('CSDN', max_length=50)
     github = models.URLField('GitHub', max_length=50)
+    qq = models.ImageField(upload_to='images/', verbose_name='qq二维码', default='images/qq.png')
+    weixin = models.ImageField(upload_to='images/', verbose_name='微信二维码', default='images/weixin.png')
 
     class Meta:
         verbose_name = '博主信息'

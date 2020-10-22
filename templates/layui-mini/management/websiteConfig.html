@@ -14,7 +14,7 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <div class="layui-form layuimini-form">
+        <form class="layui-form layuimini-form">
             <fieldset class="layui-elem-field layui-field-title">
                 <legend>网站配置</legend>
                 <div class="layui-field-box">
@@ -23,7 +23,7 @@
                             <label class="layui-form-label required">网站名称</label>
                             <div class="layui-input-block">
                                 <input type="text" name="sitename" lay-verify="required" lay-reqtext="网站域名不能为空"
-                                       placeholder="请输入网站名称" value="layuimini" class="layui-input">
+                                       placeholder="请输入网站名称" value={{ website.name }} class="layui-input">
                             </div>
                         </div>
                         <div class="layui-col-xs12 layui-col-md4">
@@ -31,35 +31,34 @@
                             <div class="layui-input-block">
                                 <input type="text" name="domain" lay-verify="required" lay-reqtext="网站域名不能为空"
                                        placeholder="请输入网站域名"
-                                       value="http://layuimini.99php.cn" class="layui-input">
+                                       value={{ website.domain }} class="layui-input">
                             </div>
                         </div>
                         <div class="layui-col-xs12 layui-col-md4">
                             <label class="layui-form-label required">首页标题</label>
                             <div class="layui-input-block">
                                 <input name="title" class="layui-input" lay-verify="required" lay-reqtext="首页标题不能为空"
-                                       placeholder="请输入首页标题">
+                                       placeholder="请输入首页标题" value={{ website.index_title }}>
                             </div>
                         </div>
                     </div>
                     <div class="layui-form-item layui-form-text">
                         <label class="layui-form-label">META关键词</label>
                         <div class="layui-input-block">
-                            <textarea name="keywords" class="layui-textarea"></textarea>
+                            <textarea name="keywords" class="layui-textarea">{{ website.keywords }}</textarea>
                             <tip>多个关键词用英文状态 , 号分割</tip>
                         </div>
                     </div>
                     <div class="layui-form-item layui-form-text">
                         <label class="layui-form-label">META描述</label>
                         <div class="layui-input-block">
-                            <textarea name="descript" class="layui-textarea"></textarea>
+                            <textarea name="descript" class="layui-textarea">{{ website.descript }}</textarea>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label required">版权信息</label>
                         <div class="layui-input-block">
-                            <input name="copyright" class="layui-input" lay-verify="required" lay-reqtext="版权信息不能为空"
-                                   placeholder="请输入版权信息">
+                            <textarea name="descript" class="layui-textarea">{{ website.copyright }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -72,21 +71,21 @@
                         <td>
                             <div>
                                 <span>前台logo</span>
-                                <img src="/static/images/logo.png">
+                                <img src={{ images.foreground.url }}>
                                 <button type="button" class="layui-btn layui-btn-warm" id="foreground">修改</button>
                             </div>
                         </td>
                         <td>
                             <div>
                                 <span>后台logo</span>
-                                <img src="/static/images/favicon-gray.png">
+                                <img src={{ images.background.url }}>
                                 <button type="button" class="layui-btn layui-btn-warm" id="background">修改</button>
                             </div>
                         </td>
                         <td>
                             <div>
                                 <span>icon</span>
-                                <img src="/static/images/favicon.ico">
+                                <img src={{ images.icon.url }}>
                                 <button type="button" class="layui-btn layui-btn-warm" id="icno">修改</button>
                             </div>
                         </td>
@@ -95,21 +94,21 @@
                         <td>
                             <div>
                                 <span>默认头像</span>
-                                <img src="/media/photo/default.jpg">
+                                <img src={{ images.photo.url }}>
                                 <button type="button" class="layui-btn layui-btn-warm" id="photo">修改</button>
                             </div>
                         </td>
                         <td>
                             <div>
                                 <span>默认封面</span>
-                                <img src="/media/cover/default.jpg">
+                                <img src={{ images.cover.url }}>
                                 <button type="button" class="layui-btn layui-btn-warm" id="cover">修改</button>
                             </div>
                         </td>
                         <td>
                             <div>
                                 <span>赞赏二维码</span>
-                                <img src="/static/images/pay.png">
+                                <img src={{ images.pay.url }}>
                                 <button type="button" class="layui-btn layui-btn-warm" id="pay">修改</button>
                             </div>
                         </td>
@@ -118,12 +117,12 @@
                 </table>
             </fieldset>
             <div class="layui-form-item">
-                <div class="layui-input-block">
+                <div class="layui-input-block submit-btn">
                     <button class="layui-btn layui-btn-normal" lay-submit lay-filter="setting">确认保存</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 <script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
@@ -137,6 +136,16 @@
             , upload = layui.upload;
         //监听提交
         form.on('submit(setting)', function (data) {
+            var formdata = $('form').serialize()
+            var photo_src = ''
+            $('.layui-btn-warm').each(function () {
+                var id = $(this).attr('id')
+                var src = $(this).siblings('img').attr('src')
+                photo_src = photo_src + '&' + id + '=' + src
+
+            })
+            console.log(photo_src)
+
             parent.layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
             });
@@ -148,27 +157,27 @@
             var elem = '#' + id
             imgUpload(elem);
         })
+
         function imgUpload(elem) {
             upload.render({
                 elem: elem //绑定元素
                 , url: "{% url "account:imageUpload" %}"
                 , data: {
                     src: $(elem).siblings('img').attr('src'),
-                    type: "default"
+                    type: "images"
                 }
                 , done: function (res) {
                     console.log("完成")
                     //上传完毕回调
                     layer.msg(res.msg, {icon: 6});
-                    setTimeout(function () {
-                        location.reload();
-                    }, 700);
+                    $(elem).siblings('img').attr('src', res.src);
                 }
                 , error: function () {
                     layer.alert("上传失败！", {icon: 6});
                 }
             })
         }
+
         // 二维码图片点击放大
         $('.photo-config img').on('click', function () {
             layer.photos({

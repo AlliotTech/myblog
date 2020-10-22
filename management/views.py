@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.views.decorators.clickjacking import xframe_options_exempt
 from account.views import imgSave
 from blog.models import Category, Tag, Article
-from management.models import About
+from management.models import About, WebsiteConfig, ImagesConfig
 
 
 @login_required()
@@ -81,6 +81,8 @@ def websiteAbout(request):
 @xframe_options_exempt
 @login_required()
 def websiteConfig(request):
+    website = WebsiteConfig.objects.get(id=1)
+    images = ImagesConfig.objects.get(id=1)
     return render(request, 'layui-mini/management/websiteConfig.html', locals())
 
 

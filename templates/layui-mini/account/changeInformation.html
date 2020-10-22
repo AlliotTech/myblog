@@ -113,16 +113,18 @@
             , url: "{% url "account:imageUpload" %}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
             , data: {type: 'photo'}
             , done: function (src) { //上传完毕回调
+                layer.msg("上传成功！", {icon: 6});
                 $("#photo-img").attr('src', src);
-                $(".layui-nav-img").attr('src', src);
             }
         });
         // 表单提交
         form.on('submit(setmyinfo)', function (data) {
+            var formdata=$('form').serialize()
+            var data = formdata + '&photo=' + $("#photo-img").attr('src')
             $.ajax({
                 type: "POST",
                 url: "{% url 'account:changeInformation' %}",
-                data: $('form').serialize(),
+                data: data,
                 success: function (result) {
                     if (result.code == 1) {
                         layer.msg(result.msg, {icon: 6});
