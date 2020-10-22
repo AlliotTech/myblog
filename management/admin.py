@@ -1,5 +1,5 @@
 from django.contrib import admin
-from management.models import Carousel, Link, About, WebsiteConfig, BloggerInfo, ImagesConfig
+from management.models import Carousel, Link, About, WebsiteConfig, Info, ImagesConfig
 
 
 # Register your models here.
@@ -8,7 +8,7 @@ from management.models import Carousel, Link, About, WebsiteConfig, BloggerInfo,
 # 轮播图
 @admin.register(Carousel)
 class CarouselAdmin(admin.ModelAdmin):
-    list_display = ('id', 'info', 'img', 'url')
+    list_display = ('id', 'info', 'img', 'url', 'is_show')
 
 
 # 友情链接
@@ -36,6 +36,6 @@ class AboutAdmin(admin.ModelAdmin):
 
 
 # 博主信息
-@admin.register(BloggerInfo)
+@admin.register(Info)
 class AboutAdmin(admin.ModelAdmin):
     list_display = ('position', 'company', 'location', 'email', 'csdn', 'github', 'qq', 'weixin')

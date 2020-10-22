@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.views.decorators.clickjacking import xframe_options_exempt
 from account.views import imgSave
 from blog.models import Category, Tag, Article
-from management.models import About, WebsiteConfig, ImagesConfig
+from management.models import About, WebsiteConfig, ImagesConfig, Info
 
 
 @login_required()
@@ -74,23 +74,78 @@ def websiteAbout(request):
         about = About.objects.get(id=1)
         body = about.body
         time = about.time
-    return render(request, 'layui-mini/management/websiteAbout.html', locals())
+        return render(request, 'layui-mini/management/websiteAbout.html', locals())
 
 
 # 网站配置
 @xframe_options_exempt
 @login_required()
 def websiteConfig(request):
-    website = WebsiteConfig.objects.get(id=1)
-    images = ImagesConfig.objects.get(id=1)
-    return render(request, 'layui-mini/management/websiteConfig.html', locals())
+    if request.method == "POST":
+        website = WebsiteConfig.objects.get(id=1)
+        website.name = request.POST.get('sitename')
+        website.domain = request.POST.get('domain')
+        website.index_title = request.POST.get('title')
+        website.keywords = request.POST.get('keywords')
+        website.descript = request.POST.get('descript')
+        website.copyright = request.POST.get('copyright')
+        images = ImagesConfig.objects.get(id=1)
+        images.foreground = request.POST.get('foreground')[6:]
+        images.background = request.POST.get('background')[6:]
+        images.icon = request.POST.get('icon')[6:]
+        images.photo = request.POST.get('photo')[6:]
+        images.cover = request.POST.get('cover')[6:]
+        images.pay = request.POST.get('pay')[6:]
+        try:
+            website.save()
+            images.save()
+            result = {
+                "code": "1",
+                "msg": "修改成功！",
+            }
+        except Exception as e:
+            print(e)
+            result = {
+                "code": "0",
+                "msg": "修改成功！",
+            }
+        return JsonResponse(result)
+    else:
+        website = WebsiteConfig.objects.get(id=1)
+        images = ImagesConfig.objects.get(id=1)
+        return render(request, 'layui-mini/management/websiteConfig.html', locals())
 
 
 # 博主信息
 @xframe_options_exempt
 @login_required()
 def BloggerInfo(request):
-    return render(request, 'layui-mini/management/bloggerInfo.html', locals())
+    if request.method == 'POST':
+        info = Info.objects.get(id=1)
+        info.position = request.POST.get('position')
+        info.company = request.POST.get('company')
+        info.location = request.POST.get('location')
+        info.email = request.POST.get('email')
+        info.csdn = request.POST.get('csdn')
+        info.github = request.POST.get('github')
+        info.qq = request.POST.get('qq')[6:]
+        info.weixin = request.POST.get('weixin')[6:]
+        try:
+            info.save()
+            result = {
+                "code": "1",
+                "msg": "修改成功！",
+            }
+        except Exception as e:
+            print(e)
+            result = {
+                "code": "0",
+                "msg": "修改成功！",
+            }
+        return JsonResponse(result)
+    else:
+        info = Info.objects.get(id=1)
+        return render(request, 'layui-mini/management/bloggerInfo.html', locals())
 
 
 # 留言管理
@@ -104,7 +159,7 @@ def websiteLeaveMessage(request):
 @xframe_options_exempt
 @login_required()
 def websiteCarousel(request):
-    return render(request, 'management/websiteCarousel.html', locals())
+    return render(request, 'layui-mini/management/websiteCarousel.html', locals())
 
 
 # 友情链接管理

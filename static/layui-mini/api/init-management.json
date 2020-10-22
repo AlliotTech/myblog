@@ -79,7 +79,7 @@
             },
             {
               "title": "轮播管理",
-              "href": "page/welcome-2.html",
+              "href": "/management/websiteCarousel",
               "icon": "fa fa-laptop-code",
               "target": "_self"
             },

@@ -19,7 +19,7 @@ from PIL import Image
 
 
 # 全局调用函数,
-from management.models import About, BloggerInfo
+from management.models import About, Info
 
 
 def global_variable(request):
@@ -36,7 +36,7 @@ def global_variable(request):
 # 侧边栏内容
 def aside():
     # 博主信息
-    info = BloggerInfo.objects.get(id=1)
+    info = Info.objects.get(id=1)
     # 所有标签
     tags = Tag.objects.all()
     # 推荐阅读

@@ -58,7 +58,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">版权信息</label>
                         <div class="layui-input-block">
-                            <textarea name="descript" class="layui-textarea">{{ website.copyright }}</textarea>
+                            <textarea name="copyright" class="layui-textarea" lay-verify="required"
+                                      lay-reqtext="版权信息不能为空">{{ website.copyright }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -86,7 +87,7 @@
                             <div>
                                 <span>icon</span>
                                 <img src={{ images.icon.url }}>
-                                <button type="button" class="layui-btn layui-btn-warm" id="icno">修改</button>
+                                <button type="button" class="layui-btn layui-btn-warm" id="icon">修改</button>
                             </div>
                         </td>
                     </tr>
@@ -142,13 +143,23 @@
                 var id = $(this).attr('id')
                 var src = $(this).siblings('img').attr('src')
                 photo_src = photo_src + '&' + id + '=' + src
-
             })
-            console.log(photo_src)
-
-            parent.layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            });
+            data = formdata + photo_src
+            $.ajax({
+                type: "POST",
+                url: "{% url 'management:websiteConfig' %}",
+                data: data,
+                success: function (result) {
+                    if (result.code == 1) {
+                        layer.msg(result.msg, {icon: 6});
+                    } else {
+                        layer.alert(result.msg, {icon: 2});
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
             return false;
         });
         // 图片上传

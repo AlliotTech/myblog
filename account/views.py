@@ -20,6 +20,7 @@ from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.decorators.csrf import csrf_exempt
 
 from blog.models import Article, Category, Tag
+from management.models import Carousel
 
 
 def sendEmail(receive, username, action, code):
@@ -319,7 +320,7 @@ def changeInformation(request):
             }
         else:
             data = {
-                "code": 1,
+                "code": 0,
                 "msg": "修改失败！"
             }
         return JsonResponse(data)
@@ -439,6 +440,7 @@ def tableData(request):
             data = {}
             data["id"] = article.id
             data["title"] = article.title
+            data["cover"] = article.img.url
             data['created_time'] = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
             data['is_release'] = article.is_release
             data['is_recommend'] = article.is_recommend
@@ -487,6 +489,19 @@ def tableData(request):
             else:
                 data['type'] = "回复"
             lis.append(data)
+    # 轮播图管理
+    elif page_type == 'carousel':
+        table_data = Carousel.objects.all()
+        lis = []
+        for carousel in table_data:
+            data = {}
+            data["id"] = carousel.id
+            data["info"] = carousel.info
+            data["url"] = carousel.url
+            data["img"] = carousel.img.url
+            data["is_show"] = carousel.is_show
+            lis.append(data)
+        print(lis)
     # 分页器进行分配
     try:
         paginator = Paginator(lis, page_limit)
@@ -697,6 +712,7 @@ def tableSearch(request):
             data["title"] = article.title
             data['created_time'] = article.created_time.strftime("%Y-%m-%d %H:%M:%S")
             data['is_release'] = article.is_release
+            data["cover"] = article.img.url
             data['is_recommend'] = article.is_recommend
             data['category'] = article.category.name
             data['category_id'] = article.category_id
@@ -734,6 +750,28 @@ def tableSearch(request):
             data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
             data['user'] = history.user.username
             data['content'] = history.content
+            table_body.append(data)
+        print(table_body)
+    # 搜索轮播图
+    elif search_type == "carousel":
+        title = request.GET.get("title")
+        url = request.GET.get("url")
+        print(title, url)
+        q1 = Q()
+        q1.connector = 'AND'
+        if title:
+            q1.children.append(('info__icontains', title))
+        if url:
+            q1.children.append(('url__icontains', url))
+        table_data = Carousel.objects.filter(q1)
+        table_body = []
+        for carousel in table_data:
+            data = {}
+            data["id"] = carousel.id
+            data["info"] = carousel.info
+            data["url"] = carousel.url
+            data["img"] = carousel.img.url
+            data["is_show"] = carousel.is_show
             table_body.append(data)
         print(table_body)
     # 放在一个列表里
@@ -859,62 +897,6 @@ def imageUpload(request):
                 "msg": "上传失败",
                 "code": "0",
             }
-        return JsonResponse(data)
-
-        # # 修改头像
-        # if type == 'photo':
-        #     filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
-        #     filepath = 'media/photo/' + filename
-        #     if imgSave(file, filepath):
-        #         userinfo = UserInfo.objects.get(user_id=request.user.id)
-        #         userinfo.photo = 'photo/' + filename
-        #         userinfo.save()
-        #         data = {
-        #             "msg": "上传成功",
-        #             "src": filepath,
-        #             "code": "1",
-        #         }
-        #     else:
-        #         data = {
-        #             "msg": "上传失败",
-        #             "code": "0",
-        #         }
-        # # 文章封面
-        # elif type == 'cover':
-        #     filename = "%s.%s" % (timezone.now().strftime('%Y_%m_%d_%H_%M_%S_%f'), file.name.split('.')[-1])
-        #     filepath = 'media/cover/' + filename
-        #     if imgSave(file, filepath):
-        #         data = {
-        #             "msg": "上传成功",
-        #             "src": filepath,
-        #             "code": "1",
-        #         }
-        #     else:
-        #         data = {
-        #             "msg": "上传失败",
-        #             "code": "0",
-        #         }
-        # # 修改默认图像
-        # elif type == 'default':
-        #     src = request.POST.get('src')
-        #     print(src)
-        #     filepath = '.' + src
-        #     if imgSave(file, filepath):
-        #         data = {
-        #             "msg": "上传成功",
-        #             "src": filepath[1:],
-        #             "code": "1",
-        #         }
-        #     else:
-        #         data = {
-        #             "msg": "上传失败",
-        #             "code": "0",
-        #         }
-        # else:
-        #     data = {
-        #         "msg": "上传失败",
-        #         "code": "0",
-        #     }
         return JsonResponse(data)
 
 

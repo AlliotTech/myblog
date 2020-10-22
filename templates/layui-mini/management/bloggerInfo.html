@@ -14,13 +14,14 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <div class="layui-form layuimini-form">
+        <form class="layui-form layuimini-form">
             <div class="layui-row config-row">
                 <div class="layui-col-xs12 layui-col-md4">
                     <div class="layui-form-item">
                         <label class="layui-form-label required">职位</label>
                         <div class="layui-input-block">
-                            <input type="text" name="sitename" class="layui-input">
+                            <input type="text" name="position" class="layui-input" value={{ info.position }}
+                            lay-verify="required" lay-reqtext="职位不能为空">
                         </div>
                     </div>
                 </div>
@@ -28,7 +29,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">单位</label>
                         <div class="layui-input-block">
-                            <input type="text" name="domain" class="layui-input">
+                            <input type="text" name="company" class="layui-input" value={{ info.company }}
+                            lay-verify="required" lay-reqtext="单位不能为空">
                         </div>
                     </div>
                 </div>
@@ -36,7 +38,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">地址</label>
                         <div class="layui-input-block">
-                            <input type="text" name="title" class="layui-input">
+                            <input type="text" name="location" class="layui-input" value={{ info.location }}
+                            lay-verify="required" lay-reqtext="地址不能为空">
                         </div>
                     </div>
                 </div>
@@ -44,7 +47,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">邮箱</label>
                         <div class="layui-input-block">
-                            <input type="text" name="sitename" class="layui-input">
+                            <input type="text" name="email" class="layui-input" value={{ info.email }}
+                            lay-verify="email" lay-reqtext="邮箱不能为空">
                         </div>
                     </div>
                 </div>
@@ -52,7 +56,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">CSDN</label>
                         <div class="layui-input-block">
-                            <input type="text" name="domain" class="layui-input">
+                            <input type="text" name="csdn" class="layui-input" value={{ info.csdn }}
+                            lay-verify="required" lay-reqtext="CSDN不能为空">
                         </div>
                     </div>
                 </div>
@@ -60,22 +65,23 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">github</label>
                         <div class="layui-input-block">
-                            <input type="text" name="title" class="layui-input">
+                            <input type="text" name="github" class="layui-input" value={{ info.github }}
+                            lay-verify="required" lay-reqtext="github不能为空">
                         </div>
                     </div>
                 </div>
                 <div class="layui-col-xs12 layui-col-md6 info-photo">
                     <div>
                         <span>QQ二维码</span>
-                        <img src="/static/images/qq.png">
+                        <img src={{ info.qq.url }}>
                         <button type="button" class="layui-btn layui-btn-warm" id="qq">修改</button>
                     </div>
                 </div>
                 <div class="layui-col-xs12 layui-col-md6 info-photo">
                     <div>
                         <span>微信二维码</span>
-                        <img src="/static/images/weixin.png">
-                        <button type="button" class="layui-btn layui-btn-warm" id="vx">修改</button>
+                        <img src={{ info.weixin.url }}>
+                        <button type="button" class="layui-btn layui-btn-warm" id="weixin">修改</button>
                     </div>
                 </div>
             </div>
@@ -85,7 +91,7 @@
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 <script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
@@ -99,9 +105,29 @@
             , upload = layui.upload;
         //监听提交
         form.on('submit(setting)', function (data) {
-            parent.layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            });
+            var formdata = $('form').serialize()
+            var photo_src = ''
+            $('.layui-btn-warm').each(function () {
+                var id = $(this).attr('id')
+                var src = $(this).siblings('img').attr('src')
+                photo_src = photo_src + '&' + id + '=' + src
+            })
+            data = formdata + photo_src
+            $.ajax({
+                type: "POST",
+                url: "{% url 'management:BloggerInfo' %}",
+                data: data,
+                success: function (result) {
+                    if (result.code == 1) {
+                        layer.msg(result.msg, {icon: 6});
+                    } else {
+                        layer.alert(result.msg, {icon: 2});
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
             return false;
         });
         // 二维码图片点击放大
@@ -125,15 +151,13 @@
                 , url: "{% url "account:imageUpload" %}"
                 , data: {
                     src: $(elem).siblings('img').attr('src'),
-                    type: "default"
+                    type: "images"
                 }
                 , done: function (res) {
                     console.log("完成")
                     //上传完毕回调
                     layer.msg(res.msg, {icon: 6});
-                    setTimeout(function () {
-                        location.reload();
-                    }, 700);
+                    $(elem).siblings('img').attr('src', res.src);
                 }
                 , error: function () {
                     layer.alert("上传失败！", {icon: 6});

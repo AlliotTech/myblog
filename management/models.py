@@ -11,13 +11,14 @@ class Carousel(models.Model):
     img = models.ImageField('轮播图', upload_to='carousel/')
     url = models.URLField('图片链接', max_length=100)
     info = models.CharField('图片标题', max_length=50, default='')
+    is_show = models.BooleanField('是否显示', default=True)
 
     def __str__(self):
         return self.info
 
     class Meta:
-        verbose_name = '轮播图'
-        verbose_name_plural = '轮播图'
+        verbose_name = '轮播图管理'
+        verbose_name_plural = '轮播图管理'
 
 
 # 友情链接
@@ -50,8 +51,8 @@ class WebsiteConfig(models.Model):
     name = models.CharField('网站名称', max_length=20)
     domain = models.URLField('网站域名', max_length=50)
     index_title = models.CharField('首页标题', max_length=50)
-    keywords = models.CharField('META关键词', max_length=200)
-    descript = models.CharField('META描述', max_length=300)
+    keywords = models.CharField('META关键词', max_length=200, blank=True, null=True)
+    descript = models.CharField('META描述', max_length=300, blank=True, null=True)
     copyright = models.CharField('版权信息', max_length=100)
 
     class Meta:
@@ -68,14 +69,13 @@ class ImagesConfig(models.Model):
     cover = models.ImageField(upload_to='images/', verbose_name='默认封面', default='images/cover.jpg')
     pay = models.ImageField(upload_to='images/', verbose_name='赞赏二维码', default='images/pay.png')
 
-
     class Meta:
         verbose_name = '图片配置'
         verbose_name_plural = '图片配置'
 
 
 # 博主信息
-class BloggerInfo(models.Model):
+class Info(models.Model):
     position = models.CharField('职位', max_length=10)
     company = models.CharField('单位', max_length=20)
     location = models.CharField('地址', max_length=10)
