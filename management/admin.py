@@ -14,7 +14,7 @@ class CarouselAdmin(admin.ModelAdmin):
 # 友情链接
 @admin.register(Link)
 class LinkAdmin(admin.ModelAdmin):
-    list_display = ('id', 'logo', 'name', 'url', 'describe')
+    list_display = ('id', 'logo', 'name', 'url', 'describe', 'type')
 
 
 # 关于

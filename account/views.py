@@ -20,7 +20,7 @@ from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.decorators.csrf import csrf_exempt
 
 from blog.models import Article, Category, Tag
-from management.models import Carousel
+from management.models import Carousel, Link
 
 
 def sendEmail(receive, username, action, code):
@@ -502,6 +502,20 @@ def tableData(request):
             data["is_show"] = carousel.is_show
             lis.append(data)
         print(lis)
+    # 友情链接管理
+    elif page_type == 'link':
+        table_data = Link.objects.all()
+        lis = []
+        for link in table_data:
+            data = {}
+            data["id"] = link.id
+            data["logo"] = link.logo.url
+            data["name"] = link.name
+            data["url"] = link.url
+            data["describe"] = link.describe
+            data["type"] = link.type
+            lis.append(data)
+        print(lis)
     # 分页器进行分配
     try:
         paginator = Paginator(lis, page_limit)
@@ -772,6 +786,29 @@ def tableSearch(request):
             data["url"] = carousel.url
             data["img"] = carousel.img.url
             data["is_show"] = carousel.is_show
+            table_body.append(data)
+        print(table_body)
+    # 搜索轮播图
+    elif search_type == "link":
+        name = request.GET.get("name")
+        url = request.GET.get("url")
+        print(name, url)
+        q1 = Q()
+        q1.connector = 'AND'
+        if name:
+            q1.children.append(('name__icontains', name))
+        if url:
+            q1.children.append(('url__icontains', url))
+        table_data = Link.objects.filter(q1)
+        table_body = []
+        for link in table_data:
+            data = {}
+            data["id"] = link.id
+            data["logo"] = link.logo.url
+            data["name"] = link.name
+            data["url"] = link.url
+            data["describe"] = link.describe
+            data["type"] = link.type
             table_body.append(data)
         print(table_body)
     # 放在一个列表里

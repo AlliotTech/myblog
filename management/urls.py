@@ -22,6 +22,8 @@ urlpatterns = [
     # 网站留言
     path('websiteCarousel/', views.websiteCarousel, name='websiteCarousel'),
     # 网站轮播图
+    path('carouselAdd/', views.carouselAdd, name='carouselAdd'),
+    # 新增轮播图
     path('websiteLink/', views.websiteLink, name='websiteLink'),
     # 网站友情链接
     path('websiteAbout/', views.websiteAbout, name='websiteAbout'),
@@ -51,4 +53,8 @@ urlpatterns = [
     # ajax修改标签
     path('tagDel/', views.tagDel, name='tagDel'),
     # ajax删除标签
+    path('carouselDel/', views.carouselDel, name='carouselDel'),
+    # ajax删除轮播图
+    path('carouselEdit-<int:carousel_id>/', views.carouselEdit, name='carouselEdit'),
+    # ajax编辑轮播图
 ]

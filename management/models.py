@@ -27,6 +27,8 @@ class Link(models.Model):
     name = models.CharField('链接名称', max_length=20)
     url = models.URLField('网址', max_length=100)
     describe = models.CharField('图片标题', max_length=50, default='')
+    type_choice = [('1', '友情链接'), ('2', '强烈推荐')]
+    type = models.CharField(verbose_name='类型', max_length=1, choices=type_choice, default=1)
 
     def __str__(self):
         return self.name

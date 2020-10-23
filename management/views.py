@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.views.decorators.clickjacking import xframe_options_exempt
 from account.views import imgSave
 from blog.models import Category, Tag, Article
-from management.models import About, WebsiteConfig, ImagesConfig, Info
+from management.models import About, WebsiteConfig, ImagesConfig, Info, Carousel
 
 
 @login_required()
@@ -140,7 +140,7 @@ def BloggerInfo(request):
             print(e)
             result = {
                 "code": "0",
-                "msg": "修改成功！",
+                "msg": "修改失败！",
             }
         return JsonResponse(result)
     else:
@@ -162,11 +162,44 @@ def websiteCarousel(request):
     return render(request, 'layui-mini/management/websiteCarousel.html', locals())
 
 
+# 新增轮播图
+@xframe_options_exempt
+@login_required()
+def carouselAdd(request):
+    if request.method == 'POST':
+        info = request.POST.get('info')
+        url = request.POST.get('url')
+        img = request.POST.get('img')[6:]
+        is_show = request.POST.get('is_show')
+        print(info, url, img, is_show)
+        print(request.POST.get('img')[6:])
+        carousel = Carousel()
+        carousel.info = request.POST.get('info')
+        carousel.url = request.POST.get('url')
+        carousel.img = request.POST.get('img')[6:]
+        carousel.is_show = request.POST.get('is_show')
+        try:
+            carousel.save()
+            result = {
+                "code": "1",
+                "msg": "添加成功！",
+            }
+        except Exception as e:
+            print(e)
+            result = {
+                "code": "0",
+                "msg": "添加失败！",
+            }
+        return JsonResponse(result)
+    else:
+        return render(request, 'layui-mini/management/carouselAdd.html', locals())
+
+
 # 友情链接管理
 @xframe_options_exempt
 @login_required()
 def websiteLink(request):
-    return render(request, 'management/websiteLink.html', locals())
+    return render(request, 'layui-mini/management/websiteLink.html', locals())
 
 
 # 用户管理
@@ -432,3 +465,42 @@ def tagDel(request):
     else:
         result = {"code": 0, "msg": "删除失败!"}
     return JsonResponse(result)
+
+
+# ajax删除轮播图
+def carouselDel(request):
+    tag_id = request.GET.get("del_id")
+    tag_arr = request.GET.get("delidArr")
+    if tag_id:
+        Carousel.objects.get(id=tag_id).delete()
+        result = {"code": 1, "msg": "删除成功!"}
+    elif tag_arr:
+        tag_list = tag_arr.split(',')
+        for i in tag_list:
+            Carousel.objects.get(id=i).delete()
+        result = {"code": 1, "msg": "删除成功!"}
+    else:
+        result = {"code": 0, "msg": "删除失败!"}
+    return JsonResponse(result)
+
+
+# ajax编辑轮播图
+@xframe_options_exempt
+@login_required()
+def carouselEdit(request, carousel_id):
+    if request.method == "POST":
+        try:
+            result = {
+                "code": "1",
+                "msg": "提交成功！",
+            }
+        except Exception as e:
+            print(e)
+            result = {
+                "code": "0",
+                "msg": "提交失败！",
+            }
+        return JsonResponse(result)
+    else:
+        carousel = Carousel.objects.get(id=carousel_id)
+        return render(request, 'layui-mini/management/carouselEdit.html', locals())

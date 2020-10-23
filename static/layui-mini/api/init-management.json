@@ -85,7 +85,7 @@
             },
             {
               "title": "友链管理",
-              "href": "page/welcome-3.html",
+              "href": "/management/websiteLink",
               "icon": "fa fa-link",
               "target": "_self"
             },

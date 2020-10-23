@@ -79,7 +79,6 @@ fieldset legend {
 
 fieldset {
     margin-bottom: 20px !important;
-    text-align: center!important;
 }
 
 fieldset legend {
@@ -201,6 +200,10 @@ fieldset legend {
     text-align: center !important;
 }
 
+.layuimini-main .layui-form-pane {
+    text-align: center;
+}
+
 /*编辑文章*/
 #cover-img {
     width: 300px;
@@ -257,6 +260,7 @@ fieldset legend {
 .photo-config button {
     margin-left: 1.5em;
 }
+
 .info-photo {
     text-align: center;
 }
@@ -266,6 +270,7 @@ fieldset legend {
     height: 100%;
     margin: 0 1em;
 }
+
 .submit-btn {
     text-align: center;
     margin: 50px 0;
