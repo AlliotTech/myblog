@@ -91,7 +91,7 @@
             },
             {
               "title": "留言管理",
-              "href": "page/welcome-3.html",
+              "href": "/management/websiteLeaveMessage",
               "icon": "fa fa-comment-dots",
               "target": "_self"
             }
@@ -99,7 +99,7 @@
         },
         {
           "title": "用户管理",
-          "href": "page/area.html",
+          "href": "/management/managementUser",
           "icon": "fa fa-user-cog",
           "target": "_self"
         }

@@ -26,6 +26,8 @@ urlpatterns = [
     # 新增轮播图
     path('websiteLink/', views.websiteLink, name='websiteLink'),
     # 网站友情链接
+    path('linkAdd/', views.linkAdd, name='linkAdd'),
+    # 新增友情链接
     path('websiteAbout/', views.websiteAbout, name='websiteAbout'),
     # 网站关于
     path('websiteConfig/', views.websiteConfig, name='websiteConfig'),
@@ -57,4 +59,10 @@ urlpatterns = [
     # ajax删除轮播图
     path('carouselEdit-<int:carousel_id>/', views.carouselEdit, name='carouselEdit'),
     # ajax编辑轮播图
+    path('linkDel/', views.linkDel, name='linkDel'),
+    # ajax删除友链
+    path('linkEdit-<int:link_id>/', views.linkEdit, name='carouselEdit'),
+    # ajax编辑友链
+    path('userDel/', views.userDel, name='userDel'),
+    # ajax删除用户
 ]

@@ -91,14 +91,13 @@
                 , {field: 'url', title: '访问链接'}
                 , {field: 'describe', title: '描述信息'}
                 , {
-                    field: 'type', title: '类型', sort: true, templet: function (res) {
-                        var str = '';
-                        if (res.type == 1 ) {
-                            str = '友情链接'
-                        } else {
-                            str = '强烈推荐'
+                    field: 'type', title: '类型', sort: true, width: '8%', templet: function (res) {
+                        let menuId = res.id;
+                        if (res.type == 1) {
+                            return "   <input type='checkbox'  menuId = '" + menuId + "' lay-filter='state' lay-skin='switch' lay-text='强烈推荐|友情链接' >"
+                        } else if (res.type == 2) {
+                            return "   <input type='checkbox'  menuId = '" + menuId + "'  lay-filter='state' lay-skin='switch' lay-text='强烈推荐|友情链接' checked>"
                         }
-                        return str;
                     }
                 }
                 , {title: '操作', toolbar: '#TableBar'}
@@ -150,9 +149,9 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {
                 // 监听添加操作
-                var url = '/management/carouselAdd/'
+                var url = '/management/linkAdd/'
                 var index = layer.open({
-                    title: '添加轮播图',
+                    title: '添加友情链接',
                     type: 2,
                     shade: 0.2,
                     maxmin: true,
@@ -164,7 +163,7 @@
                         var code = window[elem.find('iframe')[0]['name']].submit() //子页面提交
                         console.log(code)
                         if (code == '1') {
-                            layer.msg("发布成功", {icon: 6});
+                            layer.msg("添加成功", {icon: 6});
                             layer.close(index);
                             //执行表格数据重载
                             var data = 'type=link'
@@ -173,7 +172,7 @@
                                 url: url
                             }, 'data');
                         } else {
-                            layer.alert("发布失败", {icon: 2});
+                            layer.alert("添加失败", {icon: 2});
                         }
                     },
                     btn3: function () {
@@ -191,7 +190,7 @@
                     })
                     $.ajax({
                         type: "GET",
-                        url: "{% url 'management:carouselDel' %}",
+                        url: "{% url 'management:linkDel' %}",
                         data: {
                             delidArr: delidArr.toString(),
                         },
@@ -229,7 +228,7 @@
         table.on('tool(currentTableFilter)', function (obj) {
             if (obj.event === 'edit') {
                 // 修改文章
-                var url = '/management/carouselEdit-' + obj.data.id
+                var url = '/management/linkEdit-' + obj.data.id
                 var index = layer.open({
                     title: '修改文章',
                     type: 2,
@@ -240,12 +239,12 @@
                     content: url,
                     btn: ['添加', '取消'],
                     yes: function (index, elem) {
-                        code = window[elem.find('iframe')[0]['name']].articleEdit("release") //子页面文章修改
+                        code = window[elem.find('iframe')[0]['name']].submit(obj.data.id) //子页面文章修改
                         if (code == '1') {
-                            layer.msg("发布成功", {icon: 6});
+                            layer.msg("修改成功", {icon: 6});
                             layer.close(index);
                             //执行表格数据重载
-                            var data = 'type=article_list'
+                            var data = 'type=link'
                             var url = '/account/tableData?' + data
                             table.reload('currentTable', {
                                 url: url
@@ -264,7 +263,7 @@
                 layer.confirm('确定要删除吗？', function (index) {
                     $.ajax({
                         type: "GET",
-                        url: "{% url 'management:carouselDel' %}",
+                        url: "{% url 'management:linkDel' %}",
                         data: {del_id: obj.data.id},
                         success: function (result) {
                             if (result.code == 1) {
@@ -293,7 +292,30 @@
                 });
             }
         });
-
+// 监听选中状态
+        form.on('switch(state)', function (data) {
+            console.log(data.elem.attributes['menuId'].nodeValue)
+            console.log(data.elem.checked)
+            $.ajax({
+                type: "POST",
+                url: "{% url 'account:tableForm' %}",
+                data: {
+                    type: "link_type",
+                    id: data.elem.attributes['menuId'].nodeValue,
+                    value: data.elem.checked,
+                },
+                success: function (result) {
+                    if (result.code == 1) {
+                        layer.msg(result.msg, {icon: 6});
+                    } else {
+                        layer.alert(result.msg, {icon: 2});
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
+        })
     });
 </script>
 </body>

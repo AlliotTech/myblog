@@ -101,7 +101,7 @@
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'id', title: 'ID', sort: true, fixed: 'left', width: '5%'}
                 , {
-                    field: 'title', title: '文章标题', width: '10%',templet: function (res) {
+                    field: 'title', title: '文章标题', width: '10%', templet: function (res) {
                         var str = '<span><a href="#" onclick="open_win(\'/blog/show-' + res.id + '\')">' + res.title + '</a></span>'
                         return str;
                     }
@@ -124,32 +124,30 @@
                     }
                 }
                 , {
-                    field: 'cover', title: '文章封面', width: '8%',templet: function (res) {
+                    field: 'cover', title: '文章封面', width: '8%', templet: function (res) {
                         var str = '<img src="' + res.cover + '">'
                         return str;
                     }
                 }
                 , {field: 'created_time', title: '发布时间', sort: true, width: '13%'}
                 , {
-                    field: 'is_release', title: '是否发布', sort: true, width: '8%', templet: function (res) {
-                        var str = '';
-                        if (res.is_release) {
-                            str = '<i class="layui-icon layui-icon-ok-circle" style="font-size: 20px; color: #27ae60;"></i> '
-                        } else {
-                            str = '<i class="layui-icon layui-icon-close-fill" style="font-size: 20px; color: #e74c3c;"></i> '
+                    field: 'is_release', title: '状态', sort: true, width: '8%', templet: function (res) {
+                        let menuId = res.id;
+                        if (res.is_release == 1) {
+                            return "   <input type='checkbox'  menuId = '" + menuId + "' lay-filter='state' lay-skin='switch' lay-text='发布|暂存' checked>"
+                        } else if (res.is_release == 0) {
+                            return "   <input type='checkbox'  menuId = '" + menuId + "'  lay-filter='state' lay-skin='switch' lay-text='发布|暂存'>"
                         }
-                        return str;
                     }
                 }
                 , {
-                    field: 'is_recommend', title: '是否推荐', sort: true, width: '8%', templet: function (res) {
-                        var str = '';
-                        if (res.is_recommend) {
-                            str = '<i class="layui-icon layui-icon-ok-circle" style="font-size: 20px; color: #27ae60;"></i> '
-                        } else {
-                            str = '<i class="layui-icon layui-icon-close-fill" style="font-size: 20px; color: #e74c3c;"></i> '
+                    field: 'is_recommend', title: '是否推荐', sort: true, width: '9%', templet: function (res) {
+                        let menuId = res.id;
+                        if (res.is_recommend == 1) {
+                            return "   <input type='checkbox'  menuId = '" + menuId + "' lay-filter='choice' title='推荐' checked>"
+                        } else if (res.is_recommend == 0) {
+                            return "   <input type='checkbox'  menuId = '" + menuId + "'  lay-filter='choice' title='推荐'>"
                         }
-                        return str;
                     }
                 }
                 , {title: '操作', toolbar: '#TableBar'}
@@ -336,6 +334,54 @@
                 open_win(url)
             }
         });
+        // 监听选中状态
+        form.on('switch(state)', function (data) {
+            console.log(data.elem.attributes['menuId'].nodeValue)
+            console.log(data.elem.checked)
+            $.ajax({
+                type: "POST",
+                url: "{% url 'account:tableForm' %}",
+                data: {
+                    type: "article_release",
+                    id: data.elem.attributes['menuId'].nodeValue,
+                    value: data.elem.checked,
+                },
+                success: function (result) {
+                    if (result.code == 1) {
+                        layer.msg(result.msg, {icon: 6});
+                    } else {
+                        layer.alert(result.msg, {icon: 2});
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
+        })
+        // 监听复选框选中状态
+        form.on('checkbox(choice)', function (data) {
+            console.log(data.elem.attributes['menuId'].nodeValue)
+            console.log(data.elem.checked)
+            $.ajax({
+                type: "POST",
+                url: "{% url 'account:tableForm' %}",
+                data: {
+                    type: "article_recommend",
+                    id: data.elem.attributes['menuId'].nodeValue,
+                    value: data.elem.checked,
+                },
+                success: function (result) {
+                    if (result.code == 1) {
+                        layer.msg(result.msg, {icon: 6});
+                    } else {
+                        layer.alert(result.msg, {icon: 2});
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
+        })
     });
 </script>
 </body>

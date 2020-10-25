@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>编辑轮播图</title>
+    <title>修改友情链接</title>
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
     <link rel="stylesheet" href="{% static 'layui-mini/lib/layui-v2.5.5/css/layui.css' %}" media="all">
     <link rel="stylesheet" href="{% static 'layui-mini/css/public.css' %}" media="all">
@@ -13,36 +13,50 @@
 <div class="cintent-card">
     <form class="layui-form">
         <div class="layui-form-item">
-            <label class="layui-form-label">图片标题：</label>
+            <label class="layui-form-label">网站名称：</label>
             <div class="layui-input-block">
-                <input type="text" name="info" lay-verify="required" lay-reqtext="请填写图片标题" placeholder="请输入图片标题"
-                       class="layui-input" value={{ carousel.info }}>
+                <input type="text" name="name" lay-verify="required" lay-reqtext="请填写网站名称" placeholder="请输入网站名称"
+                       class="layui-input" value={{ link.name }}>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">访问链接：</label>
             <div class="layui-input-block">
                 <input type="text" name="url" lay-verify="required" lay-reqtext="请填写访问链接" autocomplete="off"
-                       placeholder="请填写访问链接"
-                       class="layui-input" value={{ carousel.url }}>
+                       placeholder="请输入访问链接"
+                       class="layui-input" value={{ link.url }}>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">是否显示：</label>
+            <label class="layui-form-label">描述信息：</label>
             <div class="layui-input-block">
-                {% if carousel.is_show %}
-                    <input type="checkbox" name="is_show" lay-skin="switch" lay-text="是|否" checked="">
-                {% else %}
-                    <input type="checkbox" name="is_show" lay-skin="switch" lay-text="是|否">
-                {% endif %}
+                <input type="text" name="describe" lay-verify="required" lay-reqtext="请填写描述信息" autocomplete="off"
+                       placeholder="请输入描述信息"
+                       class="layui-input" value={{ link.describe }}>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">图片：</label>
+            <label class="layui-form-label">文章分类：</label>
+            <div class="layui-input-block">
+                <select name="which_type" id="which_type">
+                    {% if link.type == "1" %}
+                        <option value='1' selected="">友情链接</option>
+                        <option value='2'>强烈推荐</option>
+                    {% else %}
+                        <option value='1'>友情链接</option>
+                        <option value='2' selected="">强烈推荐</option>
+                    {% endif %}
+
+
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">logo：</label>
             <div class="layui-input-block article-photo-change">
-                <img src={{ carousel.img.url }} id="cover-img">
+                <img src={{ link.logo.url }} id="cover-img">
                 <button type="button" class="layui-btn layui-btn-normal" id="editimg">修改</button>
-                <tip>点击图片查看大图，图片分辨率：700*400</tip>
+                <tip>点击图片查看大图，图片分辨率：100*100</tip>
             </div>
         </div>
     </form>
@@ -54,22 +68,17 @@
 <script>
     // 子页面提交文章方法
     function submit(edit_id) {
-        var is_show
-        if ($(" input[ name='is_show' ] ").is(':checked')) {
-            is_show = 1
-        } else {
-            is_show = 0
-        }
         var code
         $.ajax({
             type: "POST",
-            url: '/management/carouselEdit-' + edit_id + '/',
+            url: '/management/linkEdit-' + edit_id + '/',
             async: false,
             data: {
-                info: $(" input[ name='info' ] ").val(),
+                name: $(" input[ name='name' ] ").val(),
                 url: $(" input[ name='url' ] ").val(),
                 img: $('#cover-img').attr('src'),
-                is_show: is_show,
+                describe: $(" input[ name='describe' ] ").val(),
+                type: $("#which_type").val(),
             },
             success: function (result) {
                 if (result.code == 1) {
@@ -103,12 +112,12 @@
         //创建一个图片上传组件
         croppers.render({
             elem: '#editimg'
-            , saveW: 700     //保存宽度
-            , saveH: 400
-            , mark: 7 / 4    //选取比例
+            , saveW: 100     //保存宽度
+            , saveH: 100
+            , mark: 1 / 1    //选取比例
             , area: open_height  //弹窗宽度
             , url: "{% url "account:imageUpload" %}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
-            , data: {type: 'carousel'}
+            , data: {type: 'link'}
             , done: function (src) { //上传完毕回调
                 console.log(src)
                 $("#cover-img").attr('src', src);

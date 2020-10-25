@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.clickjacking import xframe_options_exempt
 from account.views import imgSave
 from blog.models import Category, Tag, Article
-from management.models import About, WebsiteConfig, ImagesConfig, Info, Carousel
+from management.models import About, WebsiteConfig, ImagesConfig, Info, Carousel, Link
 
 
 @login_required()
@@ -152,7 +153,7 @@ def BloggerInfo(request):
 @xframe_options_exempt
 @login_required()
 def websiteLeaveMessage(request):
-    return render(request, 'management/websiteLeaveMessage.html', locals())
+    return render(request, 'layui-mini/management/websiteLeaveMessage.html', locals())
 
 
 # 轮播图管理
@@ -167,12 +168,6 @@ def websiteCarousel(request):
 @login_required()
 def carouselAdd(request):
     if request.method == 'POST':
-        info = request.POST.get('info')
-        url = request.POST.get('url')
-        img = request.POST.get('img')[6:]
-        is_show = request.POST.get('is_show')
-        print(info, url, img, is_show)
-        print(request.POST.get('img')[6:])
         carousel = Carousel()
         carousel.info = request.POST.get('info')
         carousel.url = request.POST.get('url')
@@ -202,11 +197,39 @@ def websiteLink(request):
     return render(request, 'layui-mini/management/websiteLink.html', locals())
 
 
+# 新增友情链接
+@xframe_options_exempt
+@login_required()
+def linkAdd(request):
+    if request.method == 'POST':
+        link = Link()
+        link.name = request.POST.get('name')
+        link.url = request.POST.get('url')
+        link.logo = request.POST.get('img')[6:]
+        link.describe = request.POST.get('describe')
+        link.type = request.POST.get('type')
+        try:
+            link.save()
+            result = {
+                "code": "1",
+                "msg": "添加成功！",
+            }
+        except Exception as e:
+            print(e)
+            result = {
+                "code": "0",
+                "msg": "添加失败！",
+            }
+        return JsonResponse(result)
+    else:
+        return render(request, 'layui-mini/management/linkAdd.html', locals())
+
+
 # 用户管理
 @xframe_options_exempt
 @login_required()
 def managementUser(request):
-    return render(request, 'management/managementUser.html', locals())
+    return render(request, 'layui-mini/management/managementUser.html', locals())
 
 
 # ajax 文章封面图片上传
@@ -489,7 +512,13 @@ def carouselDel(request):
 @login_required()
 def carouselEdit(request, carousel_id):
     if request.method == "POST":
+        carousel = Carousel.objects.get(id=carousel_id)
+        carousel.info = request.POST.get('info')
+        carousel.url = request.POST.get('url')
+        carousel.img = request.POST.get('img')[6:]
+        carousel.is_show = request.POST.get('is_show')
         try:
+            carousel.save()
             result = {
                 "code": "1",
                 "msg": "提交成功！",
@@ -504,3 +533,66 @@ def carouselEdit(request, carousel_id):
     else:
         carousel = Carousel.objects.get(id=carousel_id)
         return render(request, 'layui-mini/management/carouselEdit.html', locals())
+
+
+# ajax友链删除
+def linkDel(request):
+    tag_id = request.GET.get("del_id")
+    tag_arr = request.GET.get("delidArr")
+    if tag_id:
+        Link.objects.get(id=tag_id).delete()
+        result = {"code": 1, "msg": "删除成功!"}
+    elif tag_arr:
+        tag_list = tag_arr.split(',')
+        for i in tag_list:
+            Link.objects.get(id=i).delete()
+        result = {"code": 1, "msg": "删除成功!"}
+    else:
+        result = {"code": 0, "msg": "删除失败!"}
+    return JsonResponse(result)
+
+
+# ajax 编辑友链
+@xframe_options_exempt
+@login_required()
+def linkEdit(request, link_id):
+    if request.method == "POST":
+        link = Link.objects.get(id=link_id)
+        link.name = request.POST.get('name')
+        link.url = request.POST.get('url')
+        link.logo = request.POST.get('img')[6:]
+        link.describe = request.POST.get('describe')
+        link.type = request.POST.get('type')
+        try:
+            link.save()
+            result = {
+                "code": "1",
+                "msg": "提交成功！",
+            }
+        except Exception as e:
+            print(e)
+            result = {
+                "code": "0",
+                "msg": "提交失败！",
+            }
+        return JsonResponse(result)
+    else:
+        link = Link.objects.get(id=link_id)
+        return render(request, 'layui-mini/management/linkEdit.html', locals())
+
+
+# ajax 删除用户
+def userDel(request):
+    tag_id = request.GET.get("del_id")
+    tag_arr = request.GET.get("delidArr")
+    if tag_id:
+        User.objects.get(id=tag_id).delete()
+        result = {"code": 1, "msg": "删除成功!"}
+    elif tag_arr:
+        tag_list = tag_arr.split(',')
+        for i in tag_list:
+            User.objects.get(id=i).delete()
+        result = {"code": 1, "msg": "删除成功!"}
+    else:
+        result = {"code": 0, "msg": "删除失败!"}
+    return JsonResponse(result)

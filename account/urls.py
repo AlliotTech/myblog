@@ -35,6 +35,8 @@ urlpatterns = [
     # ajax动态表格数据
     path('tableSearch', views.tableSearch, name='tableSearch'),
     # ajax动态表格搜索
+    path('tableForm', views.tableForm, name='tableForm'),
+    # ajax动态表格表单
 
     path('registerCheck', views.registerCheck, name='registerCheck'),
     # ajax用户注册信息验证

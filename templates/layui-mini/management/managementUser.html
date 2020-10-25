@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>评论记录</title>
+    <title>用户管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -18,21 +18,15 @@
             <div class="layui-form layui-form-pane">
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label">文章标题</label>
+                        <label class="layui-form-label">用户名</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="title" autocomplete="off" class="layui-input">
+                            <input type="text" name="username" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">评论内容</label>
+                        <label class="layui-form-label">邮箱</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="content" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">评论日期</label>
-                        <div class="layui-input-inline">
-                            <input type="text" class="layui-input" id="time">
+                            <input type="text" name="email" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
@@ -50,13 +44,13 @@
         </script>
         <table class="layui-hide" id="currentTable" lay-filter="currentTableFilter"></table>
         <script type="text/html" id="TableBar">
-            <a class="layui-btn layui-btn-xs data-count-view" lay-event="view">
-                <i class="layui-icon layui-icon-read"></i>查看</a>
             <a class="layui-btn layui-btn-danger layui-btn-xs data-count-view" lay-event="delete">
                 <i class="layui-icon layui-icon-delete"></i>删除</a>
         </script>
     </div>
 </div>
+<script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/csrf.js' %}" charset="utf-8"></script>
 <script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
 <script>
     // 打开新窗口
@@ -82,27 +76,48 @@
         // 初始化表格
         table.render({
             elem: '#currentTable',
-            url: "{% url 'account:tableData' %}?type=comment",//数据接口,
+            url: "{% url 'account:tableData' %}?type=user",//数据接口,
             toolbar: '#toolbar',
             defaultToolbar: ['filter', 'exports', 'print'],
             title: '文章列表',
             cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'id', title: 'ID'}
-                , {field: 'title', title: '文章标题'}
+                , {field: 'username', title: '用户名'}
+                , {field: 'email', title: '邮箱'}
                 , {
-                    field: 'category', title: '文章分类', sort: true, templet: function (res) {
-                        var str = '<span><a href="#" onclick="open_win(\'/blog/category-' + res.category_id + '\')">' + res.category + '</a></span>'
+                    field: 'is_active', title: '状态', templet: function (res) {
+                        let menuId = res.id;
+                        if (res.is_active == 1) {
+                            return "   <input type='checkbox'  menuId = '" + menuId + "' lay-filter='state' lay-skin='switch' lay-text='启用|禁用' checked>"
+                        } else if (res.is_active == 0) {
+                            return "   <input type='checkbox'  menuId = '" + menuId + "'  lay-filter='state' lay-skin='switch' lay-text='启用|禁用'>"
+                        }
+                    }
+                }
+                , {field: 'last_login', title: '上次登录时间', sort: true}
+                , {field: 'date_joined', title: '注册时间', sort: true}
+                , {
+                    field: 'photo', title: '头像', templet: function (res) {
+                        var str = '<img src="' + res.photo + '">'
+                        return str
+                    }
+                }
+                , {
+                    field: 'sex', title: '性别', sort: true, templet: function (res) {
+                        var str = '';
+                        if (res.sex == 1) {
+                            str = '男'
+                        } else {
+                            str = '女'
+                        }
                         return str;
                     }
                 }
-                , {field: 'content', title: '评论内容', width: '15%'}
-                , {field: 'time', title: '评论时间', sort: true}
-                , {field: 'like', title: '评论点赞数', sort: true}
                 , {title: '操作', toolbar: '#TableBar'}
             ]],
             initSort: {
-                field: 'time' //排序字段，对应 cols 设定的各字段名
+                field: 'last_login' //排序字段，对应 cols 设定的各字段名
                 , type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
             },
             limits: [10, 15, 20, 25, 50, 100],
@@ -132,7 +147,7 @@
                 layer.msg("请输入搜索条件！", {icon: 2})
                 return false;
             }
-            var data = 'type=comment&content=' + data.field.content + '&title=' + data.field.title + '&time=' + time_range
+            var data = 'type=user&email=' + data.field.email + '&username=' + data.field.username + '&time=' + time_range
             var url = '/account/tableSearch?' + data
             //执行表格数据重载
             table.reload('currentTable', {
@@ -155,7 +170,7 @@
                     })
                     $.ajax({
                         type: "GET",
-                        url: "{% url 'blog:delComment' %}",
+                        url: "{% url 'management:userDel' %}",
                         data: {
                             delidArr: delidArr.toString(),
                         },
@@ -163,7 +178,7 @@
                             if (result.code == 1) {
                                 layer.msg(result.msg, {icon: 6});
                                 //执行表格数据重载
-                                var data = 'type=comment'
+                                var data = 'type=user'
                                 var url = '/account/tableData?' + data
                                 table.reload('currentTable', {
                                     url: url
@@ -185,16 +200,12 @@
         });
         // 监听行工具事件
         table.on('tool(currentTableFilter)', function (obj) {
-            if (obj.event === 'view') {
-                // 查看文章
-                var url = '/blog/show-' + obj.data.article_id
-                open_win(url)
-            } else if (obj.event === 'delete') {
+            if (obj.event === 'delete') {
                 // 删除评论
-                layer.confirm('确定要删除评论吗？', function (index) {
+                layer.confirm('确定要删除用户吗？', function (index) {
                     $.ajax({
                         type: "GET",
-                        url: "{% url 'blog:delComment' %}",
+                        url: "{% url 'management:userDel' %}",
                         data: {
                             del_id: obj.data.id
                         },
@@ -205,7 +216,7 @@
                                     layer.closeAll();
                                 }, 2000);
                                 //执行表格数据重载
-                                var data = 'type=comment'
+                                var data = 'type=user'
                                 var url = '/account/tableData?' + data
                                 table.reload('currentTable', {
                                     url: url
@@ -224,6 +235,28 @@
                     })
                 });
             }
+        });
+        // 监听选中状态
+        form.on('switch(state)', function (data) {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'account:tableForm' %}",
+                data: {
+                    type: "user_active",
+                    id: data.elem.attributes['menuId'].nodeValue,
+                    value: data.elem.checked,
+                },
+                success: function (result) {
+                    if (result.code == 1) {
+                        layer.msg(result.msg, {icon: 6});
+                    } else {
+                        layer.alert(result.msg, {icon: 2});
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
         });
     });
 </script>

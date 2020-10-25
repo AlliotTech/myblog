@@ -90,14 +90,13 @@
                     }
                 }
                 , {
-                    field: 'is_show', title: '是否显示', sort: true, templet: function (res) {
-                        var str = '';
-                        if (res.is_show) {
-                            str = '<i class="layui-icon layui-icon-ok-circle" style="font-size: 20px; color: #27ae60;"></i> '
-                        } else {
-                            str = '<i class="layui-icon layui-icon-close-fill" style="font-size: 20px; color: #e74c3c;"></i> '
+                    field: 'is_show', title: '是否显示', sort: true, width: '8%', templet: function (res) {
+                        let menuId = res.id;
+                        if (res.is_show == 1) {
+                            return "   <input type='checkbox'  menuId = '" + menuId + "' lay-filter='state' lay-skin='switch' lay-text='显示|隐藏' checked>"
+                        } else if (res.is_show == 0) {
+                            return "   <input type='checkbox'  menuId = '" + menuId + "'  lay-filter='state' lay-skin='switch' lay-text='显示|隐藏'>"
                         }
-                        return str;
                     }
                 }
                 , {title: '操作', toolbar: '#TableBar'}
@@ -237,20 +236,20 @@
                     area: ['70%', '70%'],
                     shadeClose: true,
                     content: url,
-                    btn: ['添加', '取消'],
+                    btn: ['修改', '取消'],
                     yes: function (index, elem) {
-                        code = window[elem.find('iframe')[0]['name']].articleEdit("release") //子页面文章修改
+                        code = window[elem.find('iframe')[0]['name']].submit(obj.data.id) //子页面文章修改
                         if (code == '1') {
-                            layer.msg("发布成功", {icon: 6});
+                            layer.msg("修改成功", {icon: 6});
                             layer.close(index);
                             //执行表格数据重载
-                            var data = 'type=article_list'
+                            var data = 'type=carousel'
                             var url = '/account/tableData?' + data
                             table.reload('currentTable', {
                                 url: url
                             }, 'data');
                         } else {
-                            layer.alert("发布失败", {icon: 2});
+                            layer.alert("修改失败", {icon: 2});
                         }
                     },
                     btn2: function () {
@@ -292,7 +291,30 @@
                 });
             }
         });
-
+        // 监听选中状态
+        form.on('switch(state)', function (data) {
+            console.log(data.elem.attributes['menuId'].nodeValue)
+            console.log(data.elem.checked)
+            $.ajax({
+                type: "POST",
+                url: "{% url 'account:tableForm' %}",
+                data: {
+                    type: "carousel_show",
+                    id: data.elem.attributes['menuId'].nodeValue,
+                    value: data.elem.checked,
+                },
+                success: function (result) {
+                    if (result.code == 1) {
+                        layer.msg(result.msg, {icon: 6});
+                    } else {
+                        layer.alert(result.msg, {icon: 2});
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.text());
+                }
+            })
+        })
     });
 </script>
 </body>

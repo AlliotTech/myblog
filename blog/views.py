@@ -423,7 +423,6 @@ def likeMessage(request):
 # ajax删除留言
 def delMessage(request):
     message_id = request.GET.get("del_id")
-    user_id = request.GET.get("user_id")
     delid_arr = request.GET.get("delidArr")
     if message_id:
         message = LeaveMessage.objects.get(id=message_id)

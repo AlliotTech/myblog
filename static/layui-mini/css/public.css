@@ -203,7 +203,9 @@ fieldset legend {
 .layuimini-main .layui-form-pane {
     text-align: center;
 }
-
+.layui-table img {
+    height: 30px!important;
+}
 /*编辑文章*/
 #cover-img {
     width: 300px;

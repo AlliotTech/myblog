@@ -103,7 +103,17 @@
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
             page: true,
-            even: true
+            even: true,
+            done: function () {
+                // 图片点击放大
+                $('.layui-table img').on('click', function () {
+                    layer.photos({
+                        photos: '.layui-table',
+                        closeBtn: 2,
+                        anim: 0
+                    });
+                })
+            }
         });
 
         // 监听搜索操作

@@ -115,11 +115,12 @@
             , done: function (src) { //上传完毕回调
                 layer.msg("上传成功！", {icon: 6});
                 $("#photo-img").attr('src', src);
+                $(".layui-nav-img").attr('src', src);
             }
         });
         // 表单提交
         form.on('submit(setmyinfo)', function (data) {
-            var formdata=$('form').serialize()
+            var formdata = $('form').serialize()
             var data = formdata + '&photo=' + $("#photo-img").attr('src')
             $.ajax({
                 type: "POST",

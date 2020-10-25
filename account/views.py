@@ -489,6 +489,21 @@ def tableData(request):
             else:
                 data['type'] = "回复"
             lis.append(data)
+    # 留言
+    elif page_type == 'leave_message':
+        table_data = LeaveMessage.objects.all()
+        lis = []
+        for history in table_data:
+            data = {}
+            data["id"] = history.id
+            data['time'] = history.time.strftime("%Y-%m-%d %H:%M:%S")
+            data['user'] = history.user.username
+            data['content'] = history.content
+            if history.level == 0:
+                data['type'] = "留言"
+            else:
+                data['type'] = "回复"
+            lis.append(data)
     # 轮播图管理
     elif page_type == 'carousel':
         table_data = Carousel.objects.all()
@@ -514,6 +529,22 @@ def tableData(request):
             data["url"] = link.url
             data["describe"] = link.describe
             data["type"] = link.type
+            lis.append(data)
+        print(lis)
+    # 用户管理
+    elif page_type == 'user':
+        table_data = UserInfo.objects.all()
+        lis = []
+        for user_info in table_data:
+            data = {}
+            data["id"] = user_info.user.id
+            data["username"] = user_info.user.username
+            data["email"] = user_info.user.email
+            data["is_active"] = user_info.user.is_active
+            data["last_login"] = user_info.user.last_login.strftime("%Y-%m-%d")
+            data["date_joined"] = user_info.user.date_joined.strftime("%Y-%m-%d")
+            data["photo"] = user_info.photo.url
+            data["sex"] = user_info.sex
             lis.append(data)
         print(lis)
     # 分页器进行分配
@@ -811,6 +842,31 @@ def tableSearch(request):
             data["type"] = link.type
             table_body.append(data)
         print(table_body)
+    # 搜索用户
+    elif search_type == "user":
+        username = request.GET.get("username")
+        email = request.GET.get("email")
+        print(username, email)
+        q1 = Q()
+        q1.connector = 'AND'
+        if username:
+            q1.children.append(('user__username__icontains', username))
+        if email:
+            q1.children.append(('user__email__icontains', email))
+        table_data = UserInfo.objects.filter(q1)
+        table_body = []
+        for user_info in table_data:
+            data = {}
+            data["id"] = user_info.user.id
+            data["username"] = user_info.user.username
+            data["email"] = user_info.user.email
+            data["is_active"] = user_info.user.is_active
+            data["last_login"] = user_info.user.last_login.strftime("%Y-%m-%d")
+            data["date_joined"] = user_info.user.date_joined.strftime("%Y-%m-%d")
+            data["photo"] = user_info.photo.url
+            data["sex"] = user_info.sex
+            table_body.append(data)
+        print(table_body)
     # 放在一个列表里
     result_data = [x for x in table_body]
     if len(table_body) == 0:
@@ -824,6 +880,116 @@ def tableSearch(request):
                   "data": result_data}
 
     return JsonResponse(result)
+
+
+# ajax 动态表格表单
+def tableForm(request):
+    form_type = request.POST.get('type')
+    print(form_type)
+    edit_id = request.POST.get('id')
+    edit_value = request.POST.get('value')
+    # 修改用户启用禁用状态
+    if form_type == 'user_active':
+        user = User.objects.get(id=edit_id)
+        if edit_value == 'true':
+            user.is_active = 1
+        else:
+            user.is_active = 0
+        try:
+            user.save()
+            data = {
+                "code": 1,
+                "msg": "修改成功！"
+            }
+        except Exception as e:
+            print(e)
+            data = {
+                "code": 0,
+                "msg": "修改失败！"
+            }
+        return JsonResponse(data)
+    # 修改文章是否发布
+    elif form_type == 'article_release':
+        article = Article.objects.get(id=edit_id)
+        if edit_value == 'true':
+            article.is_release = 1
+        else:
+            article.is_release = 0
+        try:
+            article.save()
+            data = {
+                "code": 1,
+                "msg": "修改成功！"
+            }
+        except Exception as e:
+            print(e)
+            data = {
+                "code": 0,
+                "msg": "修改失败！"
+            }
+        return JsonResponse(data)
+    # 修改文章是否推荐
+    elif form_type == 'article_recommend':
+        article = Article.objects.get(id=edit_id)
+        if edit_value == 'true':
+            article.is_recommend = 1
+        else:
+            article.is_recommend = 0
+        try:
+            article.save()
+            data = {
+                "code": 1,
+                "msg": "修改成功！"
+            }
+        except Exception as e:
+            print(e)
+            data = {
+                "code": 0,
+                "msg": "修改失败！"
+            }
+        return JsonResponse(data)
+    # 修改轮播图是否显示
+    elif form_type == 'carousel_show':
+        carousel = Carousel.objects.get(id=edit_id)
+        if edit_value == 'true':
+            carousel.is_show = 1
+        else:
+            carousel.is_show = 0
+        try:
+            carousel.save()
+            data = {
+                "code": 1,
+                "msg": "修改成功！"
+            }
+        except Exception as e:
+            print(e)
+            data = {
+                "code": 0,
+                "msg": "修改失败！"
+            }
+        return JsonResponse(data)
+    # 修改友情链接类型
+    elif form_type == 'link_type':
+        link = Link.objects.get(id=edit_id)
+        if edit_value == 'true':
+            print("222")
+            link.type = 2
+        else:
+            print("111")
+            link.type = 1
+        try:
+            link.save()
+            data = {
+                "code": 1,
+                "msg": "修改成功！"
+            }
+        except Exception as e:
+            print(e)
+            data = {
+                "code": 0,
+                "msg": "修改失败！"
+            }
+        return JsonResponse(data)
 
 
 # ajax用户注册验证
