@@ -18,7 +18,7 @@ urlpatterns = [
     # 留言板
     path('about/', views.about, name='about'),
     # 关于
-    path('blogroll/', views.blogroll, name='blogroll'),
+    path('link/', views.link, name='link'),
     # 友情链接
     path('search', views.search, name='search'),
     # 搜索

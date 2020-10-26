@@ -68,7 +68,7 @@
                                     <a class="article-reward" href="javascript:">打赏
                                         <div id="reward-box" class="reward-box-show">
                                             <h5>❤️您可以选择一种方式赞助本站</h5>
-                                            <img lay-src="../../static/images/pay.png">
+                                            <img lay-src="/media/{{ img.pay }}">
                                         </div>
                                     </a>
                                     {% if articke_like == 0 %}
@@ -142,7 +142,7 @@
                                             {% if userinfo.photo %}
                                                 <img src="/media/{{ userinfo.photo }}" class="layui-nav-img img-rotate">
                                             {% else %}
-                                                <img src="/media/photo/default.jpg" class="layui-nav-img img-rotate">
+                                                <img src="/media/{{ img.photo }}" class="layui-nav-img img-rotate">
                                             {% endif %}
                                         </a>
                                     </div>

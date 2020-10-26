@@ -1,6 +1,6 @@
 {% extends 'base-blog.html' %}
 {% load static %}
-{% block title %}崔亮的博客-专注devops自动化运维，传播优秀it运维技术文章{% endblock %}
+{% block title %}{{ site.index_title }}{% endblock %}
 {% block content %}
     <main class="page-main">
         <div class="layui-row">
@@ -11,11 +11,10 @@
                         <!--            轮播图片-->
                         <div class="carousel-img layui-carousel" id="test10">
                             <div carousel-item="" class="img-zoom">
-                                <div><img lay-src="/media/carousel/carousel-1.jpg"></div>
-                                <div><img lay-src="/media/carousel/carousel-2.jpg"></div>
-                                <div><img lay-src="/media/carousel/carousel-3.jpg"></div>
-                                <div><img lay-src="/media/carousel/carousel-4.jpg"></div>
-                                <div><img lay-src="/media/carousel/carousel-5.jpg"></div>
+                                {% for carousel in carousels %}
+                                    <div><a href={{ carousel.url }} target="_blank" title={{ carousel.info }}><img
+                                            lay-src='/media/{{ carousel.img }}'></a></div>
+                                {% endfor %}
                             </div>
                         </div>
                         <!--            最新文章-->

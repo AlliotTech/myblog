@@ -14,14 +14,10 @@ from blog.forms import searchForm
 from blog.models import *
 from account.models import UserInfo, ArticleViewHistory, LeaveMessage, CommentMessage
 from PIL import Image
-
-# Create your views here.
-
-
-# 全局调用函数,
-from management.models import About, Info
+from management.models import About, Info, Carousel, Link, WebsiteConfig, ImagesConfig
 
 
+# 全局调用函数
 def global_variable(request):
     # 登录用户信息头像
     if request.user.id is not None:
@@ -30,6 +26,10 @@ def global_variable(request):
     categorys = Category.objects.all()
     # 搜索表单
     search_form = searchForm()
+    # 网站信息
+    site = WebsiteConfig.objects.get(id=1)
+    # 默认图片
+    img = ImagesConfig.objects.get(id=1)
     return locals()
 
 
@@ -89,6 +89,7 @@ def index(request):
     aside_dict = aside()
     count = Article.objects.all().filter(is_release=True).count()
     page_count = (count // 5) + 1
+    carousels = Carousel.objects.all()
     return render(request, 'blog/index.html', locals())
 
 
@@ -243,6 +244,7 @@ def show(request, article_id):
     # 阅读量+1
     article.view = article.view + 1
     article.save()
+    article_like = 0
     # 用户已登录
     if request.user.id:
         # 添加阅读记录(第一次：添加，已有记录：更新时间)
@@ -258,7 +260,6 @@ def show(request, article_id):
             new_history.user = request.user
             new_history.save()
         # 判断是否已收藏文章
-        article_like = 0
         user_list = ArticleViewHistory.objects.filter(article_id=article_id)
         for i in user_list:
             if request.user == i.user and i.is_like == 1:
@@ -459,8 +460,10 @@ def about(request):
 
 
 # 友情链接
-def blogroll(request):
-    return render(request, 'blog/blogRoll.html', locals())
+def link(request):
+    hots = Link.objects.filter(type=2)[:4]
+    links = Link.objects.filter(type=1)[:12]
+    return render(request, 'blog/link.html', locals())
 
 
 # 搜索

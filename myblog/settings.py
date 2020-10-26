@@ -67,8 +67,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # # 图片资源模板
-                # 'django.template.context_processors.media',
                 # 全局公共函数
                 'blog.views.global_variable'
             ],

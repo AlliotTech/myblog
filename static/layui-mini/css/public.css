@@ -207,10 +207,6 @@ fieldset legend {
     height: 30px!important;
 }
 /*编辑文章*/
-#cover-img {
-    width: 300px;
-    height: 200px;
-}
 
 .editormd ul li {
     list-style: disc;

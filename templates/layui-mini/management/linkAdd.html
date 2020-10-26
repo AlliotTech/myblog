@@ -47,7 +47,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">logo：</label>
             <div class="layui-input-block article-photo-change">
-                <img src="/media/cover/default.jpg" id="cover-img">
+                <img src="/media/{{ img.cover }}" id="cover-img" width="100px" height="100px">
                 <button type="button" class="layui-btn layui-btn-normal" id="editimg">修改</button>
                 <tip>点击图片查看大图，图片分辨率：100*100</tip>
             </div>
@@ -98,22 +98,13 @@
             , croppers = layui.croppers
             , layer = layui.layer;
         var open_height
-        // 设置裁剪图片
-        $(document).ready(function () {
-            w = $(window).width(); //浏览器当前窗口可视区域宽度
-            if (w > 768) {
-                open_height = '50%'
-            } else {
-                open_height = '100%'
-            }
-        })
         //创建一个图片上传组件
         croppers.render({
             elem: '#editimg'
             , saveW: 100     //保存宽度
             , saveH: 100
             , mark: 1 / 1    //选取比例
-            , area: open_height  //弹窗宽度
+            , area: '75%'  //弹窗宽度
             , url: "{% url "account:imageUpload" %}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
             , data: {type: 'link'}
             , done: function (src) { //上传完毕回调
