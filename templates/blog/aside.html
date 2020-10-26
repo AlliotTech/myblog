@@ -161,27 +161,27 @@
         <div class="about-me">
             <div>
                 <i class="fas fa-business-time"></i>
-                <span>运行时间：123天</span>
+                <span>运行时间：{{ aside_dict.day_count }}天</span>
             </div>
             <div>
                 <i class="fas fa-book-reader"></i>
-                <span>PV：2341次</span>
+                <span>总访问量：1231次</span>
             </div>
             <div>
                 <i class="fas fa-user-plus"></i>
-                <span>UV：1234人</span>
+                <span>访问人数：1234人</span>
             </div>
             <div>
                 <i class="fas fa-book"></i>
-                <span>文章数：121篇</span>
+                <span>文章总数：{{ aside_dict.article_count }}篇</span>
             </div>
             <div>
                 <i class="fas fa-columns"></i>
-                <span>栏目数：18个</span>
+                <span>栏目总数：{{ aside_dict.category_count }}个</span>
             </div>
             <div>
                 <i class="fas fa-paperclip"></i>
-                <span>标签数：34个</span>
+                <span>标签总数：{{ aside_dict.tag_count }}个</span>
             </div>
         </div>
     </aside>

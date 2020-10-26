@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 import collections
 from django.contrib.auth.decorators import login_required
@@ -49,6 +50,20 @@ def aside():
     collectionTop = Article.objects.all().filter(is_release=True).order_by('-collection')[:9]
     # 评论排行
     commentTop = Article.objects.all().filter(is_release=True).order_by('-comment')[:9]
+    # 运行时间
+    start_date = '2020-10-10'
+    now_data = str(timezone.now().strftime('%Y-%m-%d'))
+    d1 = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+    d2 = datetime.datetime.strptime(now_data, '%Y-%m-%d')
+    day_count = (d2-d1).days
+    # 总访问量
+    # 访客人数
+    # 文章总数
+    article_count = Article.objects.count()
+    # 分类数
+    category_count = Category.objects.count()
+    # 标签数
+    tag_count = Tag.objects.count()
     return locals()
 
 
