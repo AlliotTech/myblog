@@ -1,3 +1,4 @@
+import json
 import random
 from django.contrib.auth.models import User
 from captcha.helpers import captcha_image_url
@@ -213,7 +214,6 @@ def forgetPassword(request):
 # 个人中心模块
 @login_required()
 def account(request):
-    model = "account"
     return render(request, 'layui-mini/base.html', locals())
 
 
@@ -223,6 +223,10 @@ def account(request):
 def personalCenter(request):
     userinfo = UserInfo.objects.get(user_id=request.user.id)
     user = User.objects.get(username=request.user)
+    view_count = ArticleViewHistory.objects.filter(user=request.user).count()
+    like_count = ArticleViewHistory.objects.filter(user=request.user).filter(is_like=1).count()
+    comment_count = CommentMessage.objects.filter(user=request.user).count()
+    leave_count = LeaveMessage.objects.filter(user=request.user).count()
     return render(request, 'layui-mini/account/index.html', locals())
 
 

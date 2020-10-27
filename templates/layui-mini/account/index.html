@@ -45,11 +45,15 @@
                     <table class="layui-table" lay-even="" lay-skin="nob">
                         <thead>
                         <tr>
-                            <th>性别：</th>
-                            <th>{{ userinfo.get_sex_display }}</th>
+                            <th>用户名：</th>
+                            <th>{{ user.username }}</th>
                         </tr>
                         </thead>
                         <tbody>
+                        <tr>
+                            <td>性别：</td>
+                            <td>{{ userinfo.get_sex_display }}</td>
+                        </tr>
                         <tr>
                             <td>邮箱：</td>
                             <td>{{ user.email }}</td>
@@ -79,25 +83,29 @@
                         <thead>
                         <tr>
                             <th>注册时间：</th>
-                            <th>2020年8月7日17:34:51</th>
+                            <th>{{ user.date_joined }}</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
+                            <td>上次登录时间：</td>
+                            <td>{{ user.last_login }}</td>
+                        </tr>
+                        <tr>
                             <td>浏览文章数：</td>
-                            <td>23篇</td>
+                            <td>{{ view_count }}篇</td>
                         </tr>
                         <tr>
                             <td>收藏文章数：</td>
-                            <td>12篇</td>
+                            <td>{{ like_count }}篇</td>
                         </tr>
                         <tr>
                             <td>发表评论数：</td>
-                            <td>23条</td>
+                            <td>{{ comment_count }}条</td>
                         </tr>
                         <tr>
                             <td>发表留言数：</td>
-                            <td>112条</td>
+                            <td>{{ leave_count }}条</td>
                         </tr>
                         </tbody>
                     </table>
@@ -130,233 +138,231 @@
 <!--</div>-->
 <script src="{% static 'layui-mini/lib/layui-v2.5.5/layui.js' %}" charset="utf-8"></script>
 <script src="{% static 'layui-mini/js/lay-config.js' %}" charset="utf-8"></script>
+<script src="{% static 'echarts/echarts.min.js' %}" charset="utf-8"></script>
+<script src="{% static 'echarts/walden.js' %}" charset="utf-8"></script>
 <script>
-    layui.use(['layer', 'echarts'], function () {
+    layui.use(['layer'], function () {
         var $ = layui.jquery,
-            layer = layui.layer,
-            echarts = layui.echarts;
+            layer = layui.layer;
 
-        /**
-         * 报表功能
-         */
-        var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
-
-        var optionRecords = {
-            title: {
-                text: '指标名称-报表图'
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    label: {
-                        backgroundColor: '#6a7985'
-                    }
-                }
-            },
-            legend: {
-                data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-            },
-            toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value'
-                }
-            ],
-            series: [
-                {
-                    name: '邮件营销',
-                    type: 'line',
-                    stack: '总量',
-                    areaStyle: {},
-                    data: [120, 132, 101, 134, 90, 230, 210]
-                },
-                {
-                    name: '联盟广告',
-                    type: 'line',
-                    areaStyle: {},
-                    data: [220, 182, 191, 234, 290, 330, 310]
-                },
-                {
-                    name: '视频广告',
-                    type: 'line',
-                    stack: '总量',
-                    areaStyle: {},
-                    data: [150, 232, 201, 154, 190, 330, 410]
-                },
-                {
-                    name: '直接访问',
-                    type: 'line',
-                    stack: '总量',
-                    areaStyle: {},
-                    data: [320, 332, 301, 334, 390, 330, 320]
-                },
-                {
-                    name: '搜索引擎',
-                    type: 'line',
-                    stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'top'
-                        }
-                    },
-                    areaStyle: {},
-                    data: [820, 932, 901, 934, 1290, 1330, 1320]
-                }
-            ]
-        };
-        echartsRecords.setOption(optionRecords);
-
-
-        /**
-         * 玫瑰图表
-         */
-        var echartsPies = echarts.init(document.getElementById('echarts-pies'), 'walden');
-        var optionPies = {
-            title: {
-                text: '指标名称-玫瑰图',
-                left: 'center'
-            },
-            tooltip: {
-                trigger: 'item',
-                formatter: '{a} <br/>{b} : {c} ({d}%)'
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-            },
-            series: [
-                {
-                    name: '访问来源',
-                    type: 'pie',
-                    radius: '55%',
-                    center: ['50%', '60%'],
-                    roseType: 'radius',
-                    data: [
-                        {value: 335, name: '直接访问'},
-                        {value: 310, name: '邮件营销'},
-                        {value: 234, name: '联盟广告'},
-                        {value: 135, name: '视频广告'},
-                        {value: 368, name: '搜索引擎'}
-                    ],
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }
-            ]
-        };
-        echartsPies.setOption(optionPies);
-
-
-        /**
-         * 柱状图
-         */
-        var echartsDataset = echarts.init(document.getElementById('echarts-dataset'), 'walden');
-
-        var optionDataset = {
-            legend: {},
-            tooltip: {},
-            dataset: {
-                dimensions: ['product', '2015', '2016', '2017'],
-                source: [
-                    {product: 'Matcha Latte', '2015': 43.3, '2016': 85.8, '2017': 93.7},
-                    {product: 'Milk Tea', '2015': 83.1, '2016': 73.4, '2017': 55.1},
-                    {product: 'Cheese Cocoa', '2015': 86.4, '2016': 65.2, '2017': 82.5},
-                    {product: 'Walnut Brownie', '2015': 72.4, '2016': 53.9, '2017': 39.1}
-                ]
-            },
-            xAxis: {type: 'category'},
-            yAxis: {},
-            // Declare several bar series, each will be mapped
-            // to a column of dataset.source by default.
-            series: [
-                {type: 'bar'},
-                {type: 'bar'},
-                {type: 'bar'}
-            ]
-        };
-
-        echartsDataset.setOption(optionDataset);
-
-
-        /**
-         * 中国地图
-         */
-        var echartsMap = echarts.init(document.getElementById('echarts-map'), 'walden');
-
-
-        var optionMap = {
-            legend: {},
-            tooltip: {
-                trigger: 'axis',
-                showContent: false
-            },
-            dataset: {
-                source: [
-                    ['product', '2012', '2013', '2014', '2015', '2016', '2017'],
-                    ['Matcha Latte', 41.1, 30.4, 65.1, 53.3, 83.8, 98.7],
-                    ['Milk Tea', 86.5, 92.1, 85.7, 83.1, 73.4, 55.1],
-                    ['Cheese Cocoa', 24.1, 67.2, 79.5, 86.4, 65.2, 82.5],
-                    ['Walnut Brownie', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1]
-                ]
-            },
-            xAxis: {type: 'category'},
-            yAxis: {gridIndex: 0},
-            grid: {top: '55%'},
-            series: [
-                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
-                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
-                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
-                {type: 'line', smooth: true, seriesLayoutBy: 'row'},
-                {
-                    type: 'pie',
-                    id: 'pie',
-                    radius: '30%',
-                    center: ['50%', '25%'],
-                    label: {
-                        formatter: '{b}: {@2012} ({d}%)'
-                    },
-                    encode: {
-                        itemName: 'product',
-                        value: '2012',
-                        tooltip: '2012'
-                    }
-                }
-            ]
-        };
-
-        echartsMap.setOption(optionMap);
-
-
-        // echarts 窗口缩放自适应
-        window.onresize = function () {
-            echartsRecords.resize();
-        }
 
     });
+</script>
+<script>
+    /**
+     * 报表功能
+     */
+    var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
+
+    var optionRecords = {
+        title: {
+            text: '浏览趋势'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            data: ['浏览文章数', '收藏文章数', '评论文章数']
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: ['7天前', '6天前', '5天前', '4天前', '3天前', '昨天', '今天']
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '浏览文章数',
+                type: 'line',
+                stack: '总量',
+                areaStyle: {},
+                data: [10, 13, 10, 14, 9, 23, 21]
+            },
+            {
+                name: '收藏文章数',
+                type: 'line',
+                areaStyle: {},
+                data: [2, 12, 9, 4, 2, 13, 6]
+            },
+            {
+                name: '评论文章数',
+                type: 'line',
+                stack: '总量',
+                areaStyle: {},
+                data: [10, 12, 11, 15, 19, 12, 40]
+            }
+        ]
+    };
+    echartsRecords.setOption(optionRecords);
+
+
+    /**
+     * 玫瑰图表
+     */
+    var echartsPies = echarts.init(document.getElementById('echarts-pies'), 'walden');
+    var optionPies = {
+        title: {
+            text: '浏览文章分类',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['Linux', 'Django', 'Python', 'MySQL', 'docker', ' kubernets']
+        },
+        series: [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                roseType: 'radius',
+                data: [
+                    {value: 35, name: 'Linux'},
+                    {value: 10, name: 'Django'},
+                    {value: 34, name: 'Python'},
+                    {value: 15, name: 'MySQL'},
+                    {value: 28, name: 'docker'},
+                    {value: 8, name: 'kubernets'},
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    echartsPies.setOption(optionPies);
+
+
+    /**
+     * 柱状图
+     */
+    var echartsDataset = echarts.init(document.getElementById('echarts-dataset'), 'walden');
+
+    var optionDataset = {
+        title: {
+            text: '浏览时间分布',
+            left: 'left'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: ['00', '02', '04', '06', '08', '10', '12', '14', '16', '18', '20', '22', '24'],
+                axisTick: {
+                    alignWithLabel: true
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '浏览文章数',
+                type: 'bar',
+                barWidth: '60%',
+                data: [0, 0, 0, 0, 1, 3, 6, 9, 3, 5, 7, 14, 11, 9]
+            }
+        ]
+    };
+
+    echartsDataset.setOption(optionDataset);
+
+
+    /**
+     * 雷达图
+     */
+    var echartsMap = echarts.init(document.getElementById('echarts-map'), 'walden');
+
+
+    var optionMap = {
+        title: {
+            text: '评论分布'
+        },
+        tooltip: {},
+        legend: {
+            data: ['评论数量']
+        },
+        radar: {
+            // shape: 'circle',
+            name: {
+                textStyle: {
+                    color: '#fff',
+                    backgroundColor: '#999',
+                    borderRadius: 3,
+                    padding: [3, 5]
+                }
+            },
+            indicator: [
+                {name: 'Linux', max: 65},
+                {name: 'Django', max: 16},
+                {name: 'Python', max: 30},
+                {name: 'MySQL', max: 38},
+                {name: 'docker', max: 52},
+                {name: 'kubernets', max: 25}
+            ]
+        },
+        series: [{
+            type: 'radar',
+            // areaStyle: {normal: {}},
+            data: [
+                {
+                    value: [3, 10, 28, 25, 5, 19],
+                    name: '文章评论数'
+                }
+            ]
+        }]
+    };
+    echartsMap.setOption(optionMap);
+    // echarts 窗口缩放自适应
+    window.onresize = function () {
+        echartsRecords.resize();
+    }
 </script>
 </body>
 </html>

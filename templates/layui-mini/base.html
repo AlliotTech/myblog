@@ -144,13 +144,8 @@
             layer = layui.layer,
             miniAdmin = layui.miniAdmin,
             miniTongji = layui.miniTongji;
-        if ("{{ model }}" == 'account') {
-            var iniUrl = "{% static 'layui-mini/api/init-account.json' %}"
-        } else {
-            var iniUrl = "{% static 'layui-mini/api/init-management.json' %}"
-        }
         var options = {
-            iniUrl: iniUrl,    // 初始化接口
+            iniUrl: "{% url 'blog:initApi' %}?type=" + window.location.pathname,    // 初始化接口
             clearUrl: "{% static 'layui-mini/api/clear.json' %}", // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置

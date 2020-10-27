@@ -22,6 +22,9 @@ urlpatterns = [
     # 友情链接
     path('search', views.search, name='search'),
     # 搜索
+    path('initApi', views.initApi, name='initApi'),
+    # 初始化数据接口
+
     path('categoryPage', views.categoryPage, name='categoryPage'),
     # ajax文章分类分页
     path('tagPage', views.tagPage, name='tagPage'),

@@ -76,10 +76,11 @@
                 <a href="javascript:;"><img lay-src="/media/{{ userinfo.photo }}"
                                             class="layui-nav-img">{{ user.username }}
                 </a>
-
                 <dl class="layui-nav-child">
                     <dd><a href="{% url 'account:account' %}">个人中心</a></dd>
-                    <dd><a href="{% url 'management:management' %}">网站管理</a></dd>
+                    {% if user.is_superuser %}
+                        <dd><a href="{% url 'management:management' %}">网站管理</a></dd>
+                    {% endif %}
                     <dd><a href="{% url 'account:changePassword' %}">修改密码</a></dd>
                     <dd><a href="{% url 'account:logout' %}">退出登录</a></dd>
                 </dl>
@@ -91,8 +92,6 @@
                     </span>
             {% endif %}
         </li>
-
-
         <li class="nav-rignt">
             <span><a class="nav-search" href="#"><i></i></a></span>
         </li>
@@ -168,9 +167,11 @@
                         <dd data-name="button">
                             <a href="{% url 'account:account' %}">个人中心</a>
                         </dd>
-                        <dd data-name="nav">
-                            <a href="{% url 'management:management' %}">网站管理</a>
-                        </dd>
+                        {% if user.is_superuser %}
+                            <dd data-name="nav">
+                                <a href="{% url 'management:management' %}">网站管理</a>
+                            </dd>
+                        {% endif %}
                         <dd data-name="button">
                             <a href="{% url 'account:logout' %}">退出登录</a>
                         </dd>
@@ -250,8 +251,10 @@
     });
     // 下拉搜索框
     $('.nav-search').on("click", function () {
-        $('.nav-search').toggleClass('nav-search-close');
-        $('.search-box').toggleClass('search-box-show');
+        setTimeout(function () {
+            $('.nav-search').toggleClass('nav-search-close');
+            $('.search-box').toggleClass('search-box-show');
+        }, 1000)
     });
     // 导航栏吸顶效果
     $(document).ready(function () {

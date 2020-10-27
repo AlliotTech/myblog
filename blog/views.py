@@ -1,4 +1,6 @@
 import datetime
+import json
+import os
 from typing import List
 import collections
 from django.contrib.auth.decorators import login_required
@@ -16,6 +18,7 @@ from blog.models import *
 from account.models import UserInfo, ArticleViewHistory, LeaveMessage, CommentMessage
 from PIL import Image
 from management.models import About, Info, Carousel, Link, WebsiteConfig, ImagesConfig
+from myblog.settings import BASE_DIR
 
 
 # 全局调用函数
@@ -55,7 +58,7 @@ def aside():
     now_data = str(timezone.now().strftime('%Y-%m-%d'))
     d1 = datetime.datetime.strptime(start_date, '%Y-%m-%d')
     d2 = datetime.datetime.strptime(now_data, '%Y-%m-%d')
-    day_count = (d2-d1).days
+    day_count = (d2 - d1).days
     # 总访问量
     # 访客人数
     # 文章总数
@@ -649,3 +652,15 @@ def delComment(request):
     else:
         result = {"code": 0, "msg": "删除失败!"}
     return JsonResponse(result)
+
+
+# 初始化数据接口
+def initApi(request):
+    model = request.GET.get("type").strip('/')
+    json_file = "init-" + model + ".json"
+    path = "static/layui-mini/api/"+json_file
+    open_path = os.path.join(BASE_DIR, *path.split('/'))
+    with open(open_path, 'r', encoding='utf8')as f:
+        json_data = json.load(f)
+    f.close()
+    return JsonResponse(json_data)
