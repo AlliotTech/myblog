@@ -303,3 +303,8 @@ fieldset legend {
 .layuiadmin-card-list {
     padding: 15px;
 }
+.layui-card .layui-card-header {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
